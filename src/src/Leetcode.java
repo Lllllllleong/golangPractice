@@ -2603,8 +2603,7 @@ public class Leetcode {
         if (quadTree2.isLeaf) {
             if (quadTree2.val) return quadTree2;
             else return quadTree1;
-        }
-        else {
+        } else {
             QuadNode out = new QuadNode();
             out.val = false;
             out.isLeaf = false;
@@ -2634,8 +2633,9 @@ public class Leetcode {
         int b = zagRight(root);
         int c = longestZigZag(root.left);
         int d = longestZigZag(root.right);
-        return Math.max(a, Math.max(b, Math.max(c,d)));
+        return Math.max(a, Math.max(b, Math.max(c, d)));
     }
+
     public int zagLeft(TreeNode root) {
         if (root == null) {
             return 0;
@@ -2643,6 +2643,7 @@ public class Leetcode {
             return 1 + zagRight(root.right);
         }
     }
+
     public int zagRight(TreeNode root) {
         if (root == null) {
             return 0;
@@ -2674,6 +2675,7 @@ public class Leetcode {
     }
 
     Map<Integer, TreeNode> tnMap;
+
     public TreeNode createBinaryTree(int[][] descriptions) {
         tnMap = new HashMap<>();
         TreeNode newest = new TreeNode();
@@ -2704,6 +2706,7 @@ public class Leetcode {
         int latestTime = Integer.MIN_VALUE;
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
+
         public StockPrice() {
             hm = new HashMap<>();
         }
@@ -2755,10 +2758,10 @@ public class Leetcode {
         if (n < 3) return false;
         for (int i = 0; i < n - 2; i++) {
             int first = nums[i];
-            for (int j = i+1; j < n - 1; j++) {
+            for (int j = i + 1; j < n - 1; j++) {
                 int second = nums[j];
                 if (first >= second) continue;
-                for (int k = j+1; k < n; k++) {
+                for (int k = j + 1; k < n; k++) {
                     int third = nums[k];
                     if (second < third) return true;
                 }
@@ -2775,11 +2778,12 @@ public class Leetcode {
         }
         return currentSum;
     }
+
     public int bulbSwitch(int n) {
         if (n == 1) return 1;
         if (n % 2 == 0) return (n / 2);
         else {
-            return (bulbSwitch(n-1));
+            return (bulbSwitch(n - 1));
         }
     }
 
@@ -2815,7 +2819,7 @@ public class Leetcode {
                 n = n - 1;
                 isCurrentVersion = isBadVersion(n);
             }
-            return n+1;
+            return n + 1;
         }
     }
 
@@ -2865,6 +2869,7 @@ public class Leetcode {
         tnList.add(root);
         return levelOrderBottom2(tnList);
     }
+
     public List<List<Integer>> levelOrderBottom2(List<TreeNode> tnList) {
         if (tnList.size() == 0) {
             List<List<Integer>> output = new ArrayList<>();
@@ -2881,8 +2886,10 @@ public class Leetcode {
         output.add(currentLevel);
         return output;
     }
+
     HashMap<Integer, Node> hmNode;
-    public Node cloneGraph(Node node)  {
+
+    public Node cloneGraph(Node node) {
         if (node == null) {
             return node;
         }
@@ -2891,6 +2898,7 @@ public class Leetcode {
         cloneGraph2(node);
         return hmNode.get(val);
     }
+
     public void cloneGraph2(Node node) {
         int key = node.val;
         if (!hmNode.containsKey(key)) {
@@ -2907,6 +2915,7 @@ public class Leetcode {
     int[][] heightMap;
     int xMax;
     int yMax;
+
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
         heightMap = heights;
         xMax = heightMap[0].length;
@@ -2914,7 +2923,7 @@ public class Leetcode {
         List<List<Integer>> out = new ArrayList<>();
         for (int y = 0; y < yMax; y++) {
             for (int x = 0; x < xMax; x++) {
-                int[] currentCoordinates = {y,x};
+                int[] currentCoordinates = {y, x};
                 if (canReachAlantic(currentCoordinates) && canReachPacific(currentCoordinates)) {
                     List<Integer> currentList = new ArrayList<>();
                     currentList.add(y);
@@ -2925,27 +2934,29 @@ public class Leetcode {
         }
         return out;
     }
+
     public boolean canReachAlantic(int[] in) {
         int y = in[0];
         int x = in[1];
-        if (xMax-1 == x || yMax-1 == y) return true;
+        if (xMax - 1 == x || yMax - 1 == y) return true;
         else {
-            int[] down = {y+1, x};
-            if (canReachAlantic(down) && heightMap[y][x] >= heightMap[y+1][x]) return true;
-            int[] right = {y, x+1};
-            if (canReachAlantic(right) && heightMap[y][x] >= heightMap[y][x+1]) return true;
+            int[] down = {y + 1, x};
+            if (canReachAlantic(down) && heightMap[y][x] >= heightMap[y + 1][x]) return true;
+            int[] right = {y, x + 1};
+            if (canReachAlantic(right) && heightMap[y][x] >= heightMap[y][x + 1]) return true;
         }
         return false;
     }
+
     public boolean canReachPacific(int[] in) {
         int y = in[0];
         int x = in[1];
         if (x <= 0 || y <= 0) return true;
         else {
-            int[] up = {y-1, x};
-            if (canReachPacific(up) && heightMap[y][x] >= heightMap[y-1][x]) return true;
-            int[] left = {y, x-1};
-            if (canReachPacific(left) && heightMap[y][x] >= heightMap[y][x-1]) return true;
+            int[] up = {y - 1, x};
+            if (canReachPacific(up) && heightMap[y][x] >= heightMap[y - 1][x]) return true;
+            int[] left = {y, x - 1};
+            if (canReachPacific(left) && heightMap[y][x] >= heightMap[y][x - 1]) return true;
         }
         return false;
     }
@@ -2974,12 +2985,13 @@ public class Leetcode {
             second += minCameraCover2(root.left.right);
         }
         if (root.right != null) {
-            second ++;
+            second++;
             second += minCameraCover2(root.right.left);
             second += minCameraCover2(root.right.right);
         }
-        return (Math.min(first,second));
+        return (Math.min(first, second));
     }
+
     //Assume the given root is covered
     public int minCameraCover2(TreeNode root) {
         if (root == null) return 0;
@@ -2994,41 +3006,34 @@ public class Leetcode {
             second += minCameraCover2(root.left.right);
         }
         if (root.right != null) {
-            second ++;
+            second++;
             second += minCameraCover2(root.right.left);
             second += minCameraCover2(root.right.right);
         }
-        return (Math.min(first,second));
+        return (Math.min(first, second));
     }
 
     public int maxSumBST(TreeNode root) {
         if (root == null) return 0;
-        if (!isBST(root)) {
+        if (!isValidBST(root)) {
             return Math.max(maxSumBST(root.left), maxSumBST(root.right));
         } else {
-            return treeSum(root);
+            return maxSumInBST(root);
         }
     }
+
+    public int maxSumInBST(TreeNode root) {
+        int currentSum = treeSum(root);
+        return Math.max(Math.max(currentSum, maxSumBST(root.left)), maxSumBST(root.right));
+    }
+
     public int treeSum(TreeNode root) {
         if (root == null) return 0;
         else {
             return (root.val + treeSum(root.left) + treeSum(root.right));
         }
     }
-    public boolean isBST(TreeNode root) {
-        if (root == null) return true;
-        if (root.val < 0 && allNegativeBST(root)) return false;
-        if (root.left == null && root.right == null) return true;
-        if (root.left != null) {
-            if (root.left.val >= root.val) return false;
-            if (!isBST(root.left)) return false;
-        }
-        if (root.right != null) {
-            if (root.right.val <= root.val) return false;
-            if (!isBST(root.right)) return false;
-        }
-        return true;
-    }
+
     public boolean allNegativeBST(TreeNode root) {
         if (root == null) return true;
         if (root.val >= 0) return false;
@@ -3036,7 +3041,116 @@ public class Leetcode {
     }
 
 
-    public static void main(String[] args) {
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        int[] output = new int[n];
+        if (n == 1) return output;
+        for (int i = 0; i < n; i++) {
+            System.out.println(i);
+            TreeMap<Integer, Integer> tm = new TreeMap<>();
+            tm.put(i, 0);
+            boolean flag = true;
+            while (flag) {
+                System.out.println(tm.keySet().toString());
+                flag = false;
+                for (int[] edge : edges) {
+                    int first = edge[0];
+                    int second = edge[1];
+                    if (tm.keySet().contains(second) && !tm.keySet().contains(first)) {
+                        first = edge[1];
+                        second = edge[0];
+                    }
+                    System.out.println(first);
+                    System.out.println(second);
+                    if (tm.keySet().contains(first) && !tm.keySet().contains(second)) {
+                        flag = true;
+                        int priorDistance = tm.get(first);
+                        tm.put(second, priorDistance + 1);
+                    }
+                }
 
+            }
+            int sum = 0;
+            for (Integer I : tm.values()) sum += I;
+            output[i] = sum;
+        }
+        return output;
+    }
+
+    public static class Edge {
+        List<Integer> edges = new ArrayList<>();
+        boolean isCoin;
+        boolean isLeaf = (edges.size() == 1);
+
+        public Edge(boolean isCoin) {
+            this.isCoin = isCoin;
+        }
+
+    }
+
+    HashMap<Integer, Edge> edgeHM;
+
+    public static int collectTheCoins(int[] coins, int[][] edges) {
+        if (coins.length <= 5) return 0;
+        HashMap<Integer, Edge> edgeHM = new HashMap<>();
+        for (int i = 0; i < coins.length; i++) {
+            Edge currentEdge = new Edge(coins[i] == 1);
+            for (int[] edge : edges) {
+                if (edge[0] == i) currentEdge.edges.add(edge[1]);
+                if (edge[1] == i) currentEdge.edges.add(edge[0]);
+            }
+            edgeHM.put(i, currentEdge);
+        }
+
+        //Remove all non-coin leafs;
+        boolean flag = true;
+        while (flag) {
+            flag = false;
+            Set<Integer> keys = edgeHM.keySet();
+            List<Integer> toRemove = new ArrayList<>();
+            for (Integer key : keys) {
+                Edge e = edgeHM.get(key);
+                if (!e.isCoin && e.edges.size() == 1) {
+                    //Remove references to this leaf
+                    edgeHM.get(e.edges.get(0)).edges.remove(key);
+                    flag = true;
+                    //Remove the lead
+                    toRemove.add(key);
+                }
+            }
+            for (Integer key : toRemove) {
+                System.out.println(key);
+                edgeHM.remove(key);
+            }
+        }
+        //Reduce leaf coins by two
+        for (int i = 0; i < 2; i++) {
+            List<Integer> currentLeafCoins = new ArrayList<>();
+            for (Integer key : edgeHM.keySet()) {
+                Edge e = edgeHM.get(key);
+                if (e.edges.size() == 1 && e.isCoin) {
+                    System.out.println("removing " + key);
+                    currentLeafCoins.add(key);
+
+                }
+            }
+            for (Integer key : currentLeafCoins) {
+                Edge e = edgeHM.get(key);
+                edgeHM.get(e.edges.get(0)).edges.remove(key);
+                edgeHM.get(e.edges.get(0)).isCoin = true;
+            }
+            for (Integer key : currentLeafCoins) {
+                edgeHM.remove(key);
+            }
+        }
+
+        Set<Integer> output = edgeHM.keySet();
+        return ((output.size()-1)*2);
+    }
+
+
+    public static void main(String[] args) {
+        int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
+        int[] coins = {0, 0, 0, 1, 1, 0, 0, 1};
+        int i = collectTheCoins(coins, edges);
     }
 }
