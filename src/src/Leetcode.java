@@ -3076,7 +3076,7 @@ public class Leetcode {
         return output;
     }
 
-    public static class Edge {
+    public class Edge {
         List<Integer> edges = new ArrayList<>();
         boolean isCoin;
         boolean isLeaf = (edges.size() == 1);
@@ -3089,7 +3089,7 @@ public class Leetcode {
 
     HashMap<Integer, Edge> edgeHM;
 
-    public static int collectTheCoins(int[] coins, int[][] edges) {
+    public int collectTheCoins(int[] coins, int[][] edges) {
         if (coins.length <= 5) return 0;
         HashMap<Integer, Edge> edgeHM = new HashMap<>();
         for (int i = 0; i < coins.length; i++) {
@@ -3147,10 +3147,105 @@ public class Leetcode {
         return ((output.size()-1)*2);
     }
 
+    public List<Integer> findDuplicates(int[] nums) {
+        Arrays.sort(nums);
+        List<Integer> out = new ArrayList<>();
+        if (nums.length == 1) return out;
+        for (int i = 1; i < nums.length; i++) {
+            int current = nums[i-1];
+            int next = nums[i];
+            if (current == next) out.add(next);
+        }
+        return out;
+    }
+
+    public int threeSumMulti(int[] arr, int target) {
+        int output = 0;
+        int n = arr.length;
+        Arrays.sort(arr);
+        for (int i = 0; i < n-2; i++) {
+            for (int j = i+1; j < n-1; j++) {
+                for (int k = j+1; k < n; k++) {
+                    int currentSum = (arr[i] + arr[j] + arr[k]);
+                    if (currentSum == target) output++;
+                    if (currentSum > target) break;
+                }
+            }
+        }
+        return (int) (output % (Math.pow(10,9) + 7));
+    }
+
+    public List<List<String>> displayTable(List<List<String>> orders) {
+        List<List<String>> output = new ArrayList<>();
+        HashMap<String, List<String>> hmDisplay = new HashMap<>();
+        Set<String> foodSet = new HashSet<>();
+        for (List<String> ls : orders) {
+            String currentTable = ls.get(1);
+            String currentFood = ls.get(2);
+            //Add to foodSet
+            foodSet.add(currentFood);
+            if (!hmDisplay.containsKey(currentTable)) {
+                hmDisplay.put(currentTable, new ArrayList<>());
+            }
+            hmDisplay.get(currentTable).add(currentFood);
+        }
+        List<String> foodList = new ArrayList<>(foodSet);
+        Collections.sort(foodList);
+        for (String table : hmDisplay.keySet()) {
+            List<String> currentTableDisplay = new ArrayList<>();
+            var currentOrders = hmDisplay.get(table);
+            currentTableDisplay.add(table);
+            for (String food : foodList) {
+                int foodFrequency = Collections.frequency(currentOrders, food);
+                currentTableDisplay.add(String.valueOf(foodFrequency));
+            }
+            output.add(currentTableDisplay);
+        }
+        Collections.sort(output, new Comparator<List<String>>() {
+            public int compare(List<String> a, List<String> b) {
+                return (Integer.valueOf(a.get(0)) - Integer.valueOf(b.get(0)));
+            }
+        });
+        foodList.add(0, "Table");
+        output.add(0, foodList);
+        return output;
+    }
+
+
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return (a[0] - b[0]);
+            }
+        });
+        int n = intervals.length;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] firstInterval = intervals[i-1];
+            int firstStart = firstInterval[0];
+            int firstEnd = firstInterval[1];
+            int[] secondInterval = intervals[i];
+            int secondStart = secondInterval[0];
+            int secondEnd = secondInterval[1];
+            if (firstStart <= secondStart && secondStart <= firstEnd) {
+                secondInterval[0] = Math.min(firstStart, secondStart);
+                secondInterval[1] = Math.max(firstEnd, secondEnd);
+                intervals[i-1] = null;
+                n--;
+            }
+        }
+        int i = 0;
+        int[][] output = new int[n][];
+        for (int[] intArray : intervals) {
+            if (intArray != null) {
+                output[i] = intArray;
+                i++;
+            }
+        }
+        return output;
+    }
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
         int[] coins = {0, 0, 0, 1, 1, 0, 0, 1};
-        int i = collectTheCoins(coins, edges);
     }
 }
