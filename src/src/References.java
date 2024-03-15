@@ -1,9 +1,55 @@
 
 import java.util.*;
+class Seed {
+    int x;
+    int y;
+    static int totalSeedCount = 0;
+    List<Seed> next = new ArrayList<>();
+    public Seed(int x, int y) {
+        this.x = x;
+        this.y = y;
+        totalSeedCount++;
+    }
+    @Override
+    public String toString() {
+        return "Seed{" +
+                "x=" + x +
+                ", y=" + y;
+    }
+}
 
 public class References {
 
     public static void main(String[] args) {
+        HashMap<Integer, Seed> seedHM = new HashMap<>();
+        Seed one = new Seed(1, 1);
+        Seed two = new Seed(2, 2);
+        seedHM.put(1, one);
+        seedHM.put(2, two);
+        seedHM.get(1).next.add(seedHM.get(2));
+        System.out.println(seedHM.get(1).next);
+        seedHM.put(2, null);
+        System.out.println(seedHM.get(1).next);
+        seedHM.remove(2);
+        System.out.println(seedHM.get(1).next);
+
+
+
+        /*
+            Static: Used when you dont care about the instance
+            e.g. Seed class above
+            Then totalSeedCount will return total of all seeds created
+            Also e.g.
+            Seed s = new Seed(a, b);
+            Seed.toString() will not work because it is not calling toString on an instance,
+            it is calling on a class.
+            To make it work, add a static toString method in the class
+
+
+         */
+
+
+
 //          Increment hashmap value by 1 if it exists, if not, set it to 1
         HashMap<Integer, Integer> map = new HashMap<>();
         Integer key = 3;
@@ -118,6 +164,13 @@ public class References {
 
 
 //        Finding the middle of a linkedlist, use tortoise and hare method.
+
+
+
+
+
+
+
     }
 
 }
