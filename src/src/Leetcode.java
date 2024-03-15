@@ -3113,7 +3113,7 @@ public class Leetcode {
     public class Edge {
         List<Integer> edges = new ArrayList<>();
         boolean isCoin;
-        boolean isLeaf = (edges.size() == 1);
+        boolean isLeaf;
 
         public Edge(boolean isCoin) {
             this.isCoin = isCoin;
@@ -3158,6 +3158,7 @@ public class Leetcode {
         }
         //Reduce leaf coins by two
         for (int i = 0; i < 2; i++) {
+            if (edgeHM.size() == 2) return 0;
             List<Integer> currentLeafCoins = new ArrayList<>();
             for (Integer key : edgeHM.keySet()) {
                 Edge e = edgeHM.get(key);
@@ -3566,6 +3567,7 @@ public class Leetcode {
             }
         }
     }
+
     public int latestDayToCross(int row, int col, int[][] cells) {
         Grid g = new Grid(row, col);
         int output = 0;
@@ -3575,8 +3577,54 @@ public class Leetcode {
 
             if (!g.canCross()) return output;
             else output++;
+
         }
         return output;
+    }
+
+    HashMap<Integer, List<Integer>> tnHM;
+    HashMap<Integer, HashMap<Integer, List<Integer>>> layerHM;
+    HashMap<Integer, List<Integer>> tnHM2;
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> out = new ArrayList<>();
+        if (root == null) return out;
+        tnHM = new HashMap<>();
+        verticalTraversal2(root, 0, 0);
+        //Refactor the layerHM
+        List<Integer> layerKeyList = new ArrayList<>(layerHM.keySet());
+        Collections.sort(layerKeyList);
+        for (Integer layerKey : layerKeyList) {
+            HashMap<Integer, List<Integer>> currentLayer = layerHM.get(layerKey);
+            List<Integer> currentLayerXKey = new ArrayList<>(currentLayer.keySet());
+            for (Integer currentLayerKey : currentLayerXKey) {
+                List<Integer> currentLayerNodes = currentLayer.get(currentLayerKey);
+                Collections.sort(currentLayerNodes);
+                if (!tnHM.containsKey(currentLayerKey)) {
+                    tnHM.put(currentLayerKey, new ArrayList<>());
+                }
+                var tnHMList = tnHM.get(currentLayerKey);
+                tnHMList.addAll(currentLayerNodes);
+            }
+        }
+        List<Integer> keyList = new ArrayList<>(tnHM.keySet());
+        Collections.sort(keyList);
+        for (Integer key : keyList) {
+            out.add(tnHM.get(key));
+        }
+        return out;
+    }
+    public void verticalTraversal2(TreeNode root, int xIndex, int layer) {
+        if (root == null) return;
+        if (!layerHM.containsKey(layer)) {
+            layerHM.put(layer, new HashMap<>());
+        }
+        tnHM2 = layerHM.get(layer);
+        if (!tnHM2.containsKey(xIndex)) {
+            tnHM2.put(xIndex, new ArrayList<>());
+        }
+        tnHM2.get(xIndex).add(root.val);
+        verticalTraversal2(root.left, xIndex - 1, layer + 1);
+        verticalTraversal2(root.right, xIndex + 1, layer + 1);
     }
 
     public static void main(String[] args) {
