@@ -3510,6 +3510,75 @@ public class Leetcode {
         return timeSkip;
     }
 
+    public class Grid {
+        int[][] matrix;
+        //Non inclusive
+        int xLimit;
+        int yLimit;
+
+        public Grid(int yLimit, int xLimit) {
+            this.matrix = new int[yLimit][xLimit];
+            this.xLimit = xLimit;
+            this.yLimit = yLimit;
+        }
+        public void flood(int[] cell) {
+            int y = cell[0];
+            int x = cell[1];
+            matrix[y - 1][x - 1] = 1;
+        }
+        public int get(int y, int x) {
+            if (x < 0 || x >= xLimit) return 1;
+            else return matrix[y][x];
+        }
+        public boolean canCross() {
+            List<Integer> starting = new ArrayList<>();
+            for (int x = 0; x < xLimit; x++) {
+                if (matrix[0][x] == 0) starting.add(x);
+            }
+            if (starting.size() == 0) return false;
+            for (Integer i : starting) {
+                if (canCross2(0, i)) {
+                    reset();
+                    return true;
+                }
+            }
+            return false;
+        }
+        public boolean canCross2(int y, int x) {
+            if (y == yLimit) return true;
+            if (x < 0 || x >= xLimit || y < 0) return false;
+            if (matrix[y][x] == 1 || matrix[y][x] == 2) return false;
+            matrix[y][x] = 2;
+            return (canCross2(y+1, x) || canCross2(y, x+1) || canCross2(y, x-1) || canCross2(y-1, x ));
+        }
+        public void printString() {
+            for(int[] intArr : matrix) {
+                System.out.println(Arrays.toString(intArr));
+            }
+        }
+        public void reset() {
+            for (int x = 0; x < xLimit; x++) {
+                for (int y = 0; y < yLimit; y++) {
+                    if (matrix[y][x] == 2) {
+                        matrix[y][x] = 0;
+                    }
+                }
+            }
+        }
+    }
+    public int latestDayToCross(int row, int col, int[][] cells) {
+        Grid g = new Grid(row, col);
+        int output = 0;
+        for (int[] cell : cells) {
+            g.flood(cell);
+
+
+            if (!g.canCross()) return output;
+            else output++;
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
         int[] coins = {0, 0, 0, 1, 1, 0, 0, 1};
