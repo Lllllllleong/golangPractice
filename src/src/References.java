@@ -91,7 +91,8 @@ public class References {
 
 
         //Int array to list
-        List<Integer> listt = Arrays.stream(a).boxed().toList();
+        // Create a mutable list instead of an immutable one.
+        List<Integer> listt = new ArrayList<>(Arrays.stream(a).boxed().toList());
 
         //List to int array
 //        int[] output = list.stream().mapToInt(i->i).toArray();

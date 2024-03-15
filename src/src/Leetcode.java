@@ -814,48 +814,48 @@ public class Leetcode {
 
         return output;
     }
-
-    public List<Integer> goodDaysToRobBank(int[] security, int time) {
-
-        List<Integer> nonIncreasing = new ArrayList<>();
-        List<Integer> output = new ArrayList<>();
-        if (time == 0) {
-            for (int i = 0; i < security.length; i++) {
-                output.add(i);
-            }
-            return output;
-        }
-        int minimumDays = (time * 2) + 1;
-        if (security.length < minimumDays) return output;
-
-
-        int counter = time - 1;
-        for (int i = 1; i < security.length; i++) {
-            if (security[i - 1] >= security[i]) {
-                if (counter <= 0) {
-                    nonIncreasing.add(i);
-                    System.out.println(i + " added to nonIncreasing");
-                }
-                counter--;
-            } else {
-                counter = time - 1;
-            }
-        }
-        counter = time - 1;
-        for (int i = 0; i < security.length - 1; i++) {
-            if (security[i] <= security[i + 1]) {
-                if (counter <= 0) {
-                    if (nonIncreasing.contains(i)) {
-                        output.add(i);
-                    }
-                }
-                counter--;
-            } else {
-                counter = time - 1;
-            }
-        }
-        return output;
-    }
+//
+//    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+//
+//        List<Integer> nonIncreasing = new ArrayList<>();
+//        List<Integer> output = new ArrayList<>();
+//        if (time == 0) {
+//            for (int i = 0; i < security.length; i++) {
+//                output.add(i);
+//            }
+//            return output;
+//        }
+//        int minimumDays = (time * 2) + 1;
+//        if (security.length < minimumDays) return output;
+//
+//
+//        int counter = time - 1;
+//        for (int i = 1; i < security.length; i++) {
+//            if (security[i - 1] >= security[i]) {
+//                if (counter <= 0) {
+//                    nonIncreasing.add(i);
+//                    System.out.println(i + " added to nonIncreasing");
+//                }
+//                counter--;
+//            } else {
+//                counter = time - 1;
+//            }
+//        }
+//        counter = time - 1;
+//        for (int i = 0; i < security.length - 1; i++) {
+//            if (security[i] <= security[i + 1]) {
+//                if (counter <= 0) {
+//                    if (nonIncreasing.contains(i)) {
+//                        output.add(i);
+//                    }
+//                }
+//                counter--;
+//            } else {
+//                counter = time - 1;
+//            }
+//        }
+//        return output;
+//    }
 
     public long[] sumOfThree(long num) {
         long[] out = new long[3];
@@ -2598,11 +2598,13 @@ public class Leetcode {
         char cc = toEnd.charAt(0);
         System.out.println(toStart);
         System.out.println(toEnd);
-        while (c == cc) {
-            toStart = toStart.substring(1);
-            toEnd = toEnd.substring(1);
+        while (toStart.length() > 0 && toEnd.length() > 0) {
             c = toStart.charAt(0);
             cc = toEnd.charAt(0);
+            if (c == cc) {
+                toStart = toStart.substring(1);
+                toEnd = toEnd.substring(1);
+            }
         }
         toStart = toStart.replaceAll("[LR]", "U");
         return (toStart + toEnd);
@@ -2612,10 +2614,13 @@ public class Leetcode {
         if (node == null) return null;
         if (node.val == target) return "";
         else {
-            var left = pathTo(target, node.left);
-            if (left != null) return ("L" + left);
-            var right = pathTo(target, node.right);
-            if (right != null) return ("R" + right);
+            if (node.left != null) {
+                String left = pathTo(target, node.left);
+                if (left != null) return ("L" + left);
+            } else if (node.right != null) {
+                String right = pathTo(target, node.right);
+                if (right != null) return ("R" + right);
+            }
             return null;
         }
     }
@@ -3309,6 +3314,201 @@ public class Leetcode {
         }
     }
 
+
+    public int[] findOriginalArray(int[] changed) {
+        int halfLength = changed.length/2;
+        int[] output = new int[0];
+        List<Integer> outputList = new ArrayList<>();
+        Arrays.sort(changed);
+        // Create a mutable list instead of an immutable one.
+        List<Integer> list = new ArrayList<>(Arrays.stream(changed).boxed().toList());
+        int index = 0;
+        while (!list.isEmpty()) {
+            Integer first = list.get(0);
+            list.remove(first);
+            Integer second = first * 2;
+            if (list.contains(second)) {
+                list.remove(second);
+                outputList.add(first);
+                index++;
+            } else {
+                return output;
+            }
+        }
+        return outputList.stream().mapToInt(i->i).toArray();
+    }
+
+
+
+    public int minSwaps(int[] nums) {
+        int n = nums.length;
+        int zero = 0, one = 0;
+        for (int i : nums) {
+            if (i == 0) zero++;
+            else one++;
+        }
+        if (zero == 0 || one == 0) return 0;
+        //Counting with ones
+        int index = 0;
+        int minimumZeroCount = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            index = i;
+            if (nums[i] != 1) continue;
+            int countZeros = 0;
+            for (int j = 0; j < one; j++) {
+                index = i + j;
+                if (index >= n) index -= n;
+                if (nums[index] != 1) countZeros++;
+            }
+            if (countZeros > minimumZeroCount) break;
+            minimumZeroCount = Math.min(minimumZeroCount, countZeros);
+        }
+        //Counting with Zeros
+        //Counting with ones
+        index = 0;
+        int minimumOneCount = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            index = i;
+            if (nums[i] != 0) continue;
+            int countOnes = 0;
+            for (int j = 0; j < zero; j++) {
+                index = i + j;
+                if (index >= n) index -= n;
+                if (nums[index] != 0) countOnes++;
+            }
+            if (countOnes > minimumOneCount) break;
+            minimumOneCount = Math.min(minimumOneCount, countOnes);
+        }
+        System.out.println(minimumOneCount);
+        System.out.println(minimumZeroCount);
+        return Math.min(minimumOneCount, minimumZeroCount);
+    }
+
+
+    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+        List<Integer> output = new ArrayList<>();
+        int n = security.length;
+        if (time == 0) {
+            for (int i = 0; i < security.length; i++) {
+                output.add(i);
+            }
+            return output;
+        }
+        int minimumDays = (time * 2) + 1;
+        if (security.length < minimumDays) return output;
+        int[] nonIncreasingConsec = new int[n];
+        int[] nonDecreasingConsec = new int[n];
+        int currentConsec = 0;
+        for (int i = 1; i < (n - time); i++) {
+            int firstDay = security[i-1];
+            int secondDay = security[i];
+            if (firstDay >= secondDay) {
+                currentConsec++;
+            } else {
+                currentConsec = 0;
+            }
+            nonIncreasingConsec[i] = currentConsec;
+        }
+        currentConsec = 0;
+        for (int i = n-2; i >= time; i--) {
+            int firstDay = security[i];
+            int secondDay = security[i+1];
+            if (firstDay <= secondDay) {
+                currentConsec++;
+            } else {
+                currentConsec = 0;
+            }
+            nonDecreasingConsec[i] = currentConsec;
+        }
+        for (int i = time; i < n - time; i++) {
+            if (nonDecreasingConsec[i] >= time && nonIncreasingConsec[i] >= time) {
+                output.add(i);
+            }
+        }
+        return output;
+    }
+
+    class Player {
+        int win;
+        int loss;
+
+        public Player() {
+            this.win = 0;
+            this.loss = 0;
+        }
+        public void addWin() {
+            this.win++;
+        }
+        public void addLoss() {
+            this.loss++;
+        }
+    }
+
+    public List<List<Integer>> findWinners(int[][] matches) {
+        HashMap<Integer, Player> playerHM = new HashMap<>();
+        for (int[] arr : matches) {
+            int winner = arr[0];
+            int loser = arr[1];
+            if (!playerHM.containsKey(winner)) playerHM.put(winner, new Player());
+            if (!playerHM.containsKey(loser)) playerHM.put(loser, new Player());
+            playerHM.get(winner).addWin();
+            playerHM.get(loser).addLoss();
+        }
+        List<List<Integer>> output = new ArrayList<>();
+        List<Integer> zeroLosses = new ArrayList<>();
+        List<Integer> oneLoss = new ArrayList<>();
+        for (var key : playerHM.keySet()) {
+            Player current = playerHM.get(key);
+            if (current.loss == 0) {
+                zeroLosses.add(key);
+            } else if (current.loss == 1) {
+                oneLoss.add(key);
+            }
+        }
+        Collections.sort(oneLoss);
+        Collections.sort(zeroLosses);
+        output.add(0,zeroLosses);
+        output.add(1, oneLoss);
+        return output;
+
+    }
+
+
+    public class Seed {
+        int plantTime;
+        int growTime;
+
+        public Seed(int plantTime, int growTime) {
+            this.plantTime = plantTime;
+            this.growTime = growTime;
+        }
+    }
+
+    public int earliestFullBloom(int[] plantTime, int[] growTime) {
+        List<Seed> seedList = new ArrayList<>();
+        for (int i = 0; i < plantTime.length; i++) {
+            Seed current = new Seed(plantTime[i], growTime[i]);
+            seedList.add(current);
+        }
+        Collections.sort(seedList, new Comparator<Seed>() {
+            public int compare(Seed a, Seed b) {
+                if (a.growTime != b.growTime) {
+                    return (b.growTime - a.growTime);
+                } else {
+                    return (b.plantTime - a.plantTime);
+                }
+            }
+        });
+        int output = 0;
+        int timeSkip = 0;
+        for (Seed s : seedList) {
+            int pTime = s.plantTime;
+            int gTime = s.growTime;
+            output += pTime;
+            timeSkip = Math.max(timeSkip, (output + gTime));
+        }
+        return timeSkip;
+    }
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
