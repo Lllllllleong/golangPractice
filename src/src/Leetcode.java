@@ -3737,6 +3737,147 @@ public class Leetcode {
         return output;
     }
 
+    int[][] blockedSortedByValue;
+    public class WoodSpace {
+        int y;
+        int x;
+        boolean isValid;
+
+        public WoodSpace(int y, int x) {
+            this.y = y;
+            this.x = x;
+            this.isValid = (y > 0 && x > 0);
+        }
+        public boolean canFitBlock(int by, int bx) {
+            return (y >= by && x >= bx);
+        }
+    }
+    public long sellingWood(int m, int n, int[][] prices) {
+        //Sort by value per block
+        Arrays.sort(prices, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                double first = (double) a[2] / (a[0] * a[1]);
+                double second = (double) b[2] / (b[0] * b[1]);
+                if (second > first) return 1;
+                else if (first > second) return -1;
+                else return 0;
+            }
+        });
+        blockedSortedByValue = prices;
+        WoodSpace ws = new WoodSpace(m,n);
+        return sellingWood2(ws);
+    }
+    public long sellingWood2(WoodSpace ws) {
+        long output = 0;
+        if (ws == null) return output;
+        for (int[] block : blockedSortedByValue) {
+            int blockY = block[0];
+            int blockX = block[1];
+            if (ws.canFitBlock(blockY, blockX)) {
+                long currentMax = block[2];
+                long nextMax = 0;
+                List<List<WoodSpace>> wsList = remainingSpace(ws, blockY, blockX);
+                for (List<WoodSpace> wsListCurrent : wsList) {
+                    long currentWSMax = 0;
+                    for (WoodSpace wss : wsListCurrent) {
+                        currentWSMax += sellingWood2(wss);
+                    }
+                    nextMax = Math.max(currentWSMax, nextMax);
+                }
+                currentMax += nextMax;
+                output = Math.max(output, currentMax);
+            }
+        }
+        return output;
+    }
+    public List<List<WoodSpace>> remainingSpace(WoodSpace ws, int blockY, int blockX) {
+        List<List<WoodSpace>> output = new ArrayList<>();
+        List<WoodSpace> first = new ArrayList<>();
+        List<WoodSpace> second = new ArrayList<>();
+        //First two remaining segment:
+        //1. Same height as what block was cut, with all the space to the right
+        //2. All the space below
+        WoodSpace firstA = new WoodSpace(blockY, ws.x - blockX);
+        WoodSpace firstB = new WoodSpace(ws.y - blockY, ws.x);
+        if (firstA.isValid) first.add(firstA);
+        if (firstB.isValid) first.add(firstB);
+        //Second segment
+        //1. All the space to the right of the block, and all down
+        //2. Directly below the block that was cut
+        WoodSpace secondA = new WoodSpace(ws.y, ws.x - blockX);
+        WoodSpace secondB = new WoodSpace(ws.y - blockY, blockX);
+        if (secondA.isValid) second.add(secondA);
+        if (secondB.isValid) second.add(secondB);
+        output.add(first);
+        output.add(second);
+        return output;
+    }
+
+    public int numberOfGoodPaths(int[] vals, int[][] edges) {
+        if (vals.length == 1) return 1;
+        HashMap<Integer, Integer> valueHM = new HashMap<>();
+        HashMap<Integer, Set<Integer>> toHM = new HashMap<>();
+        for (int[] edge : edges) {
+            int first = edge[0];
+            int second = edge[1];
+            if (!valueHM.keySet().contains(first)) {
+                valueHM.put(first, vals[first]);
+                toHM.put(first, new HashSet<>());
+            }
+            if (!valueHM.keySet().contains(second)) {
+                valueHM.put(second, vals[second]);
+                toHM.put(second, new HashSet<>());
+            }
+            toHM.get(first).add(second);
+            toHM.get(second).add(first);
+            for (Set<Integer> s : toHM.values()) {
+                if (s.contains(first)) s.add(second);
+                if (s.contains(second)) s.add(first);
+            }
+        }
+        int output = valueHM.values().size();
+        System.out.println(output);
+        int sum = 0;
+        for (Integer key : valueHM.keySet()) {
+            Integer currentValue = valueHM.get(key);
+            for (Integer pathKey : toHM.get(key)) {
+                if (pathKey == key) continue;
+                if (valueHM.get(pathKey) == currentValue) sum++;
+            }
+        }
+        output += (sum / 2);
+        return output;
+    }
+
+    public int minOperations(int[] nums, int[] numsDivide) {
+        HashSet<Integer> numsSet = new HashSet<>();
+        Arrays.sort(numsDivide);
+        for (int i : numsDivide) numsSet.add(i);
+        System.out.println(numsSet.toString());
+        int gcd = 0;
+        for (int i : numsSet) {
+            gcd = GCD(gcd, i);
+        }
+        Arrays.sort(nums);
+        int output = 0;
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            if (current < gcd) output++;
+            else if (current == gcd) return output;
+            else {
+                return -1;
+            }
+        }
+        return -1;
+    }
+    // i < j
+    public int GCD(int i, int j) {
+        if (i == 0) return j;
+        return GCD(j % i, i);
+    }
+
+
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};

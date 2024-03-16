@@ -21,18 +21,20 @@ class Seed {
 public class References {
 
     public static void main(String[] args) {
-        HashMap<Integer, Seed> seedHM = new HashMap<>();
-        Seed one = new Seed(1, 1);
-        Seed two = new Seed(2, 2);
-        seedHM.put(1, one);
-        seedHM.put(2, two);
-        seedHM.get(1).next.add(seedHM.get(2));
-        System.out.println(seedHM.get(1).next);
-        seedHM.put(2, null);
-        System.out.println(seedHM.get(1).next);
-        seedHM.remove(2);
-        System.out.println(seedHM.get(1).next);
 
+        int[][] prices = {{1,4,2},{2,2,7},{2,1,3},{3,2,10},{1,4,2},{4,1,3}};
+        Arrays.sort(prices, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                double first = (double) a[2] / (a[0] * a[1]);
+                double second = (double) b[2] / (b[0] * b[1]);
+                if (second > first) return 1;
+                else if (first > second) return -1;
+                else return 0;
+            }
+        });
+        for (int[] intArr : prices) {
+            System.out.println(Arrays.toString(intArr));
+        }
 
 
         /*
@@ -53,7 +55,7 @@ public class References {
 //          Increment hashmap value by 1 if it exists, if not, set it to 1
         HashMap<Integer, Integer> map = new HashMap<>();
         Integer key = 3;
-        Integer value = new Integer(3);
+        Integer value = 3;
         map.put(1, value);
         value++;
         System.out.println(map.get(1));
