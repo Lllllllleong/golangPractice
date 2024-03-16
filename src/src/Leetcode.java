@@ -3899,6 +3899,28 @@ public class Leetcode {
         return output;
 
     }
+    HashMap<Integer, Integer> MLS;
+    public int maxLevelSum(TreeNode root) {
+        int output = 0;
+        MLS = new HashMap<>();
+        mls(root, 1);
+        int max = Integer.MIN_VALUE;
+        for (Integer key : MLS.keySet()) {
+            int current = MLS.get(key);
+            if (current > max) {
+                max = current;
+                output = key;
+            }
+        }
+        return output;
+    }
+    public void mls(TreeNode root, int level) {
+        if (root == null) return;
+        if (!MLS.containsKey(level)) MLS.put(level, 0);
+        MLS.put(level, MLS.get(level) + root.val);
+        mls(root.right, level + 1);
+        mls(root.left, level + 1);
+    }
 
 
 
