@@ -3877,6 +3877,29 @@ public class Leetcode {
         return GCD(j % i, i);
     }
 
+    public int pairSum(ListNode head) {
+        if (head == null) return -1;
+        if (head.next == null) return head.val;
+        ListNode reverseCopy = null;
+
+        ListNode current = head;
+        while (current != null) {
+            ListNode reverseHead = new ListNode(current.val);
+            reverseHead.next = reverseCopy;
+            reverseCopy = reverseHead;
+            current = current.next;
+        }
+        int output = 0;
+        current = head;
+        while (current != null) {
+            output = Math.max(current.val + reverseCopy.val, output);
+            current = current.next;
+            reverseCopy = reverseCopy.next;
+        }
+        return output;
+
+    }
+
 
 
     public static void main(String[] args) {
