@@ -57,14 +57,7 @@ public class References {
         Integer key = 3;
         Integer value = 3;
         map.put(1, value);
-        value++;
-        System.out.println(map.get(1));
 
-
-        Object reference = map.get(1);
-        System.out.println(reference);
-
-        System.out.println(map.get(1));
 
         map.merge(key, 1, Integer::sum);
 

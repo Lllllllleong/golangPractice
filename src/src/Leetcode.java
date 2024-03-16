@@ -4007,6 +4007,161 @@ public class Leetcode {
         return output;
     }
 
+    public int minSetSize(int[] arr) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : arr) {
+            hm.merge(i, 1, Integer::sum);
+        }
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int value1 = hm.get(o1);
+                int value2 = hm.get(o2);
+                if (value1 != value2) return value2 - value1;
+                else return (o2 - o1);
+            }
+        });
+        int n = arr.length/2;
+        int currentLength = 0;
+        int output = 0;
+        while (currentLength < n) {
+            currentLength += hm.get(keyList.get(output));
+            output++;
+        }
+        return output;
+    }
+
+    public int[] findDiagonalOrder(List<List<Integer>> nums) {
+        int yMax = nums.size();
+        int xMax = 0;
+        System.out.println(xMax);
+        for (var v : nums) {
+            xMax = Math.max(xMax, v.size());
+        }
+        int[][] matrix = new int[yMax][xMax];
+        for (int y = 0; y < yMax; y++) {
+            int index = 0;
+            for (var I : nums.get(y)) {
+                matrix[y][index] = I;
+                index++;
+            }
+        }
+        List<Integer> out = new ArrayList<>();
+        for (int yCounter = 0; yCounter < yMax; yCounter++) {
+            int y = yCounter;
+            int x = 0;
+            while (y < yMax && x < xMax) {
+                int current = matrix[y][x];
+                if (current != 0) out.add(current);
+                y--;
+                x++;
+            }
+        }
+        for (int xCounter = 0; xCounter < xMax; xCounter++) {
+            int y = yMax-1;
+            int x = xCounter;
+            while (y < yMax && x < xMax) {
+                int current = matrix[y][x];
+                if (current != 0) out.add(current);
+                y--;
+                x++;
+            }
+        }
+        return (out.stream().mapToInt(i->i).toArray());
+    }
+
+
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+        HashMap<Integer, List<Integer>> hm = new HashMap<>();
+        for (int[] intArr : prerequisites) {
+            int prereq = intArr[0];
+            int postreq = intArr[1];
+            hm.merge(postreq, new ArrayList<>(Arrays.asList(prereq)), (existingPrereqs, newPrereqs) -> {
+                existingPrereqs.addAll(newPrereqs);
+                return existingPrereqs;
+            });
+        }
+        List<Boolean> output = new ArrayList<>();
+        for (int[] intArr : queries) {
+            int prereq = intArr[0];
+            int postreq = intArr[1];
+            var v = hm.get(postreq);
+            Deque<Integer> q = new ArrayDeque(v);
+            boolean b = false;
+            while (!q.isEmpty()) {
+                Integer I = q.poll();
+                if (I == prereq) {
+                    b = true;
+                    break;
+                } else {
+                    List<Integer> prepreList = hm.get(I);
+                    if (prepreList != null) {
+                        q.addAll(prepreList);
+                    }
+                }
+            }
+            output.add(b);
+        }
+        return output;
+    }
+
+
+
+    public int maxPoints(int[][] points) {
+        int output = 1;
+        Arrays.sort(points, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int o1X = o1[0];
+                int o1Y = o1[1];
+                int o2X = o2[0];
+                int o2Y = o2[1];
+                if (o1X != o2X) return o1X - o2X;
+                else return o1Y - o2Y;
+            }
+        });
+        Deque<int[]> pointQueue = new ArrayDeque<>(Arrays.asList(points));
+        while (!pointQueue.isEmpty()) {
+            int[] currentPoint = pointQueue.pop();
+            double o1X = currentPoint[0];
+            double o1Y = currentPoint[1];
+            //System.out.println("current x and y is " + o1X + " " + o1Y);
+            List<int[]> remainingPoints = new ArrayList<>(pointQueue);
+            for (int[] intArr : remainingPoints) {
+                int currentCount = 1;
+                double o2X = intArr[0];
+                double o2Y = intArr[1];
+                //System.out.println("current gradient index is " + o2X + " " + o2Y);
+                double currentGradient = (o2Y - o1Y) / (o2X - o1X);
+                boolean infGradient = (o2X == o1X);
+                //System.out.println("current grdient is " + currentGradient);
+                for (int[] p : points) {
+                    if (p.equals(currentPoint)) continue;
+                    double o3X = p[0];
+                    double o3Y = p[1];
+                    //System.out.println("current comparison  is " + o3X + " " + o3Y);
+                    if (infGradient) {
+                        if (o3X == o1X) {
+                            currentCount++;
+                            System.out.println("match inf gradient");
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        double check = currentGradient * (o3X - o1X);
+                        if (Math.abs((o3Y - o1Y) - check) < 0.000001) {
+                            currentCount++;
+                            System.out.println("match");
+                        }
+                    }
+                }
+                output = Math.max(output, currentCount);
+            }
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
         int[] coins = {0, 0, 0, 1, 1, 0, 0, 1};
