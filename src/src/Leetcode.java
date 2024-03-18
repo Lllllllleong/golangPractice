@@ -1,3 +1,5 @@
+import com.sun.source.tree.Tree;
+
 import java.util.*;
 
 public class Leetcode {
@@ -4181,6 +4183,79 @@ public class Leetcode {
             current = current.next;
         }
         return out.next;
+    }
+
+    int MPS = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        int out = maxPathSum2(root);
+        return Math.max(out, MPS);
+    }
+    public int maxPathSum2(TreeNode root) {
+        if (root == null) return 0;
+        int left = maxPathSum2(root.left);
+        int right = maxPathSum2(root.right);
+        int value = root.val;
+        int midLeft = value + left;
+        int midRight = value + right;
+        //If currentNode was a kink
+        MPS = Math.max(MPS, left + right + value);
+        //If currentNode started here
+        MPS = Math.max(MPS,Math.max(midLeft, midRight));
+        MPS = Math.max(MPS, value);
+        //If currentNode passed through here
+        int output = Math.max(midLeft, midRight);
+        //If currentNode stopped here
+        output = Math.max(output, value);
+        return output;
+
+    }
+
+    public List<Integer> countSmaller(int[] nums) {
+        PriorityQueue<Integer> pQueue = new PriorityQueue<>(Collections.reverseOrder());
+        List<Integer> output = new ArrayList<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            Integer currentCount = 0;
+            Integer currentNumber = nums[i];
+            PriorityQueue<Integer> currentQueue = new PriorityQueue<>(pQueue);
+            while (!currentQueue.isEmpty()) {
+                Integer peek = currentQueue.peek();
+                if (peek < currentNumber) {
+                    break;
+                } else {
+                    currentQueue.poll();
+                }
+            }
+            output.add(0, currentQueue.size());
+            pQueue.add(currentNumber);
+        }
+        return output;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (k == 1) return head;
+        if (head == null) return head;
+        ListNode headToBeReversed = head;
+        ListNode current = head;
+        ListNode next = current.next;
+        int countDown = k;
+        while (next != null) {
+            if (countDown == 1) break;
+            current = next;
+            next = current.next;
+            countDown--;
+        }
+        if (next == null && countDown != 1) return head;
+        ListNode remainingRecurse = reverseKGroup(next, k);
+        current.next = null;
+        //Start reversing the first portion
+        ListNode reverseNext = headToBeReversed.next;
+        while (headToBeReversed != null) {
+            reverseNext = headToBeReversed.next;
+            headToBeReversed.next = remainingRecurse;
+            remainingRecurse = headToBeReversed;
+            headToBeReversed = reverseNext;
+        }
+        return remainingRecurse;
     }
 
     public static void main(String[] args) {
