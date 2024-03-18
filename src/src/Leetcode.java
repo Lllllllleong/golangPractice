@@ -531,14 +531,14 @@ public class Leetcode {
         return output;
     }
 
-    public int maxProfit(int[] prices) {
-        int profit = 0;
-        for (int i = 1; i < prices.length; i++) {
-            int currentProfit = prices[i] - prices[i - 1];
-            profit = profit + Math.max(currentProfit, 0);
-        }
-        return profit;
-    }
+//    public int maxProfit(int[] prices) {
+//        int profit = 0;
+//        for (int i = 1; i < prices.length; i++) {
+//            int currentProfit = prices[i] - prices[i - 1];
+//            profit = profit + Math.max(currentProfit, 0);
+//        }
+//        return profit;
+//    }
 
     public String reversePrefix(String word, char ch) {
         int index = word.indexOf(ch);
@@ -2105,22 +2105,7 @@ public class Leetcode {
 //
 //    }
 
-    public ListNode rotateRight(ListNode head, int k) {
-        if (k == 0) return head;
-        if (head.next == null) return head;
-        ListNode output = head;
-        ListNode next = head.next;
-        while (next != null) {
-            System.out.println(output.val);
-            System.out.println(next.val);
-            output = head.next;
-            next = output.next;
-            if (next.next == null) break;
-        }
-        output.next = null;
-        next.next = head;
-        return (rotateRight(next, k--));
-    }
+
 
     public boolean isSymmetric(TreeNode root) {
         List<TreeNode> tnList = new ArrayList<>();
@@ -2696,15 +2681,17 @@ public class Leetcode {
 
     public TreeNode createBinaryTree(int[][] descriptions) {
         tnMap = new HashMap<>();
-        TreeNode newest = new TreeNode();
+        Integer rootKey = -1;
         TreeNode current;
+        Set<Integer> rootFinder = new HashSet<>();
         for (int[] node : descriptions) {
-            int from = node[0];
-            int to = node[1];
+            Integer from = node[0];
+            Integer to = node[1];
             int left = node[2];
+            rootFinder.add(to);
             if (!tnMap.containsKey(from)) {
-                newest = new TreeNode(from);
-                tnMap.put(from, newest);
+                current = new TreeNode(from);
+                tnMap.put(from, current);
             }
             if (!tnMap.containsKey(to)) {
                 current = new TreeNode(to);
@@ -2716,7 +2703,14 @@ public class Leetcode {
                 tnMap.get(from).right = tnMap.get(to);
             }
         }
-        return newest;
+        for (int[] node : descriptions) {
+            Integer from = node[0];
+            if (!rootFinder.contains(from)) {
+                rootKey = from;
+                break;
+            }
+        }
+        return tnMap.get(rootKey);
     }
 
     class StockPrice {
@@ -4257,6 +4251,66 @@ public class Leetcode {
         }
         return remainingRecurse;
     }
+
+
+
+    public ListNode rotateRight(ListNode head, int k) {
+        if (k == 0) return head;
+        if (head.next == null) return head;
+        ListNode newHead = head;
+        ListNode previous = head;
+        ListNode current = previous.next;
+        ListNode next = current.next;
+        while (next != null) {
+            previous = current;
+            current = previous.next;
+            next = current.next;
+        }
+        previous.next = null;
+        current.next = newHead;
+        return (rotateRight(current, k-1));
+    }
+
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        //Sort via changing values, not swapping nodes
+        ListNode previous = head;
+        ListNode current = previous;
+        ListNode next = current.next;
+        while (current != null && next != null) {
+            if (current.val > next.val) {
+                if (previous.val > next.val) {
+                    current.next = next.next;
+                    next.next = previous;
+                    previous = next;
+                } else {
+                    int store = current.val;
+                    current.val = next.val;
+                    next.val = store;
+                    return insertionSortList(previous);
+                }
+            }
+            current = current.next;
+            next = current.next;
+        }
+        return previous;
+    }
+
+
+
+
+    public int maxProfitOG(int[] prices) {
+        if (prices == null || prices.length == 0) return 0;
+        int max = 0;
+        int minimumPrice = prices[0];
+        for (int i : prices) {
+            max = Math.max(max, i - minimumPrice);
+            minimumPrice = Math.min(minimumPrice, i);
+        }
+        return max;
+    }
+
+
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
