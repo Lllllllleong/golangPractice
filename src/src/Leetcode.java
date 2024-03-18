@@ -4296,9 +4296,6 @@ public class Leetcode {
         return previous;
     }
 
-
-
-
     public int maxProfitOG(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
         int max = 0;
@@ -4309,6 +4306,40 @@ public class Leetcode {
         }
         return max;
     }
+
+
+    public boolean isMatch(String s, String p) {
+        if (p.length() == 0) return true;
+        int yMax = p.length();
+        int xMax = s.length();
+        boolean[][] dpMatrix = new boolean[yMax + 1][xMax + 1];
+        //Corner solution
+        dpMatrix[yMax][xMax] = true;
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0 ; x--) {
+                char pattern = p.charAt(y);
+                char cmatch = s.charAt(x);
+                if (pattern == '?') {
+                    dpMatrix[y][x] = dpMatrix[y+1][x+1];
+                } else if (pattern == '*') {
+                    if (y == yMax-1 && x == xMax-1) {
+                        dpMatrix[y][x] = true;
+                    } else {
+                        dpMatrix[y][x] = (dpMatrix[y + 1][x] || dpMatrix[y][x + 1]);
+                    }
+                } else {
+                    if (pattern == cmatch) {
+                        dpMatrix[y][x] = dpMatrix[y+1][x+1];
+                    } else {
+                        dpMatrix[y][x] = false;
+                    }
+                }
+            }
+        }
+        return dpMatrix[0][0];
+    }
+
+
 
 
 
