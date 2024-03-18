@@ -4256,6 +4256,15 @@ public class Leetcode {
 
     public ListNode rotateRight(ListNode head, int k) {
         if (k == 0) return head;
+        if (head == null) return head;
+        int length = lnLength(head);
+        k = length % k;
+        return rotateRight2(head, k);
+    }
+    public ListNode rotateRight2(ListNode head, int k) {
+        if (k == 0) {
+            return head;
+        }
         if (head.next == null) return head;
         ListNode newHead = head;
         ListNode previous = head;
@@ -4268,7 +4277,12 @@ public class Leetcode {
         }
         previous.next = null;
         current.next = newHead;
-        return (rotateRight(current, k-1));
+        return (rotateRight2(current, k-1));
+    }
+    public int lnLength(ListNode head) {
+        if (head == null) return 0;
+        ListNode current = head.next;
+        return (1 + lnLength(current));
     }
 
     public ListNode insertionSortList(ListNode head) {
@@ -4340,6 +4354,38 @@ public class Leetcode {
     }
 
 
+
+    public double averageWaitingTime(int[][] customers) {
+        double waitSum = 0;
+        int currentQueue = 0;
+        int priorTime = 0;
+        for (int[] a : customers) {
+            int orderTime = a[0];
+            int cookTime = a[1];
+            currentQueue = Math.max(0, currentQueue - (orderTime - priorTime));
+            currentQueue += cookTime;
+            waitSum += currentQueue;
+            priorTime = orderTime;
+        }
+        return (waitSum / customers.length);
+    }
+
+    public int maxIceCream(int[] costs, int coins) {
+        PriorityQueue<Integer> costQueue = new PriorityQueue<>();
+        for (Integer i : costs) {
+            costQueue.add(i);
+        }
+        int output = 0;
+        while (!costQueue.isEmpty()) {
+            int cost = costQueue.poll();
+            coins -= cost;
+            if (coins < 0) break;
+            else {
+                output++;
+            }
+        }
+        return output;
+    }
 
 
 
