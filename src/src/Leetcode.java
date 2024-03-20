@@ -4361,38 +4361,6 @@ public class Leetcode {
         return output;
     }
 
-    public ListNode partition(ListNode head, int x) {
-        if (head == null) return head;
-        if (head.next == null) return head;
-        if (head.val < x) {
-            ListNode next = partition(head.next, x);
-            head.next = next;
-            return head;
-        } else {
-            if (head.next == null) {
-                return head;
-            }
-            ListNode masterStart = head;
-            ListNode current = head;
-            ListNode next = current.next;
-            while (next != null) {
-                int value = next.val;
-                if (value < x) {
-                    current.next = next.next;
-                    next.next = current;
-                    masterStart.next = next;
-                    masterStart = masterStart.next;
-                } else {
-                    next = next.next;
-                }
-
-                next = next.next;
-            }
-
-
-        }
-        return head;
-    }
 
 
     List<Integer> distanceKList;
@@ -4489,6 +4457,29 @@ public class Leetcode {
         return GCD(j % i, i);
     }
 
+
+    public int minTaps(int n, int[] ranges) {
+        //At every i'th, is the minimum number of taps required so far
+        int[] dpArray = new int[n+1];
+        //Fill to an arbitrary large value, so we can identify at the end
+        Arrays.fill(dpArray, n+2);
+        //Initialise first value
+        dpArray[0] = 0;
+        //Fill
+        for (int i = 0; i < ranges.length; i++) {
+            int reach = ranges[i];
+            if (reach == 0) continue;
+            int from = Math.max(0, i - reach);
+            int to = Math.min(n, i + reach);
+            for (int j = from; j <= to; j++) {
+                dpArray[j] = Math.min(dpArray[j], dpArray[from] + 1);
+            }
+        }
+        //Check the number of taps required at the last n. If it is n+2, we know the taps didnt
+        //make it
+        if (dpArray[n] == n+2) return -1;
+        else return dpArray[n];
+    }
 
 
 
