@@ -1,5 +1,3 @@
-import com.sun.source.tree.Tree;
-
 import java.util.*;
 
 public class Leetcode {
@@ -2835,27 +2833,7 @@ public class Leetcode {
         }
     }
 
-    public ListNode sortList(ListNode head) {
-        ListNode prev = new ListNode();
-        ListNode current = head;
-        ListNode next = current.next;
-        if (next == null) return head;
-        while (next != null) {
-            int first = current.val;
-            int second = next.val;
-            if (first > second) {
-                prev.next = next;
-                current.next = next.next;
-                next.next = current;
-                return sortList(head);
-            } else {
-                prev = current;
-                current = current.next;
-                next = current.next;
-            }
-        }
-        return head;
-    }
+
 
     public void reorderList(ListNode head) {
         if (head == null) return;
@@ -3849,11 +3827,7 @@ public class Leetcode {
         }
         return -1;
     }
-    // i < j
-    public int GCD(int i, int j) {
-        if (i == 0) return j;
-        return GCD(j % i, i);
-    }
+
 
     public int pairSum(ListNode head) {
         if (head == null) return -1;
@@ -4386,6 +4360,146 @@ public class Leetcode {
         }
         return output;
     }
+
+    public ListNode partition(ListNode head, int x) {
+        if (head == null) return head;
+        if (head.next == null) return head;
+        if (head.val < x) {
+            ListNode next = partition(head.next, x);
+            head.next = next;
+            return head;
+        } else {
+            if (head.next == null) {
+                return head;
+            }
+            ListNode masterStart = head;
+            ListNode current = head;
+            ListNode next = current.next;
+            while (next != null) {
+                int value = next.val;
+                if (value < x) {
+                    current.next = next.next;
+                    next.next = current;
+                    masterStart.next = next;
+                    masterStart = masterStart.next;
+                } else {
+                    next = next.next;
+                }
+
+                next = next.next;
+            }
+
+
+        }
+        return head;
+    }
+
+
+    List<Integer> distanceKList;
+    TreeNode masterTree;
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        distanceKList = new ArrayList<>();
+        if (k == 0) {
+            distanceKList.add(target.val);
+            return distanceKList;
+        }
+        masterTree = root;
+        if (root.val == target.val) {
+            findChildren(root.left, k-1);
+            findChildren(root.right, k-1);
+        } else {
+            findParent(root, target.val, k);
+        }
+        return distanceKList;
+    }
+    public void findParent(TreeNode root, int target, int k) {
+        if (root == null) return;
+        if (root.val == target) {
+            findChildren(root, k);
+        } else {
+            int deltaK = distanceToTarget(root, target);
+            int leftK = distanceToTarget(root.left, target);
+            int rightK = distanceToTarget(root.right, target);
+            System.out.println("current root is " + root.val);
+            System.out.println("current deltaK is " + deltaK);
+            System.out.println("current leftK is " + leftK);
+            System.out.println("current rightK is " + rightK);
+            if (deltaK == k) distanceKList.add(root.val);
+
+            if (leftK != 0) {
+                if (deltaK >= k) {
+                    findParent(root.left, target, k);
+                } else {
+                    findParent(root.left, target, k);
+                    findChildren(root.right, k - deltaK - 1);
+                }
+            }
+            if (rightK != 0) {
+                if (deltaK >= k) {
+                    findParent(root.right, target, k);
+                } else {
+                    findParent(root.right, target, k);
+                    findChildren(root.right, k - deltaK - 1);
+                }
+            }
+        }
+    }
+    public int distanceToTarget(TreeNode root, int target) {
+        if (root == null) return 0;
+        if (root.val == target) return 0;
+        if (root.left != null && root.left.val == target) return 1;
+        if (root.right != null && root.right.val == target) return 1;
+        else {
+            int left = distanceToTarget(root.left, target);
+            if (left != 0) return (1 + left);
+            int right = distanceToTarget(root.right, target);
+            if (right != 0) return (1 + right);
+            return 0;
+        }
+    }
+
+    public void findChildren(TreeNode root, int k) {
+        if (root == null) return;
+        if (k == 0) {
+            distanceKList.add(root.val);
+        } else {
+            findChildren(root.left, k-1);
+            findChildren(root.right, k-1);
+        }
+    }
+
+
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        if (head == null) return head;
+        if (head.next == null) return head;
+        ListNode current = head;
+        ListNode next = current.next;
+        while (next != null) {
+            int gcd = GCD(current.val, next.val);
+            ListNode middle = new ListNode(gcd);
+            middle.next = next;
+            current.next = middle;
+            current = next;
+            next = current.next;
+        }
+        return head;
+    }
+    public int GCD(int i, int j) {
+        if (i == 0) return j;
+        return GCD(j % i, i);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
