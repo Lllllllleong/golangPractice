@@ -4485,15 +4485,6 @@ public class Leetcode {
 
 
 
-
-
-
-
-
-
-
-
-
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
         int[] coins = {0, 0, 0, 1, 1, 0, 0, 1};
