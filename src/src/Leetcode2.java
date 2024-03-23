@@ -428,6 +428,27 @@ public class Leetcode2 {
     }
 
 
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 1;
+        int[] dpArray = new int[n];
+        //Initialise
+        Arrays.fill(dpArray, 1);
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dpArray[i] = Math.max(dpArray[i], dpArray[j] + 1);
+                }
+            }
+        }
+        int output = 0;
+        for (int i : dpArray) {
+            output = Math.max(output, i);
+        }
+        return output;
+    }
+
+
 }
 
 
