@@ -318,9 +318,30 @@ public class Leetcode2 {
     }
 
 
-    public List<String> printVertically(String s) {
-
+    public int jump(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 0;
+        nums[n-1] = 0;
+        for (int i = n-2; i >= 0; i--) {
+            int currentJump = nums[i];
+            if (currentJump == 0) {
+                nums[i] = 10000;
+                continue;
+            }
+            int max = i + currentJump;
+            if (max >= n - 1) {
+                nums[i] = 1;
+            } else {
+                int currentMinimum = Integer.MAX_VALUE;
+                for (int j = max; j > i; j--) {
+                    currentMinimum = Math.min(currentMinimum, 1 + nums[j]);
+                }
+                nums[i] = currentMinimum;
+            }
+        }
+        return nums[0];
     }
+
 
 }
 
