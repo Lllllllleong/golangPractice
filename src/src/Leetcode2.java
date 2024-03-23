@@ -343,6 +343,41 @@ public class Leetcode2 {
     }
 
 
+    public int trap(int[] height) {
+        int n = height.length;
+        if (n <= 2) return 0;
+        int leftIndex = 0;
+        int rightIndex = n-1;
+        int leftMaxHeight = height[leftIndex];
+        int rightMaxHeight = height[rightIndex];
+        int output = 0;
+        while (leftMaxHeight == 0) {
+            leftIndex++;
+            leftMaxHeight = height[leftIndex];
+        }
+        while (leftIndex != rightIndex) {
+            if (leftMaxHeight <= rightMaxHeight) {
+                leftIndex++;
+                int currentHeight = height[leftIndex];
+                if (currentHeight < leftMaxHeight) {
+                    output += leftMaxHeight - currentHeight;
+                } else {
+                    leftMaxHeight = currentHeight;
+                }
+            } else {
+                rightIndex--;
+                int currentHeight = height[rightIndex];
+                if (currentHeight < rightMaxHeight) {
+                    output += rightMaxHeight - currentHeight;
+                } else {
+                    rightMaxHeight = currentHeight;
+                }
+            }
+        }
+        return output;
+    }
+
+
 }
 
 
