@@ -629,6 +629,21 @@ public class Leetcode2 {
         else return dpArray[amount];
     }
 
+
+    public int minNumberOperations(int[] target) {
+        int n = target.length;
+        if (n == 1) return target[0];
+        int output = 0;
+        int previous = 0;
+        for (int i : target) {
+            if (previous < i) {
+                output += (i - previous);
+            }
+            previous = i;
+        }
+        return output;
+    }
+
 }
 
 
