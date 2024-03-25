@@ -610,6 +610,24 @@ public class Leetcode2 {
         return output;
     }
 
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) return amount;
+        int[] dpArray = new int[amount + 1];
+        Arrays.fill(dpArray, Integer.MAX_VALUE - 1);
+        dpArray[0] = 0;
+        Arrays.sort(coins);
+        for (int i = 1; i <= amount; i++) {
+            for (int c : coins) {
+                int change = i - c;
+                if (change < 0) break;
+                else {
+                    dpArray[i] = Math.min(dpArray[i], dpArray[change] + 1);
+                }
+            }
+        }
+        if (dpArray[amount] == Integer.MAX_VALUE-1) return -1;
+        else return dpArray[amount];
+    }
 
 }
 
