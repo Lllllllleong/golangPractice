@@ -158,12 +158,12 @@ public class Leetcode2 {
         int xBound = nums1.length;
         int yBound = nums2.length;
         int[][] dpArray = new int[yBound + 1][xBound + 1];
-        for (int y = yBound-1; y >=0; y--) {
-            for (int x = xBound-1; x >= 0; x--) {
+        for (int y = yBound - 1; y >= 0; y--) {
+            for (int x = xBound - 1; x >= 0; x--) {
                 if (nums1[x] == nums2[y]) {
-                    dpArray[y][x] = 1 + dpArray[y+1][x+1];
+                    dpArray[y][x] = 1 + dpArray[y + 1][x + 1];
                 } else {
-                    dpArray[y][x] = Math.max(dpArray[y+1][x], dpArray[y][x+1]);
+                    dpArray[y][x] = Math.max(dpArray[y + 1][x], dpArray[y][x + 1]);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class Leetcode2 {
     public int maxResult(int[] nums, int k) {
         int output = 0;
         Deque<Integer> dQueue = new ArrayDeque<>();
-        for (int i = nums.length-1; i >= 0 ; i--) {
+        for (int i = nums.length - 1; i >= 0; i--) {
             if (nums[i] < 0) {
                 dQueue.addFirst(nums[i]);
             } else {
@@ -187,6 +187,7 @@ public class Leetcode2 {
         }
         return output;
     }
+
     public int queueSum(Deque<Integer> dQ, int k) {
         Deque<Integer> sumQueue = new ArrayDeque<>();
         while (sumQueue.size() != k) {
@@ -212,7 +213,6 @@ public class Leetcode2 {
     }
 
 
-
     public int minSideJumps(int[] obstacles) {
         int[][] dpArray = new int[3][obstacles.length];
         int counter = 0;
@@ -223,11 +223,11 @@ public class Leetcode2 {
             }
             counter++;
         }
-        Deque<Integer> orderQueue = new ArrayDeque<>(Arrays.asList(0,1,2));
-        for (int i = obstacles.length-2; i >= 0 ; i--) {
+        Deque<Integer> orderQueue = new ArrayDeque<>(Arrays.asList(0, 1, 2));
+        for (int i = obstacles.length - 2; i >= 0; i--) {
             for (int j = 0; j < 3; j++) {
                 if (dpArray[j][i] == 1000) continue;
-                dpArray[j][i] = dpArray[j][i+1];
+                dpArray[j][i] = dpArray[j][i + 1];
             }
             for (int j = 0; j < 3; j++) {
                 dpArray[j][i] = Math.min(dpArray[j][i], dpArray[0][i] + 1);
@@ -250,19 +250,20 @@ public class Leetcode2 {
         if (n == 1) return nums[0];
         if (n == 2) return Math.max(nums[0], nums[1]);
         int first = rob2(Arrays.copyOfRange(nums, 1, n));
-        int second = rob2(Arrays.copyOfRange(nums, 0, n-1));
-        return Math.max(first,second);
+        int second = rob2(Arrays.copyOfRange(nums, 0, n - 1));
+        return Math.max(first, second);
     }
+
     public int rob2(int[] nums) {
         //Let
         //dp[0][n] be the max value if you choose to rob the nth house
         //dp[1][n] is the max value if you don't rob the nth house
         int n = nums.length;
-        int[][] dp = new int[2][n+1];
-        for (int i = n-1; i >= 0 ; i--) {
+        int[][] dp = new int[2][n + 1];
+        for (int i = n - 1; i >= 0; i--) {
             int currentRob = nums[i];
-            dp[0][i] = currentRob + dp[1][i+1];
-            dp[1][i] = Math.max(dp[0][i+1], dp[1][i+1]);
+            dp[0][i] = currentRob + dp[1][i + 1];
+            dp[1][i] = Math.max(dp[0][i + 1], dp[1][i + 1]);
         }
         return Math.max(dp[0][0], dp[1][0]);
     }
@@ -271,23 +272,24 @@ public class Leetcode2 {
     public int[] reverseArray(int[] in) {
         int n = in.length;
         int[] reverse = new int[n];
-        n = n-1;
+        n = n - 1;
         for (int i : in) {
             reverse[n] = i;
             n--;
         }
         return reverse;
     }
+
     public int maxSizeSlices(int[] slices) {
         int n = slices.length;
         int[] sliceReverse = reverseArray(slices);
-        int[][] dpArray = new int[n+2][n+2];
+        int[][] dpArray = new int[n + 2][n + 2];
         int j = 0;
-        for (int x = n-1; x >= 0 ; x--) {
+        for (int x = n - 1; x >= 0; x--) {
             for (int y = j; y >= 0; y--) {
-                int one = slices[x] + dpArray[y+1][x+2];
-                int two = slices[y] + dpArray[y+2][x+1];
-                int three = dpArray[y+1][x+1];
+                int one = slices[x] + dpArray[y + 1][x + 2];
+                int two = slices[y] + dpArray[y + 2][x + 1];
+                int three = dpArray[y + 1][x + 1];
                 dpArray[y][x] = Math.max(one, Math.max(two, three));
             }
             j++;
@@ -305,13 +307,15 @@ public class Leetcode2 {
         int b = zagRight(root.left);
         int c = longestZigZag(root.left);
         int d = longestZigZag(root.right);
-        int output = Math.max(a, Math.max(b, Math.max(c,d)));
+        int output = Math.max(a, Math.max(b, Math.max(c, d)));
         return output;
     }
+
     public int zagLeft(TreeNode root) {
         if (root == null) return 0;
         return (1 + zagRight(root.left));
     }
+
     public int zagRight(TreeNode root) {
         if (root == null) return 0;
         return (1 + zagLeft(root.right));
@@ -321,8 +325,8 @@ public class Leetcode2 {
     public int jump(int[] nums) {
         int n = nums.length;
         if (n == 1) return 0;
-        nums[n-1] = 0;
-        for (int i = n-2; i >= 0; i--) {
+        nums[n - 1] = 0;
+        for (int i = n - 2; i >= 0; i--) {
             int currentJump = nums[i];
             if (currentJump == 0) {
                 nums[i] = 10000;
@@ -347,7 +351,7 @@ public class Leetcode2 {
         int n = height.length;
         if (n <= 2) return 0;
         int leftIndex = 0;
-        int rightIndex = n-1;
+        int rightIndex = n - 1;
         int leftMaxHeight = height[leftIndex];
         int rightMaxHeight = height[rightIndex];
         int output = 0;
@@ -384,21 +388,21 @@ public class Leetcode2 {
             int p = prices[1] - prices[0];
             return (p > 0) ? p : 0;
         } else {
-            int[][] dpArray = new int[n+1][n+1];
-            for (int i = n-1; i >= 0; i--) {
+            int[][] dpArray = new int[n + 1][n + 1];
+            for (int i = n - 1; i >= 0; i--) {
                 int currentPeak = prices[i];
                 for (int j = i; j >= 0; j--) {
                     int currentPrice = prices[j];
-                    dpArray[i][j] = Math.max(dpArray[i][j+1], currentPeak - currentPrice);
+                    dpArray[i][j] = Math.max(dpArray[i][j + 1], currentPeak - currentPrice);
                     currentPeak = Math.max(currentPeak, currentPrice);
                 }
             }
             for (int[] a : dpArray) {
                 System.out.println(Arrays.toString(a));
             }
-            int output = dpArray[n-1][0];
+            int output = dpArray[n - 1][0];
             for (int i = 1; i < n; i++) {
-                int c = dpArray[n-1][i] + dpArray[i-1][0];
+                int c = dpArray[n - 1][i] + dpArray[i - 1][0];
                 output = Math.max(output, c);
             }
             return output;
@@ -406,21 +410,20 @@ public class Leetcode2 {
     }
 
 
-
     public boolean isSubsequence(String s, String t) {
         int y = s.length();
         int x = t.length();
         if (y == 0 || y == 0 && x == 0) return true;
         if (x == 0) return false;
-        boolean[][] dpArray = new boolean[y+1][x+1];
+        boolean[][] dpArray = new boolean[y + 1][x + 1];
         //Corner solution initialise
         Arrays.fill(dpArray[y], true);
-        for (int i = y-1; i >= 0; i--) {
-            for (int j = x-1; j >= 0; j--) {
+        for (int i = y - 1; i >= 0; i--) {
+            for (int j = x - 1; j >= 0; j--) {
                 if (s.charAt(i) == t.charAt(j)) {
-                    dpArray[i][j] = dpArray[i+1][j+1];
+                    dpArray[i][j] = dpArray[i + 1][j + 1];
                 } else {
-                    dpArray[i][j] = dpArray[i][j+1];
+                    dpArray[i][j] = dpArray[i][j + 1];
                 }
             }
         }
@@ -449,14 +452,13 @@ public class Leetcode2 {
     }
 
 
-
     public int findLengthOfLCIS(int[] nums) {
         int n = nums.length;
         if (n == 1) return 1;
         int output = 1;
         int counter = 1;
         for (int i = 1; i < n; i++) {
-            if (nums[i] > nums[i-1]) {
+            if (nums[i] > nums[i - 1]) {
                 counter++;
                 output = Math.max(output, counter);
             } else {
@@ -470,10 +472,10 @@ public class Leetcode2 {
     public int lenLongestFibSubseq(int[] arr) {
         int output = 0;
         int currentCount = 2;
-        for (int i = 0; i < arr.length-2; i++) {
-            int middle = arr[i+1];
+        for (int i = 0; i < arr.length - 2; i++) {
+            int middle = arr[i + 1];
             int target = arr[i] + middle;
-            for (int j = i+2; j < arr.length; j++) {
+            for (int j = i + 2; j < arr.length; j++) {
                 int current = arr[j];
                 if (current == target) {
                     currentCount++;
@@ -492,19 +494,19 @@ public class Leetcode2 {
         int output = 0;
         if (n <= 2) return 0;
         for (int i = 1; i < n; i++) {
-            int prev = arr[i-1];
+            int prev = arr[i - 1];
             int curr = arr[i];
             if (prev < curr) {
-                arr[i-1] = 1;
+                arr[i - 1] = 1;
             } else if (prev == curr) {
-                arr[i-1] = 0;
+                arr[i - 1] = 0;
             } else {
-                arr[i-1] = -1;
+                arr[i - 1] = -1;
             }
         }
         int previousPrefix = -1;
         int currentMax = 0;
-        for (int i = 0; i < n-1; i++) {
+        for (int i = 0; i < n - 1; i++) {
 
             int currentPrefix = arr[i];
             System.out.println("i is " + i);
@@ -516,7 +518,7 @@ public class Leetcode2 {
                 currentMax = 2;
             } else if (previousPrefix == -1 && currentPrefix == -1 && currentMax != 0) {
                 currentMax++;
-                if (i == n-2) output = Math.max(output, currentMax);
+                if (i == n - 2) output = Math.max(output, currentMax);
             } else if (previousPrefix == 1 && currentPrefix == -1) {
                 currentMax++;
                 output = Math.max(output, currentMax);
@@ -555,6 +557,7 @@ public class Leetcode2 {
         }
         return output;
     }
+
     public int arrMaxValue(int[] in) {
         int output = Integer.MIN_VALUE;
         for (int i : in) {
@@ -562,6 +565,37 @@ public class Leetcode2 {
         }
         return output;
     }
+
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> output = new ArrayList<>();
+        int subLength = words[0].length();
+        int sLength = subLength * words.length;
+        int n = s.length();
+        //Initialise map
+        HashMap<String, Integer> frequencyHM = new HashMap<>();
+        for (String w : words) {
+            frequencyHM.merge(w, 1, Integer::sum);
+        }
+        for (int i = 0; i <= n - sLength; i++) {
+            String current = s.substring(i, i + sLength);
+            HashMap<String, Integer> currentHM = new HashMap<>(frequencyHM);
+            int k = 0;
+            while (k < sLength) {
+                String currentSubstring = current.substring(k, k + subLength);
+                if (!currentHM.containsKey(currentSubstring)) break;
+                currentHM.compute(currentSubstring, (a, b) -> (b == null) ? null : b - 1);
+                k += subLength;
+            }
+            boolean flag = true;
+            for (Integer I : currentHM.values()) {
+                if (I != 0) flag = false;
+            }
+            if (flag) output.add(i);
+        }
+        return output;
+    }
+
+
 
 }
 
