@@ -467,6 +467,70 @@ public class Leetcode2 {
         return output;
     }
 
+    public int lenLongestFibSubseq(int[] arr) {
+        int output = 0;
+        int currentCount = 2;
+        for (int i = 0; i < arr.length-2; i++) {
+            int middle = arr[i+1];
+            int target = arr[i] + middle;
+            for (int j = i+2; j < arr.length; j++) {
+                int current = arr[j];
+                if (current == target) {
+                    currentCount++;
+                    target = target + middle;
+                    middle = current;
+                }
+            }
+            output = Math.max(output, currentCount);
+            currentCount = 2;
+        }
+        return output;
+    }
+
+    public int longestMountain(int[] arr) {
+        int n = arr.length;
+        int output = 0;
+        if (n <= 2) return 0;
+        for (int i = 1; i < n; i++) {
+            int prev = arr[i-1];
+            int curr = arr[i];
+            if (prev < curr) {
+                arr[i-1] = 1;
+            } else if (prev == curr) {
+                arr[i-1] = 0;
+            } else {
+                arr[i-1] = -1;
+            }
+        }
+        int previousPrefix = -1;
+        int currentMax = 0;
+        for (int i = 0; i < n-1; i++) {
+
+            int currentPrefix = arr[i];
+            System.out.println("i is " + i);
+            System.out.println("currentPrevfix is " + currentPrefix);
+            System.out.println("count is " + currentMax);
+
+            if (previousPrefix == -1 && currentPrefix == 1) {
+                output = Math.max(output, currentMax);
+                currentMax = 2;
+            } else if (previousPrefix == -1 && currentPrefix == -1 && currentMax != 0) {
+                currentMax++;
+                if (i == n-2) output = Math.max(output, currentMax);
+            } else if (previousPrefix == 1 && currentPrefix == -1) {
+                currentMax++;
+                output = Math.max(output, currentMax);
+            } else if (previousPrefix == 1 && currentPrefix == 1) {
+                currentMax++;
+            } else if (previousPrefix == 0 && currentPrefix == 1) {
+                currentMax = 2;
+            } else {
+                currentMax = 0;
+            }
+            previousPrefix = currentPrefix;
+        }
+        return output;
+    }
 
 }
 
