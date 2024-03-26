@@ -644,6 +644,121 @@ public class Leetcode2 {
         return output;
     }
 
+
+    public long maxPoints(int[][] points) {
+        int yMax = points.length;
+        int xMax = points[0].length;
+        long[] dpArray = new long[xMax];
+        for (int x = 0; x < xMax; x++) {
+            dpArray[x] = (long) points[yMax-1][x];
+        }
+        for (int y = yMax - 2; y >= 0; y--) {
+            for (int x = 0; x < xMax; x++) {
+                long currentX = 0;
+                for (int z = 0; z < xMax; z++) {
+                    currentX = Math.max(currentX, points[y][z] - Math.abs(x-z));
+                }
+                dpArray[x] += currentX;
+            }
+        }
+        long output = 0;
+        for (long l : dpArray) output = Math.max(output, l);
+        return output;
+
+    }
+
+
+
+    public int countSpecialSubsequences(int[] nums) {
+        int n = nums.length;
+        double[][] dpArray = new double[3][n + 1];
+        for (int i = n-1; i >= 0; i--) {
+            int current = nums[i];
+            dpArray[0][i] = dpArray[0][i+1];
+            dpArray[1][i] = dpArray[1][i+1];
+            dpArray[2][i] = dpArray[2][i+1];
+            if (current == 0) {
+                dpArray[0][i] = ((dpArray[0][i] * 2) +  dpArray[1][i]);
+            } else if (current == 1) {
+                dpArray[1][i] = ((dpArray[1][i] * 2) +  dpArray[2][i]) ;
+            } else {
+                dpArray[2][i] = ((dpArray[2][i] * 2) + 1);
+            }
+        }
+        for (double[] a : dpArray) {
+            System.out.println(Arrays.toString(a));
+        }
+        return (int) (dpArray[0][0] % (Math.pow(10,9) + 7));
+    }
+
+
+    public int peopleAwareOfSecret(int n, int delay, int forget) {
+        int output = 1;
+        int originalDelay = delay;
+        int originalForget = forget;
+        while (n != 0) {
+            if (delay <= 0) {
+                output += peopleAwareOfSecret(n, originalDelay, originalForget);
+            }
+            if (forget == 0) {
+                output--;
+            }
+            n--;
+            delay--;
+            forget--;
+        }
+        return output;
+    }
+
+    public boolean canReach(String s, int minJump, int maxJump) {
+        int n = s.length();
+        if (s.charAt(n-1) == 0) return false;
+        if (n == 2) {
+            return (s.charAt(0) == '0' && minJump >= 1);
+        }
+        int[] dpArray = new int[n];
+        Arrays.fill(dpArray, 1);
+        dpArray[n-1] = 0;
+        for (int i = n-2; i >= 0; i--) {
+            if (s.charAt(i) == '1') {
+                dpArray[i] = 1;
+            } else {
+                for (int j = minJump; j <= maxJump; j++) {
+                    int jumpto = Math.min(n-1, i+j);
+                    if (dpArray[jumpto] == 0) {
+                        dpArray[i] = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        return dpArray[0] == 0;
+    }
+
+
+
+    public long maxTaxiEarnings(int n, int[][] rides) {
+        Arrays.sort(rides, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return (b[0] - a[0]);
+            }
+        });
+
+        TreeMap<Integer, Long> tm = new TreeMap<>();
+        tm.put(n, (long) 0);
+        long currentMax = 0;
+        for (int[] ride : rides) {
+            long currentEarning = ride[1] - ride[0] + ride[2];
+            currentEarning += tm.get(tm.ceilingKey(ride[1]));
+            currentMax = Math.max(currentMax, currentEarning);
+            tm.put(ride[0], currentMax);
+        }
+        return currentMax;
+    }
+
+
+
+
 }
 
 
