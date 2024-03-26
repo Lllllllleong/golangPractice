@@ -757,6 +757,74 @@ public class Leetcode2 {
     }
 
 
+    public int minSumOfLengths(int[] arr, int target) {
+        List<Integer> l = new ArrayList<>();
+        int n = arr.length;
+        if (n == 1) return 0;
+        for (int i = n-1; i >= 0; i--) {
+            if (arr[i] == target) l.add(1);
+            if (arr[i] > target) continue;
+            for (int j = i+1; j < n; j++) {
+                arr[j] += arr[i];
+                if (arr[j] == target) l.add(j - i + 1);
+            }
+        }
+        Collections.sort(l);
+        if (l.size() < 2) return -1;
+        else {
+            return (l.get(0) + l.get(1));
+        }
+    }
+
+
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        int n = nums.length;
+        if (firstLen + secondLen == n) return intArraySum(nums);
+        int one = maxSumTwoNoOverlap2(nums, firstLen, secondLen);
+
+        return -1;
+    }
+    public int maxSumTwoNoOverlap2(int[] nums, int firstLen, int secondLen) {
+        int n = nums.length;
+        int window = firstLen + secondLen;
+        int[] dpArrayFirst = new int[n - window + 1];
+
+
+
+    }
+
+    public int intArraySum(int[] in) {
+        int output = 0;
+        for (int i : in) {
+            output += i;
+        }
+        return output;
+    }
+
+
+    public int longestSquareStreak(int[] nums) {
+        Set<Integer> s = new HashSet<>();
+        for (int i : nums) {
+            s.add(i);
+        }
+        int output = -1;
+        List<Integer> l = new ArrayList<>(s);
+        Collections.sort(l, Collections.reverseOrder());
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (Integer I : l) {
+            Integer II = I * I;
+            if (hm.containsKey(II)) {
+                Integer newValue = hm.get(II) + 1;
+                output = Math.max(newValue, output);
+                hm.put(I, newValue);
+            } else {
+                hm.put(I, 1);
+            }
+        }
+        return output;
+
+    }
+
 
 
 }
