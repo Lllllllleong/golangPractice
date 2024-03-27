@@ -269,20 +269,11 @@ public class Leetcode2 {
     }
 
 
-    public int[] reverseArray(int[] in) {
-        int n = in.length;
-        int[] reverse = new int[n];
-        n = n - 1;
-        for (int i : in) {
-            reverse[n] = i;
-            n--;
-        }
-        return reverse;
-    }
+
 
     public int maxSizeSlices(int[] slices) {
         int n = slices.length;
-        int[] sliceReverse = reverseArray(slices);
+//        int[] sliceReverse = reverseArray(slices);
         int[][] dpArray = new int[n + 2][n + 2];
         int j = 0;
         for (int x = n - 1; x >= 0; x--) {
@@ -818,6 +809,130 @@ public class Leetcode2 {
         else return oddMax;
     }
 
+
+    public int minimizeArrayValue(int[] nums) {
+        int out = 0;
+        long sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            sum = sum + current;
+            int j = (int) sum / (i+1);
+            j = (sum % (i+1) == 0) ? j : j + 1;
+            out = Math.max(out, j);
+        }
+        return out;
+    }
+
+    public int rootCount(int[][] edges, int[][] guesses, int k) {
+        int maxNode = edges.length;
+        int output = 0;
+        for (int i = 0; i < maxNode + 1; i++) {
+            int kk = k;
+            int[][] dpArray = constructEdgeTree(edges, i);
+            for (int[] guess : guesses) {
+                if (dpArray[guess[0]][guess[1]] == 1) {
+                    kk--;
+                    if (kk == 0) break;
+                }
+            }
+            if (kk <= 0) {
+                System.out.println("correct for node " + i);
+                output++;
+            }
+
+        }
+        return output;
+    }
+    public int[][] constructEdgeTree(int[][] edges, int root) {
+        Deque<Integer> d = new ArrayDeque<>();
+        d.add(root);
+        int n = edges.length;
+        int[][] out = new int[n][n];
+        Set<Integer> s = new HashSet<>();
+        s.add(root);
+        while (!d.isEmpty()) {
+            int target = d.pollFirst();
+            for (int[] edge : edges) {
+                if (edge[0] == target && !s.contains(edge[1])) {
+                    d.addLast(edge[1]);
+                    s.add(edge[1]);
+                    out[target][edge[1]] = 1;
+                } else if (edge[1] == target && !s.contains(edge[0])) {
+                    d.addLast(edge[0]);
+                    s.add(edge[0]);
+                    out[target][edge[0]] = 1;
+                }
+            }
+        }
+        return out;
+    }
+
+
+    public int minSessions(int[] tasks, int sessionTime) {
+        int n = tasks.length;
+        if (n == 1) return n;
+        Arrays.sort(tasks);
+        boolean b = allZero(tasks);
+        int out = 0;
+        while (!b) {
+            System.out.println(Arrays.toString(tasks));
+            out++;
+            int currentTime = sessionTime;
+            for (int i = n-1; i >= 0 ; i--) {
+                if (tasks[i] > currentTime) continue;
+                else {
+                    if (tasks[i] != 0) {
+                        currentTime -= tasks[i];
+                        tasks[i] = 0;
+                    }
+                }
+            }
+            b = allZero(tasks);
+        }
+        return out;
+    }
+    public boolean allZero(int[] in) {
+        for (int i : in) {
+            if (i != 0) return false;
+        }
+        return true;
+    }
+
+    public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
+        Set<Integer> combinationSums = new HashSet<>();
+        generateSums(toppingCosts, 0, 0, combinationSums);
+        int output = -1;
+        int delta = Integer.MAX_VALUE;
+        for (int i : baseCosts) {
+            for (int j : combinationSums) {
+                int k = i + j;
+                int difference = Math.abs(target - k);
+                if (difference < delta) {
+                    delta = difference;
+                    output = k;
+                } else if (difference == delta) {
+                    output = Math.min(output, k);
+                }
+            }
+        }
+        return output;
+    }
+
+
+
+    public static void generateSums(int[] nums, int index, int currentSum, Set<Integer> result) {
+        // Base case: If we've considered all elements, add the current sum to the result set
+        if (index == nums.length) {
+            result.add(currentSum);
+            return;
+        }
+        // Case 1: Don't include the current element
+        generateSums(nums, index + 1, currentSum, result);
+        // Case 2: Include the current element once
+        generateSums(nums, index + 1, currentSum + nums[index], result);
+        // Case 3: Include the current element twice
+        generateSums(nums, index + 1, currentSum + 2 * nums[index], result);
+    }
 
 
 }
