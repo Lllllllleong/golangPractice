@@ -974,19 +974,19 @@ public class Leetcode2 {
 
 
 
-    public int numOfSubarrays(int[] arr) {
-        int n = arr.length;
-        long output = 0;
-        if (n == 1) return (arr[0] % 2 == 0) ? 0 : 1;
+    public int maxAbsoluteSum(int[] nums) {
+        int n = nums.length;
+        int output = 0;
+        if (n == 1) return (Math.abs(nums[0]));
         for (int i = n-1; i >= 0; i--) {
-            int a = arr[i];
-            if (a % 2 != 0) output++;
+            int a = nums[i];
+            output = Math.max(output, Math.abs(a));
             for (int j = i+1; j < n; j++) {
-                arr[j] += a;
-                if (arr[j] % 2 != 0) output++;
+                nums[j] += a;
+                output = Math.max(output, Math.abs(nums[j]));
             }
         }
-        return (int) (output % (Math.pow(10,9) + 7));
+        return output;
     }
 
     public String kthSmallestPath(int[] destination, int k) {
@@ -1037,6 +1037,34 @@ public class Leetcode2 {
         }
         return result;
     }
+
+    public ListNode mergeNodes(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return null;
+        ListNode current = head;
+        ListNode next = current.next;
+        while (next.val != 0) {
+            current = current.next;
+            next = current.next;
+        }
+        current.next = null;
+        ListNode newHead = nodeSumMerge(head);
+        ListNode newTail = mergeNodes(next);
+        newHead.next = newTail;
+        return newHead;
+    }
+    public ListNode nodeSumMerge(ListNode head) {
+        if (head == null) return null;
+        int out = 0;
+        ListNode current = head;
+        while (current != null) {
+            out += current.val;
+            current = current.next;
+        }
+        ListNode output = new ListNode(out);
+        return output;
+    }
+
 
 }
 
