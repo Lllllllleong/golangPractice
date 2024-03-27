@@ -1066,6 +1066,42 @@ public class Leetcode2 {
     }
 
 
+    public int maximumTop(int[] nums, int k) {
+        int n = nums.length;
+        if (n == 0) return -1;
+        if (k == 0) return nums[0];
+        if (n == 1) {
+            if (k % 2 == 0) return nums[0];
+            else return -1;
+        }
+        if (k == 1) {
+            if (n <= 1) return -1;
+            else return nums[1];
+        }
+        if (k >= n + 1) return maxInArray(nums);
+        if (k == n) {
+            nums[n-1] = nums[0];
+            return maxInArray(nums);
+        } else {
+            int max = nums[0];
+            int index = 0;
+            while (k != 1) {
+                max = Math.max(max, nums[index]);
+                index++;
+                k--;
+            }
+            return Math.max(max, nums[index+1]);
+        }
+    }
+    public int maxInArray(int[] in) {
+        int out = in[0];
+        for (int i : in) {
+            out = Math.max(out, i);
+        }
+        return out;
+    }
+
+
 }
 
 
