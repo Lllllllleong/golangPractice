@@ -935,9 +935,47 @@ public class Leetcode2 {
     }
 
 
+
+    public int maxSum(int[] nums1, int[] nums2) {
+        int aIndex = 0, bIndex = 0;
+        int aMax = nums1.length, bMax = nums2.length;
+        long output = 0;
+        long sumA = 0, sumB = 0;
+        while (aIndex < aMax && bIndex < bMax) {
+            long a = nums1[aIndex];
+            long b = nums2[bIndex];
+            if (a == b) {
+                sumA += a;
+                sumB += b;
+                output += Math.max(sumA, sumB);
+                sumA = 0;
+                sumB = 0;
+                aIndex++;
+                bIndex++;
+            } else if (a < b) {
+                sumA += a;
+                aIndex++;
+            } else if (a > b) {
+                sumB += b;
+                bIndex++;
+            }
+        }
+        //Clear the queues
+        for (int i = aIndex; i < aMax; i++) {
+            sumA += nums1[i];
+        }
+        for (int i = bIndex; i < bMax; i++) {
+            sumB += nums2[i];
+        }
+        output += Math.max(sumA, sumB);
+        return (int) (output % (Math.pow(10,9) + 7));
+    }
+
+
 }
 
 
 
 
 
+//          return (int) (output % (Math.pow(10,9) + 7));
