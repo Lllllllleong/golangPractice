@@ -37,6 +37,14 @@ public class References {
         }
 
 
+
+        //TreeMap
+        //Ceiling key : Returns the least key greater than or equal to the given key, or null if there is no such key.
+        //Floor key : Returns the greatest key less than or equal to the given key, or null if there is no such key.
+
+
+
+
         /*
             Static: Used when you dont care about the instance
             e.g. Seed class above

@@ -1202,6 +1202,39 @@ public class Leetcode2 {
         return (a == x && b == y && c == z);
     }
 
+
+
+    public int[] platesBetweenCandles(String s, int[][] queries) {
+        int n = s.length();
+        int m = queries.length;
+        TreeMap<Integer, Integer> tm = new TreeMap<>();
+        int counter = 0;
+        boolean firstCandle = true;
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == '*') counter++;
+            else if (c == '|') {
+                if (firstCandle) {
+                    firstCandle = false;
+                    counter = 0;
+                }
+                tm.put(i, counter);
+            }
+        }
+        int[] out = new int[m];
+        for (int i = 0; i < m; i++) {
+            int[] query = queries[i];
+            if (tm.ceilingKey(query[0]) != null && tm.floorKey(query[1]) != null) {
+                int left = tm.get(tm.ceilingKey(query[0]));
+                int right = tm.get(tm.floorKey(query[1]));
+                out[i] = Math.max(right - left, 0);
+            } else {
+                out[i] = 0;
+            }
+        }
+        return out;
+    }
+
 }
 
 
