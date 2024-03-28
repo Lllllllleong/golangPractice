@@ -1286,6 +1286,79 @@ public class Leetcode2 {
         }
         return out;
     }
+
+
+
+    public int networkBecomesIdle(int[][] edges, int[] patience) {
+        HashMap<Integer, Integer> distanceMap = new HashMap<>();
+        distanceMap.put(0, 0);
+        Deque<int[]> dQ = new ArrayDeque<>();
+        for (int[] edge : edges) {
+            dQ.addLast(edge);
+        }
+        while (!dQ.isEmpty()) {
+            int[] edge = dQ.pollFirst();
+            int a = edge[0];
+            int b = edge[1];
+            if (distanceMap.containsKey(a) && !distanceMap.containsKey(b)) {
+                distanceMap.put(b, distanceMap.get(a) + 1);
+            } else if (!distanceMap.containsKey(a) && distanceMap.containsKey(b)) {
+                distanceMap.put(a, distanceMap.get(b) + 1);
+            } else if (distanceMap.containsKey(a) && distanceMap.containsKey(b)) {
+                distanceMap.put(a, Math.min(distanceMap.get(b) + 1, distanceMap.get(a)));
+                distanceMap.put(b, Math.min(distanceMap.get(a) + 1, distanceMap.get(b)));
+            } else {
+                dQ.addLast(edge);
+            }
+        }
+        for (Map.Entry<Integer,Integer> e : distanceMap.entrySet()) {
+            System.out.println(e.toString());
+        }
+        int out = -1;
+        for (int server : distanceMap.keySet()) {
+            int d = distanceMap.get(server);
+            int p = patience[server];
+            System.out.println(d + " d is and p is " + p);
+            if (p >= 2*d) {
+                out = Math.max(out, 2*d);
+            } else {
+                if (p == 1) {
+                    out = Math.max(out, 4*d - 1);
+                } else if ((2*d) % p == 0) {
+                    out = Math.max(out, 4*d - p);
+                } else {
+                    out = Math.max(out, 4*d - ((2*d) % p));
+                }
+            }
+            System.out.println("out is " + out);
+        }
+        return out + 1;
+    }
+
+
+    public int wateringPlants(int[] plants, int capacity) {
+        int output = 0;
+        int currentCapacity = capacity;
+        for (int i = 0; i < plants.length; i++) {
+            System.out.println("cap start " + currentCapacity);
+            output++;
+            System.out.println("output " + output);
+            int position = i + 1;
+            int req = plants[0];
+            if (currentCapacity < req) {
+                output += (position * 2);
+                currentCapacity = capacity;
+            }
+            currentCapacity -= req;
+            System.out.println("cap end " + currentCapacity);
+        }
+        return output;
+    }
+
+
+
+
+
 }
 
 
