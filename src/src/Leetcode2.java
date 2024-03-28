@@ -1235,6 +1235,29 @@ public class Leetcode2 {
         return out;
     }
 
+
+    public boolean winnerOfGame(String colors) {
+        if (colors.length() < 3) return false;
+        int aMove = 0, bMove = 0;
+        int consecCount = 1;
+        char prior = 'Z';
+        int n = colors.length();
+        for (int i = 0; i < n; i++) {
+            char c = colors.charAt(i);
+            if (c == prior) {
+                consecCount++;
+                if (consecCount >= 3) {
+                    if (c == 'A') aMove++;
+                    else bMove++;
+                }
+            } else {
+                consecCount = 1;
+            }
+            prior = c;
+        }
+        return aMove > bMove;
+    }
+
 }
 
 
