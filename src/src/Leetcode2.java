@@ -1144,6 +1144,47 @@ public class Leetcode2 {
         }
 
     }
+    public ListNode doubleIt(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) {
+            head.val = head.val * 2;
+            return head;
+        } else {
+            ListNode current = head;
+            long sum = 0;
+            while (current != null) {
+                sum = sum * 10;
+                sum += current.val;
+                current = current.next;
+            }
+            sum = sum * 2;
+            ListNode previous = new ListNode();
+            while (sum != 0) {
+                ListNode tail = new ListNode((int) (sum % 10));
+                tail.next = previous;
+                previous = tail;
+                sum = sum / 10;
+            }
+            return previous;
+        }
+    }
+
+
+    public int addRungs(int[] rungs, int dist) {
+        int n = rungs.length;
+        if (n == 1) {
+            if (rungs[0] > dist) return 1;
+            else return 0;
+        }
+        int out = 0;
+        int prev = 0;
+        for (int i = 0; i < n; i++) {
+            int a = rungs[i];
+            out += Math.max(0,(prev - a - 1) / dist);
+            prev = a;
+        }
+        return out;
+    }
 
 
 }
