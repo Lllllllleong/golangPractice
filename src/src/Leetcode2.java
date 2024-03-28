@@ -1258,6 +1258,34 @@ public class Leetcode2 {
         return aMove > bMove;
     }
 
+
+
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+        int n = items.length;
+        Arrays.sort(items, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                if (a[0] != b[0]) return a[0] - b[0];
+                else return b[1] - a[1];
+            }
+        });
+        TreeMap<Integer, Integer> tm = new TreeMap<>();
+        tm.put(0,0);
+        int maxBeauty = 0;
+        for (int[] item : items) {
+            int price = item[0];
+            int beauty = item[1];
+            if (beauty <= maxBeauty) continue;
+            else {
+                maxBeauty = beauty;
+                tm.put(price, maxBeauty);
+            }
+        }
+        int[] out = new int[queries.length];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = tm.get(tm.floorKey(queries[i]));
+        }
+        return out;
+    }
 }
 
 
