@@ -1491,6 +1491,40 @@ public class Leetcode2 {
         return out.next;
     }
 
+    public void wiggleSort(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return;
+        else {
+            Arrays.sort(nums);
+            Deque<Integer> dQ = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
+            boolean pollFirst = true;
+            int i = 0;
+            while (!dQ.isEmpty()) {
+                int j;
+                if (pollFirst) {
+                    j = dQ.pollFirst();
+                    pollFirst = false;
+                } else {
+                    j = dQ.pollLast();
+                    pollFirst = true;
+                }
+                nums[i] = j;
+                i++;
+            }
+        }
+    }
+
+    public int singleNonDuplicate(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        else {
+            for (int i = 0; i < n; i = i + 2) {
+                if (nums[i] != nums[i+1]) return nums[i];
+            }
+            return -1;
+        }
+    }
+
 }
 
 
