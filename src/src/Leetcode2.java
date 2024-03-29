@@ -1445,6 +1445,51 @@ public class Leetcode2 {
         }
     }
 
+    public long[] getDistances(int[] arr) {
+        HashMap<Integer, Set<Integer>> hmSet = new HashMap<>();
+        int n = arr.length;
+        for (int i = 0; i < n; i++) {
+            int current = arr[i];
+            if (!hmSet.containsKey(current)) {
+                hmSet.put(current, new HashSet<>());
+            }
+            hmSet.get(current).add(i);
+        }
+
+        long[] out = new long[n];
+        for (int i = 0; i < n; i++) {
+            Set<Integer> indexes = hmSet.get(arr[i]);
+            long sum = 0;
+            for (Integer I : indexes) {
+                if (I == i) continue;
+                sum += Math.abs(I - i);
+            }
+            out[i] = sum;
+        }
+        return out;
+    }
+
+
+
+    public ListNode sortList(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return head;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        ListNode ln = head;
+        while(ln != null) {
+            pq.add(ln.val);
+            ln = ln.next;
+        }
+        ListNode out = new ListNode();
+        ListNode prev = out;
+
+        while (!pq.isEmpty()) {
+            ListNode current = new ListNode(pq.poll());
+            prev.next = current;
+            prev = prev.next;
+        }
+        return out.next;
+    }
 
 }
 
