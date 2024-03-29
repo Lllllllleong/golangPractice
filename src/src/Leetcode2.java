@@ -1523,6 +1523,20 @@ public class Leetcode2 {
         return score;
     }
 
+
+    public int maxSubArray(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        int maxSum = Integer.MIN_VALUE;
+        int currentSum = 0;
+        for (int i : nums) {
+            currentSum += i;
+            maxSum = Math.max(maxSum, currentSum);
+            currentSum = (currentSum < 0) ? 0 : currentSum;
+        }
+        return maxSum;
+    }
+
 }
 
 
