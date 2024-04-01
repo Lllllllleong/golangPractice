@@ -20,6 +20,13 @@ class Seed {
 
 public class References {
 
+
+
+    //SHORTCUTS
+
+    //itar
+    //itco
+
     public static void main(String[] args) {
 
         int[][] prices = {{1,4,2},{2,2,7},{2,1,3},{3,2,10},{1,4,2},{4,1,3}};

@@ -1738,7 +1738,34 @@ public class Leetcode2 {
 
 
 
+
+
+
+    public int maximumProduct(int[] nums, int k) {
+        int n = nums.length;
+        if (n == 1) return (nums[0] + k);
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        long mod = 1000000007;
+        for (int num : nums) {
+            pq.add((long) num);
+        }
+        while (k > 0) {
+            Long I = pq.poll();
+            I++;
+            pq.add(I);
+            k = k - 1;
+        }
+        long out = 1;
+        while (!pq.isEmpty()) {
+            out = (out * pq.poll()) % mod;
+        }
+        return (int) out;
+    }
+
+
+
 }
 
 
 //          return (int) (output % (Math.pow(10,9) + 7));
+//          long mod = 1000000007;
