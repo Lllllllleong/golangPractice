@@ -1663,6 +1663,81 @@ public class Leetcode2 {
     }
 
 
+
+
+    public boolean possibleToStamp(int[][] grid, int stampHeight, int stampWidth) {
+        int yMax = grid.length;
+        int xMax = grid[0].length;
+        int maxWidth = maxMatrixWidth(grid);
+        int maxHeight = maxMatrixWidth(transposeMatrix(grid));
+        System.out.println("max width " + maxWidth);
+        System.out.println("max height " + maxHeight);
+        if (maxHeight == 0 && maxWidth == 0) return true;
+        return (stampHeight <= maxHeight && stampWidth <= maxWidth);
+    }
+    public int maxMatrixWidth(int[][] matrix) {
+        int xMax = matrix[0].length;
+        int maxWidth = xMax;
+        boolean flag = false;
+        for (int[] y : matrix) {
+            int currentWidth = 0;
+            for (int x = 0; x < xMax; x++) {
+                if (y[x] == 0) {
+                    currentWidth++;
+                    flag = true;
+                }
+                else if (y[x] == 1 && currentWidth != 0) {
+                    maxWidth = Math.min(maxWidth, currentWidth);
+                    currentWidth = 0;
+                }
+            }
+            if (currentWidth != 0) maxWidth = Math.min(maxWidth, currentWidth);
+        }
+        if (!flag) return 0;
+        else return maxWidth;
+    }
+    public int[][] transposeMatrix(int[][] matrix) {
+        int rows = matrix.length; // Number of rows of original matrix
+        int cols = matrix[0].length; // Number of columns of original matrix
+        // Initialize the transposed matrix with dimensions cols x rows
+        int[][] transposed = new int[cols][rows];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // Swap the elements
+                transposed[j][i] = matrix[i][j];
+            }
+        }
+        return transposed;
+    }
+
+
+
+
+
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        TreeMap<Integer, Integer> jobProfitMap = new TreeMap<>();
+        for (int i = 0; i < difficulty.length; i++) {
+            jobProfitMap.put(difficulty[i], Math.max(jobProfitMap.getOrDefault(difficulty[i], 0), profit[i]));
+        }
+
+        int max = 0;
+        for (Map.Entry<Integer, Integer> entry : jobProfitMap.entrySet()) {
+            max = Math.max(max, entry.getValue());
+            entry.setValue(max); // Ensure each difficulty level maps to the max profit so far
+        }
+
+        int totalProfit = 0;
+        for (int capability : worker) {
+            Integer floorKey = jobProfitMap.floorKey(capability);
+            if (floorKey != null) {
+                totalProfit += jobProfitMap.get(floorKey);
+            }
+        }
+        return totalProfit;
+    }
+
+
+
 }
 
 
