@@ -1537,6 +1537,36 @@ public class Leetcode2 {
         return maxSum;
     }
 
+
+    public String smallestSubsequence(String s) {
+        int n = s.length();
+        if (n == 1) return s;
+        char[] c = s.toCharArray();
+        Arrays.sort(c);
+        String out = String.valueOf(s.charAt(0));
+        for (char cc : c) {
+            if (cc != out.charAt(out.length()-1)) out += cc;
+        }
+        return out;
+    }
+
+
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        int[][] matrix = new int[n][n];
+        for (int [] query : queries) {
+            int y = query[0];
+            int x = query[1];
+            int yy = query[2];
+            int xx = query[3];
+            for (int i = y; i <= yy; i++) {
+                for (int j = x; j <= xx; j++) {
+                    matrix[i][j]++;
+                }
+            }
+        }
+        return matrix;
+    }
+
 }
 
 
