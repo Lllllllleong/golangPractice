@@ -1789,6 +1789,39 @@ public class Leetcode2 {
     }
 
 
+    public String shiftingLetters(String s, int[][] shifts) {
+        int n = s.length();
+        //Prefix array
+        int[] prefix = new int[n+1];
+        for (int[] shift : shifts) {
+            int a = shift[0];
+            int b = shift[1];
+            int c = shift[2];
+            if (c == 1) {
+                prefix[a]++;
+                prefix[b+1]--;
+            } else {
+                prefix[a]--;
+                prefix[b+1]++;
+            }
+        }
+        //Prefix sum
+        for (int i = 1; i < n+1; i++) {
+            prefix[i] = prefix[i] + prefix[i-1];
+        }
+        char[] charArray = s.toCharArray();
+        //Shift the characters
+        for (int i = 0; i < n; i++) {
+            int charIndex = charArray[i] - 'a';
+            int shift = prefix[i] % 26;
+            charIndex = (charIndex + 26 + shift) % 26;
+            charArray[i] = (char) ('a' + charIndex);
+        }
+        String out = new String(charArray);
+        return out;
+    }
+
+
 }
 
 
