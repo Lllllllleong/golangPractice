@@ -1624,10 +1624,6 @@ public class Leetcode2 {
         int a = Integer.MAX_VALUE;
         int b = Integer.MAX_VALUE;
         for (int i : nums) {
-            System.out.println("a, b and i");
-            System.out.println(a);
-            System.out.println(b);
-            System.out.println(i);
             if (i > b) return true;
             if (i < b) {
                 if (i < a) {
@@ -1641,9 +1637,29 @@ public class Leetcode2 {
     }
 
 
-
-    public static void main(String[] args) {
-        System.out.println("hi");
+    public int longestSubarray(int[] nums, int limit) {
+        int n = nums.length;
+        if (n == 1) {
+            return 1;
+        }
+        int out = 1;
+        PriorityQueue<Integer> inc = new PriorityQueue<>();
+        PriorityQueue<Integer> dec = new PriorityQueue<>(Collections.reverseOrder());
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i : nums) {
+            dq.addLast(i);
+            inc.add(i);
+            dec.add(i);
+            int diff = dec.peek() - inc.peek();
+            while (diff > limit) {
+                int removed = dq.removeFirst();
+                inc.remove(removed);
+                dec.remove(removed);
+                diff = dec.peek() - inc.peek();
+            }
+            out = Math.max(out, dq.size());
+        }
+        return out;
     }
 
 
