@@ -1996,6 +1996,65 @@ public class Leetcode2 {
 
 
 
+
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        if (n == 1) {
+            return 0;
+        }
+        int minimumPrice = Integer.MAX_VALUE;
+        int profit = 0;
+        for (int price : prices) {
+            minimumPrice = Math.min(minimumPrice, price);
+            if (price - minimumPrice > fee) {
+                profit += (price - minimumPrice - fee);
+                minimumPrice = price;
+            }
+        }
+        return profit;
+    }
+
+
+    int[][] pathMatrix;
+    public int minFallingPathSum(int[][] matrix) {
+        int out = 0;
+        pathMatrix = matrix;
+        int yMax = pathMatrix.length;
+        int xMax = pathMatrix[0].length;
+        if (yMax != 1) {
+            for (int y = yMax - 2; y >= 0; y--) {
+                for (int x = 0; x < xMax; x++) {
+                    pathMatrix[y][x] = pathMatrix[y][x] + getMinLower(y, x);
+                }
+            }
+        }
+        for (int i : pathMatrix[0]) {
+            out = Math.min(out, i);
+        }
+        return out;
+    }
+    public int getMinLower(int y, int x) {
+        int yMax = pathMatrix.length;
+        int xMax = pathMatrix[0].length;
+        int out = Integer.MAX_VALUE;
+        y = y + 1;
+        //Should not happen
+        if (y == yMax) return -1;
+        x = x - 1;
+        if (x >= 0) {
+            out = Math.min(out, pathMatrix[y][x]);
+        }
+        x = x + 1;
+        out = Math.min(out, pathMatrix[y][x]);
+        x = x + 1;
+        if (x < xMax) {
+            out = Math.min(out, pathMatrix[y][x]);
+        }
+        return out;
+    }
+
+
+
 }
 
 
