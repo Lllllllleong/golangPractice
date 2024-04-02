@@ -2129,6 +2129,107 @@ public class Leetcode2 {
     }
 
 
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        int[] out = new int[n];
+        for (int i = 0; i < n; i++) {
+            int distanceCounter = 0;
+            Set<Integer> s = new HashSet<>();
+            s.add(i);
+            int multiplier = 1;
+            int countAdded = 1;
+            while (countAdded != 0) {
+                Set<Integer> ss = new HashSet<>();
+                for (int[] edge : edges) {
+                    Integer a = edge[0];
+                    Integer b = edge[1];
+                    if (s.contains(a) && !s.contains(b) || !s.contains(a) && s.contains(b)) {
+                        if (ss.contains(a)) {
+                            ss.add(b);
+                        } else {
+                            ss.add(a);
+                        }
+                    }
+                }
+                System.out.println("s and ss are");
+                System.out.println(s);
+                System.out.println(ss);
+                countAdded = ss.size();
+                distanceCounter += countAdded * multiplier;
+                multiplier++;
+                s.addAll(ss);
+            }
+            out[i] = distanceCounter;
+        }
+        return out;
+    }
+
+
+
+
+    public int change(int amount, int[] coins) {
+        Arrays.sort(coins);
+        int n = amount;
+        if (n == 0) return 0;
+        if (coins.length == 1) {
+            if (amount % coins[0] == 0) return 1;
+            else return 0;
+        }
+        long[] dpArray = new long[n+1];
+        dpArray[0] = 1;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                int change = i - coin;
+                if (change < 0) break;
+                else {
+                    dpArray[i] += dpArray[change];
+                }
+            }
+        }
+        return (int) dpArray[amount];
+    }
+
+    public int integerReplacement(int n) {
+        if (n == 1) return 0;
+        int[] dpArray = new int[n+1];
+        dpArray[1] = 0;
+        dpArray[2] = 1;
+        dpArray[3] = 2;
+        dpArray[4] = 2;
+        for (int i = 5; i <= n; i++) {
+            if (i%2==0) {
+                dpArray[i] = dpArray[i/2] + 1;
+            } else {
+                dpArray[i+1] = dpArray[(i+1)/2] + 1;
+                dpArray[i] = Math.min(dpArray[i-1], dpArray[i+1]) + 1;
+                i++;
+            }
+        }
+        return dpArray[n];
+    }
+
+    public int minDistance(String word1, String word2) {
+        int yMax = word1.length();
+        int xMax = word2.length();
+        int[][] dpArray = new int[yMax + 1][xMax + 1];
+        //Initialise values
+        for (int y = 0, x = yMax; y < yMax; y++, x--) {
+            dpArray[y][xMax] = x;
+        }
+        for (int x = 0, y = xMax; x < xMax; x++, y--) {
+            dpArray[yMax][x] = y;
+        }
+        //DP Fill
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
+                if (word1.charAt(y) == word2.charAt(x)) {
+                    dpArray[y][x] = dpArray[y+1][x+1];
+                } else {
+                    dpArray[y][x] = Math.min(dpArray[y+1][x],  Math.min(dpArray[y][x+1], dpArray[y+1][x+1])) + 1;
+                }
+            }
+        }
+        return dpArray[0][0];
+    }
 
 
 
