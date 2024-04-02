@@ -1886,6 +1886,32 @@ public class Leetcode2 {
     }
 
 
+    public ListNode partition(ListNode head, int x) {
+        if (head.next == null) return head;
+        ListNode lowerHead = new ListNode();
+        ListNode lowerCurrent = lowerHead;
+
+        ListNode upperHead = new ListNode();
+        ListNode upperCurrent = upperHead;
+
+        ListNode current = head;
+        while (current != null) {
+            if (current.val >= x) {
+                upperCurrent.next = current;
+                upperCurrent = upperCurrent.next;
+            } else {
+                lowerCurrent.next = current;
+                lowerCurrent = lowerCurrent.next;
+            }
+            current = current.next;
+        }
+        upperCurrent.next = null;
+        upperHead = upperHead.next;
+        lowerCurrent.next = upperHead;
+        return lowerHead.next;
+    }
+
+
 
 
 
