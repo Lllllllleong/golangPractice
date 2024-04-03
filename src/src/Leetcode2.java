@@ -2265,6 +2265,21 @@ public class Leetcode2 {
 
 
 
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length;
+        if (n == 2) {
+            return Math.min(cost[0], cost[1]);
+        } else {
+            for (int i = cost.length - 3; i >= 0; i--) {
+                int a = cost[i];
+                int b = cost[i+1];
+                int c = cost[i+2];
+                cost[i] = a + Math.min(b,c);
+            }
+            return Math.min(cost[0], cost[1]);
+        }
+    }
+
 
 
 
