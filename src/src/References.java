@@ -46,9 +46,24 @@ public class References {
                 else return 0;
             }
         });
+
+
+        Arrays.sort(prices, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int a1 = a[0];
+                int a2 = a[1];
+                int b1 = b[0];
+                int b2 = b[1];
+                if (a1 != b1) return (a1-b1);
+                return (a2-b2);
+            }
+        });
+
+
         for (int[] intArr : prices) {
             System.out.println(Arrays.toString(intArr));
         }
+
 
         //Int array sum
 //        int sum = Arrays.stream(nums).boxed().reduce(0, (a, b) -> a + b);

@@ -2370,6 +2370,87 @@ public class Leetcode2 {
         }
     }
 
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int i : candidates) pq.add(i);
+        return combSum2(pq, target);
+    }
+    public List<List<Integer>> combSum2(PriorityQueue<Integer> pq, int target) {
+        System.out.println("pq and target at start");
+        System.out.println(pq);
+        System.out.println(target);
+        List<List<Integer>> out = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        if (target == 0) {
+            out.add(list);
+            return out;
+        }
+        if (pq.size() == 0) return out;
+        if (pq.size() == 1) {
+            Integer i = pq.poll();
+            if (i == target) {
+                list.add(i);
+                out.add(list);
+                return out;
+            } else {
+                return out;
+            }
+        } else {
+            while (!pq.isEmpty()) {
+                Integer i = pq.poll();
+                PriorityQueue<Integer> pqNext = new PriorityQueue<>(pq);
+//                PriorityQueue<Integer> pqNext = new PriorityQueue<>();
+//                for (Integer ii : pq) pqNext.add(ii);
+                int newTarget = target - i;
+                if (newTarget <= 0) {
+                    return out;
+                } else {
+                    List<List<Integer>> doubleList = combSum2(pqNext, newTarget);
+//                    List<List<Integer>> doubleList = new ArrayList<>(combSum2(pqNext, newTarget));
+                    if (doubleList.size() == 0) {
+                        continue;
+                    } else {
+                        for (List<Integer> l : doubleList) {
+                            List<Integer> current = new ArrayList<>(l);
+                            current.add(0, i);
+                            if (!out.contains(current)) out.add(current);
+                        }
+                    }
+                }
+            }
+            return out;
+        }
+    }
+
+
+    public int videoStitching(int[][] clips, int time) {
+        int[] dpArray = new int[time+10];
+        Arrays.fill(dpArray, 101);
+        dpArray[0] = 0;
+        Arrays.sort(clips, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int a1 = a[0];
+                int a2 = a[1];
+                int b1 = b[0];
+                int b2 = b[1];
+                if (a1 != b1) return (a1-b1);
+                return (a2-b2);
+            }
+        });
+        for (int[] clip : clips) {
+            int start = clip[0];
+            if (start >= time) continue;
+
+            int end = Math.min(clip[1], time);
+            int newMinClips = dpArray[start] + 1;
+            for (int i = start; i <= end; i++) {
+                dpArray[i] = Math.min(dpArray[i], newMinClips);
+            }
+        }
+        return (dpArray[time] == 101) ? -1 : dpArray[time];
+    }
+
+
 
 
     public static void main(String[] args) {
@@ -2396,6 +2477,13 @@ public class Leetcode2 {
             doubleList.add(v);
         }
         System.out.println(doubleList);
+
+
+
+        List<List<Integer>> out = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        out.add(list);
+        System.out.println(out.size());
 
 
     }
