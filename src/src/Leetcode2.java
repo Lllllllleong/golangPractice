@@ -2589,6 +2589,31 @@ public class Leetcode2 {
         }
     }
 
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        if (n == 1) {
+            return arr[0];
+        } else {
+            long[] dpArray = new long[n];
+            long out = 0;
+            for (int i = n-1; i >= 0; i--) {
+                int current = arr[i];
+                dpArray[i] += current;
+                for (int j = i+1; j < n; j++) {
+                    int prev = arr[j];
+                    if (current >= prev) {
+                        dpArray[i] += dpArray[j];
+                        break;
+                    } else {
+                        dpArray[i] += current;
+                    }
+                }
+                out += dpArray[i];
+            }
+            return (int) (out % (Math.pow(10,9) + 7));
+        }
+    }
+
 
 
     public static void main(String[] args) {
