@@ -2917,6 +2917,60 @@ public class Leetcode2 {
     }
 
 
+    public int totalFruit(int[] fruits) {
+        int n = fruits.length;
+        if (n <= 2) return n;
+        int fruit1Type = -1;
+        int fruit2Type = fruits[0];
+        int fruit1 = 0;
+        int fruit2 = 0;
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int fruit = fruits[i];
+            if (fruit != fruit1Type && fruit != fruit2Type) {
+                output = Math.max(output, fruit1 + fruit2);
+                fruit1 = fruit2;
+                fruit1Type = fruit2Type;
+                fruit2 = 1;
+                fruit2Type = fruit;
+
+            } else if (fruit == fruit1Type) {
+                fruit1++;
+            } else {
+                fruit2++;
+            }
+        }
+        output = Math.max(output, fruit1 + fruit2);
+        return output;
+    }
+
+
+
+    public int twoCitySchedCost(int[][] costs) {
+        Arrays.sort(costs, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int a1 = a[0];
+                int a2 = a[1];
+                int b1 = b[0];
+                int b2 = b[1];
+                return ((a1-a2) - (b1-b2));
+            }
+        });
+        Deque<int[]> q = new ArrayDeque<>();
+        for(int[] c : costs) {
+            q.addLast(c);
+        }
+        int out = 0;
+        while (!q.isEmpty()) {
+            int[] left = q.pollFirst();
+            int[] right = q.pollLast();
+            out += left[0];
+            out += right[1];
+        }
+        return out;
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
