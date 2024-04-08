@@ -2699,6 +2699,36 @@ public class Leetcode2 {
         return 'z';
     }
 
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        if (n == 1) {
+            return 1;
+        }
+        Set<Integer> visited = new HashSet<>();
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            if (visited.contains(i)) {
+                continue;
+            } else {
+                output++;
+                Deque<Integer> q = new ArrayDeque<>();
+                q.add(i);
+                while (!q.isEmpty()) {
+                    Integer I = q.poll();
+                    if (visited.contains(I)) {
+                        continue;
+                    } else {
+                        visited.add(I);
+                        int[] connections = isConnected[I];
+                        for (int j = 0; j < n; j++) {
+                            if (connections[j] == 1 && !visited.contains(j)) q.addLast(j);
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
 
 
 
