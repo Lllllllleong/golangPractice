@@ -2676,6 +2676,32 @@ public class Leetcode2 {
         }
 
     }
+
+
+
+
+    public char findTheDifference(String s, String t) {
+        if (s.length() == 0) {
+            return t.charAt(0);
+        }
+        int[] dp = new int[26];
+        for (char c : s.toCharArray()) {
+            int index = c - 'a';
+            dp[index]++;
+        }
+        for (char c : t.toCharArray()) {
+            int index = c - 'a';
+            if (dp[index] == 0) return c;
+            else {
+                dp[index]--;
+            }
+        }
+        return 'z';
+    }
+
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
