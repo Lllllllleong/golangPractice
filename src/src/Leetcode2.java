@@ -2824,6 +2824,61 @@ public class Leetcode2 {
         return (visited.size() == n);
     }
 
+    public int mincostTickets(int[] days, int[] costs) {
+        int oneDay = costs[0];
+        int sevenDay = costs[1];
+        int thirtyDay = costs[2];
+        int firstDay = days[0];
+        Deque<Integer> q = new ArrayDeque<>();
+        for (Integer I : days) {
+            q.addFirst(I);
+        }
+        int endDay = q.peek() + 1;
+        int[] dpArray = new int[endDay+1];
+        Arrays.fill(dpArray, Integer.MAX_VALUE);
+        int pointerDay = q.poll();
+        dpArray[pointerDay] = Math.min(oneDay, Math.min(sevenDay, thirtyDay));
+        dpArray[endDay] = 0;
+        while (!q.isEmpty()) {
+            int day = q.poll();
+            while (pointerDay != day+1) {
+                pointerDay--;
+                dpArray[pointerDay] = Math.min(dpArray[pointerDay], dpArray[pointerDay+1]);
+            }
+            int oneDayLater = day + 1;
+            int sevenDayLater = Math.min(day + 7, endDay);
+            int thirtyDayLater = Math.min(day + 30, endDay);
+            oneDayLater = dpArray[oneDayLater] + oneDay;
+            sevenDayLater = dpArray[sevenDayLater] + sevenDay;
+            thirtyDayLater = dpArray[thirtyDayLater] + thirtyDay;
+            dpArray[day] = Math.min(oneDayLater, Math.min(sevenDayLater, thirtyDayLater));
+        }
+        System.out.println(Arrays.toString(dpArray));
+        return dpArray[firstDay];
+    }
+
+
+
+
+    public int minIncrementForUnique(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int minimum = -1;
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int current = nums[i];
+            if (current > minimum) {
+                minimum = current + 1;
+            } else {
+                output += (minimum - current);
+                minimum = minimum + 1;
+            }
+        }
+        return output;
+    }
 
 
 
