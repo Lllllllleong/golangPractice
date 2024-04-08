@@ -2732,6 +2732,54 @@ public class Leetcode2 {
 
 
 
+    public int findUnsortedSubarray(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return 0;
+        } else if (n == 2) {
+            if (nums[0] <= nums[1]) {
+                return 0;
+            } else {
+                return 2;
+            }
+        } else {
+            int subarrayMinimum = Integer.MAX_VALUE;
+            int subarrayMaximum = Integer.MIN_VALUE;
+            boolean flag = false;
+            for (int i = 0; i < n - 1; i++) {
+                int first = nums[i];
+                int second = nums[i + 1];
+                if (first > second) {
+                    flag = true;
+                    subarrayMaximum = Math.max(subarrayMaximum, first);
+                    subarrayMinimum = Math.min(subarrayMinimum, second);
+                }
+            }
+            if (!flag) return 0;
+
+            int minIndex = 0;
+            int current = nums[minIndex];
+            while (current <= subarrayMinimum) {
+                minIndex++;
+                current = nums[minIndex];
+            }
+
+            int maxIndex = n - 1;
+            current = nums[maxIndex];
+            while (current >= subarrayMaximum) {
+                maxIndex--;
+                current = nums[maxIndex];
+            }
+
+            return (maxIndex - minIndex + 1);
+
+
+        }
+
+    }
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
