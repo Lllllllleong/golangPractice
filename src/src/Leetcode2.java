@@ -2881,6 +2881,20 @@ public class Leetcode2 {
     }
 
 
+    public int[] prisonAfterNDays(int[] cells, int n) {
+        n=(n-1)%14+1;
+        int length = cells.length;
+        if (n == 0) {
+            return cells;
+        } else {
+            int[] nextCells = new int[length];
+            for (int i = 1; i < n-1; i++) {
+                nextCells[i] = (cells[i-1] == cells[i+1]) ? 1 : 0;
+            }
+            return prisonAfterNDays(nextCells, n-1);
+        }
+    }
+
 
 
     public static void main(String[] args) {
