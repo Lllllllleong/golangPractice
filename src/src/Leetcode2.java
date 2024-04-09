@@ -2972,6 +2972,37 @@ public class Leetcode2 {
 
 
 
+
+    public List<List<Integer>> combine(int n, int k) {
+        return combine2(n,k, 1);
+    }
+    public List<List<Integer>> combine2(int n, int k, int start) {
+        List<List<Integer>> output = new ArrayList<>();
+        if (k == 1) {
+            for (int i = start; i <= n; i++) {
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                output.add(list);
+            }
+            return output;
+        } else {
+            int newK = k-1;
+            int upperStartBoundIncl = n - newK;
+            for (int i = start; i <= upperStartBoundIncl; i++) {
+                List<List<Integer>> nextCombOutput = new ArrayList<>();
+                nextCombOutput = combine2(n, newK, i + 1);
+                for (var v : nextCombOutput) {
+                    List<Integer> newList = new ArrayList<>(v);
+                    newList.add(0, i);
+                    output.add(newList);
+                }
+            }
+            return output;
+        }
+    }
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
@@ -3005,6 +3036,7 @@ public class Leetcode2 {
 
 
     }
+
 
 }
 
