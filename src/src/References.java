@@ -65,6 +65,10 @@ public class References {
         }
 
 
+        //Int[] to deque
+//        Deque<Integer> queue = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
+
+
         //Int array sum
 //        int sum = Arrays.stream(nums).boxed().reduce(0, (a, b) -> a + b);
 

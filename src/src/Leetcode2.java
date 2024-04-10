@@ -3048,6 +3048,50 @@ public class Leetcode2 {
 
 
 
+    Boolean[][] cache;
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return false;
+        Integer I = 0;
+        for (int i : nums) I += i;
+        if (I % 2 != 0) return false;
+        int halfSum = I / 2;
+        cache = new Boolean[n+1][halfSum+1];
+        return canPartition2(nums, 0, halfSum);
+    }
+    public boolean canPartition2(int[] nums,int index, int halfSumTarget) {
+        int n = nums.length;
+        if (halfSumTarget == 0) return true;
+        if (index == n && halfSumTarget != 0) return false;
+        if (index == n && halfSumTarget == 0) return true;
+        if (halfSumTarget < 0) return false;
+        if (cache[index][halfSumTarget] != null) return cache[index][halfSumTarget];
+        int newTarget = halfSumTarget - nums[index];
+        cache[index][halfSumTarget] = (canPartition2(nums, index+1, newTarget) || canPartition2(nums, index+1, halfSumTarget));
+        return cache[index][halfSumTarget];
+    }
+
+
+    public int findTargetSumWays(int[] nums, int target) {
+        int n = nums.length;
+        if (n == 1) {
+            if (target - nums[0] == 0) return 1;
+            if (target + nums[0] == 0) return 1;
+            return 0;
+        } else {
+            int current = nums[0];
+            int newTargetA = target - current;
+            int newTargetB = target + current;
+            int[] nextNums = Arrays.copyOfRange(nums, 1, nums.length);
+            newTargetA = findTargetSumWays(nextNums, newTargetA);
+            newTargetB = findTargetSumWays(nextNums, newTargetB);
+            return newTargetA + newTargetB;
+
+        }
+    }
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
