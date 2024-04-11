@@ -3167,6 +3167,26 @@ public class Leetcode2 {
     }
 
 
+    public boolean checkPossibility(int[] nums) {
+        int count = 0;
+        int n = nums.length;
+        boolean flag = false;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            int current = nums[i];
+            if (current < max) {
+                if (flag) return false;
+                else {
+                    flag = true;
+                }
+            } else {
+                max = current;
+            }
+        }
+        return true;
+    }
+
+
 
 
 
