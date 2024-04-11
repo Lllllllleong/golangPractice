@@ -2588,6 +2588,7 @@ public class Leetcode2 {
 
     public double new21Game(int n, int k, int maxPts) {
         if (n < k) return 0;
+        if (k == 1) return (n / maxPts);
         if (n >= (k + maxPts)) return 1;
         double[] dpArray = new double[n + 1];
         dpArray[0] = 1;
@@ -3276,6 +3277,68 @@ public class Leetcode2 {
         double T = 0.25*(Q+W+E+R);
         return dpDouble[a][b] = T;
     }
+
+
+    public double[] sampleStats(int[] count) {
+        int n = count.length;
+        double sampleSize = 0;
+        long sum = 0;
+        double minimum = -1, maximum = 0, mean = 0, median = 0, mode = 0;
+        int modeFrequency = -1;
+
+        // Process each value in 'count'
+        for (int i = 0; i < n; i++) {
+            int currentFrequency = count[i];
+            if (currentFrequency > 0) {
+                sampleSize += currentFrequency;
+                sum += ((long)i * currentFrequency);
+                maximum = i;
+                if (minimum == -1) minimum = i;
+                if (modeFrequency < currentFrequency) {
+                    modeFrequency = currentFrequency;
+                    mode = i;
+                }
+            }
+        }
+
+        if (sampleSize == 0) return new double[]{minimum, maximum, mean, median, mode};
+
+        mean = sum / sampleSize;
+
+        // Find median
+        int countSoFar = 0;
+        int medianIndex1 = ((int)sampleSize - 1) / 2;
+        int medianIndex2 = (int)sampleSize / 2;
+        for (int i = 0; i < n; i++) {
+            if (count[i] > 0) {
+                countSoFar += count[i];
+                if (median == 0 && countSoFar > medianIndex1) {
+                    median += i; // Found the lower median index
+                }
+                if (countSoFar > medianIndex2) {
+                    median += i; // Found the upper median index
+                    median /= 2.0; // Calculate the average of the two indices if necessary
+                    break;
+                }
+            }
+        }
+
+        return new double[]{minimum, maximum, mean, median, mode};
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public static void main(String[] args) {
