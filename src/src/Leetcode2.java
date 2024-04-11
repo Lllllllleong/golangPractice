@@ -3384,5 +3384,82 @@ public class Leetcode2 {
 }
 
 
+
+class Trie {
+    Node root;
+    public Trie() {
+        root = new Node();
+    }
+    public void insert(String word) {
+        root.insert(word,0);
+    }
+    public boolean search(String word) {
+        return root.search(word,0);
+    }
+    public boolean startsWith(String prefix) {
+        return root.startsWith(prefix,0);
+    }
+    class Node {
+        Node[] children;
+        boolean eow;
+        public Node() {
+            children = new Node[26];
+        }
+        public void insert(String s, int index) {
+            if (index == s.length()) {
+                return;
+            } else {
+                char c = s.charAt(index);
+                int cIndex = c - 'a';
+                if (children[cIndex] == null) {
+                    children[cIndex] = new Node();
+                }
+                children[cIndex].insert(s, index + 1);
+                if (index == s.length() - 1) children[cIndex].eow = true;
+            }
+        }
+        public boolean search(String s, int index) {
+            if (index == s.length()) return false;
+            char c = s.charAt(index);
+            int cIndex = c - 'a';
+            Node n = children[cIndex];
+            if (n == null) return false;
+            if (index == s.length()-1) return n.eow;
+            return n.search(s, index+1);
+        }
+        public boolean startsWith(String s, int index) {
+            if (index == s.length()) return false;
+            char c = s.charAt(index);
+            int cIndex = c - 'a';
+            Node n = children[cIndex];
+            if (n == null) return false;
+            if (index == s.length()-1) return true;
+            else return n.startsWith(s, index+1);
+        }
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //          return (int) (output % (Math.pow(10,9) + 7));
 //          long mod = 1000000007;
