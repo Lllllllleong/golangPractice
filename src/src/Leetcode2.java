@@ -3198,6 +3198,7 @@ public class Leetcode2 {
             univalueTraverse(root.right);
         }
     }
+
     public void univaluePathSearch(TreeNode root, int target) {
         if (root == null) return;
         Deque<TreeNode> q = new ArrayDeque<>();
@@ -3216,8 +3217,6 @@ public class Leetcode2 {
         }
         univaluePathLength = Math.max(univaluePathLength, counter);
     }
-
-
 
 
     public int repeatedStringMatch(String a, String b) {
@@ -3249,7 +3248,7 @@ public class Leetcode2 {
         Arrays.sort(jobMap);
         //Index 25 is the job with the most frequency
         int minimumDuration = n * jobMap[25];
-        int vacantSlots = (n-1) * jobMap[25];
+        int vacantSlots = (n - 1) * jobMap[25];
         int remainingJobs = tasks.length - jobMap[25];
         if (remainingJobs > vacantSlots) return tasks.length;
         else return minimumDuration;
@@ -3257,24 +3256,26 @@ public class Leetcode2 {
 
 
     double[][] dpDouble;
+
     public double soupServings(int n) {
         if (n <= 25) {
-            return 0.25*(1+0.5+0.5+0.5);
+            return 0.25 * (1 + 0.5 + 0.5 + 0.5);
         }
-        dpDouble = new double[n+1][n+1];
+        dpDouble = new double[n + 1][n + 1];
         for (double[] d : dpDouble) Arrays.fill(d, -1);
         return soupProbability(n, n);
     }
+
     public double soupProbability(int a, int b) {
         if (a == b && a <= 0) return 0.5;
         if (a <= 0 && b > 0) return 1;
         if (a > 0 && b <= 0) return 0;
         if (dpDouble[a][b] != -1) return dpDouble[a][b];
-        double Q = soupProbability(Math.max(a-100, 0), b);
-        double W = soupProbability(Math.max(a-75, 0), Math.max(b-25, 0));
-        double E = soupProbability(Math.max(a-50, 0), Math.max(b-50, 0));
-        double R = soupProbability(Math.max(a-25, 0), Math.max(b-75, 0));
-        double T = 0.25*(Q+W+E+R);
+        double Q = soupProbability(Math.max(a - 100, 0), b);
+        double W = soupProbability(Math.max(a - 75, 0), Math.max(b - 25, 0));
+        double E = soupProbability(Math.max(a - 50, 0), Math.max(b - 50, 0));
+        double R = soupProbability(Math.max(a - 25, 0), Math.max(b - 75, 0));
+        double T = 0.25 * (Q + W + E + R);
         return dpDouble[a][b] = T;
     }
 
@@ -3291,7 +3292,7 @@ public class Leetcode2 {
             int currentFrequency = count[i];
             if (currentFrequency > 0) {
                 sampleSize += currentFrequency;
-                sum += ((long)i * currentFrequency);
+                sum += ((long) i * currentFrequency);
                 maximum = i;
                 if (minimum == -1) minimum = i;
                 if (modeFrequency < currentFrequency) {
@@ -3307,8 +3308,8 @@ public class Leetcode2 {
 
         // Find median
         int countSoFar = 0;
-        int medianIndex1 = ((int)sampleSize - 1) / 2;
-        int medianIndex2 = (int)sampleSize / 2;
+        int medianIndex1 = ((int) sampleSize - 1) / 2;
+        int medianIndex2 = (int) sampleSize / 2;
         for (int i = 0; i < n; i++) {
             if (count[i] > 0) {
                 countSoFar += count[i];
@@ -3326,18 +3327,88 @@ public class Leetcode2 {
         return new double[]{minimum, maximum, mean, median, mode};
     }
 
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> output = new ArrayList<>();
+        // char c - 'A';
+        //32 <= lowercase <= 57
+        //0 <= uppercase <= 25
+        for (String s : queries) {
+            int n = s.length();
+            int patternIndex = 0;
+            for (int i = 0; i < n; i++) {
+                int sCharIndex = s.charAt(i) - 'A';
+                if (patternIndex == pattern.length()) {
+                    if (sCharIndex <= 25) {
+                        patternIndex = 0;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                int patternCharIndex = pattern.charAt(patternIndex) - 'A';
+                if (sCharIndex == patternCharIndex) {
+                    patternIndex++;
+                } else if (sCharIndex <= 25 &&  patternCharIndex != sCharIndex) {
+                    break;
+                }
+            }
+            if (patternIndex == pattern.length()) {
+                output.add(true);
+            } else {
+                output.add(false);
+            }
+        }
+        return output;
+    }
 
 
 
 
 
 
+    class Trie {
+        Node root;
+        public Trie() {
+            root = new Node();
+        }
+        public void insert(String word) {
+            root.insert(word, 0);
+        }
+        public boolean search(String word) {
+            return root.search(word, 0);
+        }
+        class Node {
+            Node[] children;
+            boolean eow;
 
+            public Node() {
+                children = new Node[26];
+            }
+            public void insert(String s, int index) {
+                if (index == s.length()) {
+                    return;
+                } else {
+                    char c = s.charAt(index);
+                    int cIndex = c - 'a';
+                    if (children[cIndex] == null) {
+                        children[cIndex] = new Node();
+                    }
+                    children[cIndex].insert(s, index + 1);
+                    if (index == s.length() - 1) children[cIndex].eow = true;
+                }
+            }
 
-
-
-
-
+            public boolean search(String s, int index) {
+                if (index == s.length()) return false;
+                char c = s.charAt(index);
+                int cIndex = c - 'a';
+                Node n = children[cIndex];
+                if (n == null) return false;
+                if (index == s.length() - 1) return n.eow;
+                return n.search(s, index + 1);
+            }
+        }
+    }
 
 
 
@@ -3372,10 +3443,12 @@ public class Leetcode2 {
         out.add(list);
         System.out.println(out.size());
 
-
-        double[][] dpDouble = new double[10][10];
-        for (double[] d : dpDouble) Arrays.fill(d, -1);
-        System.out.println(Arrays.toString(dpDouble[0]));
+        System.out.println('a' - 'A');
+        System.out.println('b' - 'A');
+        System.out.println('z' - 'A');
+        System.out.println('A' - 'A');
+        System.out.println('B' - 'A');
+        System.out.println('Z' - 'A');
 
 
     }
@@ -3385,59 +3458,6 @@ public class Leetcode2 {
 
 
 
-class Trie {
-    Node root;
-    public Trie() {
-        root = new Node();
-    }
-    public void insert(String word) {
-        root.insert(word,0);
-    }
-    public boolean search(String word) {
-        return root.search(word,0);
-    }
-    public boolean startsWith(String prefix) {
-        return root.startsWith(prefix,0);
-    }
-    class Node {
-        Node[] children;
-        boolean eow;
-        public Node() {
-            children = new Node[26];
-        }
-        public void insert(String s, int index) {
-            if (index == s.length()) {
-                return;
-            } else {
-                char c = s.charAt(index);
-                int cIndex = c - 'a';
-                if (children[cIndex] == null) {
-                    children[cIndex] = new Node();
-                }
-                children[cIndex].insert(s, index + 1);
-                if (index == s.length() - 1) children[cIndex].eow = true;
-            }
-        }
-        public boolean search(String s, int index) {
-            if (index == s.length()) return false;
-            char c = s.charAt(index);
-            int cIndex = c - 'a';
-            Node n = children[cIndex];
-            if (n == null) return false;
-            if (index == s.length()-1) return n.eow;
-            return n.search(s, index+1);
-        }
-        public boolean startsWith(String s, int index) {
-            if (index == s.length()) return false;
-            char c = s.charAt(index);
-            int cIndex = c - 'a';
-            Node n = children[cIndex];
-            if (n == null) return false;
-            if (index == s.length()-1) return true;
-            else return n.startsWith(s, index+1);
-        }
-    }
-}
 
 /**
  * Your Trie object will be instantiated and called as such:
@@ -3446,19 +3466,6 @@ class Trie {
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //          return (int) (output % (Math.pow(10,9) + 7));
