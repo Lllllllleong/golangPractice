@@ -3430,6 +3430,14 @@ public class Leetcode2 {
     }
 
 
+    public int getLastMoment(int n, int[] left, int[] right) {
+        int out = 0;
+        for (int i : left) out = Math.max(out, i);
+        for (int i : right) out = Math.max(out, n - i);
+        return out;
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
