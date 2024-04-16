@@ -3348,7 +3348,7 @@ public class Leetcode2 {
                 int patternCharIndex = pattern.charAt(patternIndex) - 'A';
                 if (sCharIndex == patternCharIndex) {
                     patternIndex++;
-                } else if (sCharIndex <= 25 &&  patternCharIndex != sCharIndex) {
+                } else if (sCharIndex <= 25 && patternCharIndex != sCharIndex) {
                     break;
                 }
             }
@@ -3373,60 +3373,11 @@ public class Leetcode2 {
             maxTripEnd = Math.max(maxTripEnd, c);
         }
         int currentCapacity = capacity;
-        for (int i = 0; i < maxTripEnd+1; i++) {
+        for (int i = 0; i < maxTripEnd + 1; i++) {
             currentCapacity -= prefix[i];
             if (currentCapacity < 0) return false;
         }
         return (currentCapacity < 0) ? false : true;
-    }
-
-
-
-
-
-
-    class Trie {
-        Node root;
-        public Trie() {
-            root = new Node();
-        }
-        public void insert(String word) {
-            root.insert(word, 0);
-        }
-        public boolean search(String word) {
-            return root.search(word, 0);
-        }
-        class Node {
-            Node[] children;
-            boolean eow;
-
-            public Node() {
-                children = new Node[26];
-            }
-            public void insert(String s, int index) {
-                if (index == s.length()) {
-                    return;
-                } else {
-                    char c = s.charAt(index);
-                    int cIndex = c - 'a';
-                    if (children[cIndex] == null) {
-                        children[cIndex] = new Node();
-                    }
-                    children[cIndex].insert(s, index + 1);
-                    if (index == s.length() - 1) children[cIndex].eow = true;
-                }
-            }
-
-            public boolean search(String s, int index) {
-                if (index == s.length()) return false;
-                char c = s.charAt(index);
-                int cIndex = c - 'a';
-                Node n = children[cIndex];
-                if (n == null) return false;
-                if (index == s.length() - 1) return n.eow;
-                return n.search(s, index + 1);
-            }
-        }
     }
 
 
@@ -3467,7 +3418,6 @@ public class Leetcode2 {
     }
 
 
-
     public int[] deckRevealedIncreasing(int[] deck) {
         int n = deck.length;
         int[] out = new int[n];
@@ -3479,14 +3429,14 @@ public class Leetcode2 {
         } else {
             Arrays.sort(deck);
             Deque<Integer> q = new ArrayDeque<>();
-            q.addFirst(deck[n-1]);
-            q.addFirst(deck[n-2]);
-            for (int i = n-3; i >= 0; i--) {
+            q.addFirst(deck[n - 1]);
+            q.addFirst(deck[n - 2]);
+            for (int i = n - 3; i >= 0; i--) {
                 Integer I = q.pollLast();
                 q.addFirst(I);
                 q.addFirst(deck[i]);
             }
-            out = q.stream().mapToInt(i->i).toArray();
+            out = q.stream().mapToInt(i -> i).toArray();
             return out;
         }
     }
@@ -3495,26 +3445,98 @@ public class Leetcode2 {
     public int numWaterBottles(int numBottles, int numExchange) {
         return numWaterBottles2(numBottles, 0, numExchange);
     }
+
     public int numWaterBottles2(int numFull, int numEmpty, int numExchange) {
         if (numFull == 0 && numEmpty < numExchange) return 0;
         if (numFull == 0 && numEmpty >= numExchange) {
             return numWaterBottles2((numEmpty / numExchange), (numEmpty % numExchange), numExchange);
         } else {
-            return (numFull + numWaterBottles2(0, numEmpty+numFull, numExchange));
+            return (numFull + numWaterBottles2(0, numEmpty + numFull, numExchange));
         }
     }
 
     public int maxBottlesDrunk(int numBottles, int numExchange) {
         return maxBottlesDrunk(numBottles, 0, numExchange);
     }
+
     public int maxBottlesDrunk(int numFull, int numEmpty, int numExchange) {
         if (numFull == 0 && numEmpty < numExchange) return 0;
         if (numFull == 0 && numEmpty >= numExchange) {
             return maxBottlesDrunk(1, numEmpty - numExchange, numExchange + 1);
         } else {
-            return (numFull + maxBottlesDrunk(0, numEmpty+numFull, numExchange));
+            return (numFull + maxBottlesDrunk(0, numEmpty + numFull, numExchange));
         }
     }
+
+
+    public void gameOfLife(int[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0) return;
+        GoL gameState = new GoL(board);
+        int[][] newState = gameState.updateState();
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                board[y][x] = newState[y][x];
+            }
+        }
+    }
+
+    class GoL {
+        int[][] gameState;
+        int yMax;
+        int xMax;
+
+        public GoL(int[][] gameState) {
+            this.gameState = gameState;
+            yMax = gameState.length;
+            xMax = gameState[0].length;
+        }
+
+        public int get(int y, int x) {
+            if (x < 0 || y < 0 || x >= xMax || y >= yMax) {
+                return 0;
+            } else {
+                return gameState[y][x];
+            }
+        }
+
+        public int updateCell(int y, int x) {
+            int neighbourSum = 0;
+            // Correcting the order of x and y in get() calls
+            neighbourSum += get(y-1, x-1);
+            neighbourSum += get(y-1, x);
+            neighbourSum += get(y-1, x+1);
+            neighbourSum += get(y, x-1);
+            neighbourSum += get(y, x+1);
+            neighbourSum += get(y+1, x-1);
+            neighbourSum += get(y+1, x);
+            neighbourSum += get(y+1, x+1);
+
+            boolean alive = (gameState[y][x] == 1);
+            if (alive) {
+                if (neighbourSum < 2 || neighbourSum > 3) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else {
+                if (neighbourSum == 3) return 1;
+                else return 0;
+            }
+        }
+
+        public int[][] updateState() {
+            int[][] output = new int[yMax][xMax];
+            for (int y = 0; y < yMax; y++) {
+                for (int x = 0; x < xMax; x++) {
+                    output[y][x] = updateCell(y, x);
+                }
+            }
+            return output;
+        }
+    }
+
+
+
 
 
 
@@ -3557,14 +3579,12 @@ public class Leetcode2 {
         System.out.println('Z' - 'A');
 
 
-        System.out.println(9/3);
+        System.out.println(9 / 3);
 
     }
 
 
 }
-
-
 
 
 /**
@@ -3575,6 +3595,53 @@ public class Leetcode2 {
  * boolean param_3 = obj.startsWith(prefix);
  */
 
+class Trie {
+    Node root;
 
+    public Trie() {
+        root = new Node();
+    }
+
+    public void insert(String word) {
+        root.insert(word, 0);
+    }
+
+    public boolean search(String word) {
+        return root.search(word, 0);
+    }
+
+    class Node {
+        Node[] children;
+        boolean eow;
+
+        public Node() {
+            children = new Node[26];
+        }
+
+        public void insert(String s, int index) {
+            if (index == s.length()) {
+                return;
+            } else {
+                char c = s.charAt(index);
+                int cIndex = c - 'a';
+                if (children[cIndex] == null) {
+                    children[cIndex] = new Node();
+                }
+                children[cIndex].insert(s, index + 1);
+                if (index == s.length() - 1) children[cIndex].eow = true;
+            }
+        }
+
+        public boolean search(String s, int index) {
+            if (index == s.length()) return false;
+            char c = s.charAt(index);
+            int cIndex = c - 'a';
+            Node n = children[cIndex];
+            if (n == null) return false;
+            if (index == s.length() - 1) return n.eow;
+            return n.search(s, index + 1);
+        }
+    }
+}
 //          return (int) (output % (Math.pow(10,9) + 7));
 //          long mod = 1000000007;
