@@ -3504,6 +3504,18 @@ public class Leetcode2 {
         }
     }
 
+    public int maxBottlesDrunk(int numBottles, int numExchange) {
+        return maxBottlesDrunk(numBottles, 0, numExchange);
+    }
+    public int maxBottlesDrunk(int numFull, int numEmpty, int numExchange) {
+        if (numFull == 0 && numEmpty < numExchange) return 0;
+        if (numFull == 0 && numEmpty >= numExchange) {
+            return maxBottlesDrunk(1, numEmpty - numExchange, numExchange + 1);
+        } else {
+            return (numFull + maxBottlesDrunk(0, numEmpty+numFull, numExchange));
+        }
+    }
+
 
 
     public static void main(String[] args) {
