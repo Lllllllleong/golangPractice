@@ -3468,6 +3468,31 @@ public class Leetcode2 {
 
 
 
+    public int[] deckRevealedIncreasing(int[] deck) {
+        int n = deck.length;
+        int[] out = new int[n];
+        if (n == 1) return deck;
+        if (n == 2) {
+            out[0] = Math.min(deck[0], deck[1]);
+            out[1] = Math.max(deck[0], deck[1]);
+            return out;
+        } else {
+            Arrays.sort(deck);
+            Deque<Integer> q = new ArrayDeque<>();
+            q.addFirst(deck[n-1]);
+            q.addFirst(deck[n-2]);
+            for (int i = n-3; i >= 0; i--) {
+                Integer I = q.pollLast();
+                q.addFirst(I);
+                q.addFirst(deck[i]);
+            }
+            out = q.stream().mapToInt(i->i).toArray();
+            return out;
+        }
+    }
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
