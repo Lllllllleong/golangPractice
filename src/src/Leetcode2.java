@@ -3559,6 +3559,9 @@ public class Leetcode2 {
     }
 
 
+    public int uniquePaths(int m, int n) {
+        return (int) nCr(m+n-2, m-1);
+    }
 
 
 
