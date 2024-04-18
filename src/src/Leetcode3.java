@@ -81,10 +81,11 @@ public class Leetcode3 {
             b.left = mergeNode(a, b.left);
             return b;
         }
+    }
 
 
-
-
+    public int change(int amount, int[] coins) {
+        return 0
     }
 
 
