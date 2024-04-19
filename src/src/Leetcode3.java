@@ -103,6 +103,28 @@ public class Leetcode3 {
         return dpBool[halfSum];
     }
 
+    public int lastStoneWeightII(int[] stones) {
+        int n = stones.length;
+        if (n == 1) return stones[0];
+        int sum = 0;
+        for (int i : stones) sum += i;
+        int halfSum  = sum/2;
+        boolean[] dpBool = new boolean[halfSum + 1];
+        dpBool[0] = true;
+        for (int stone : stones) {
+            for (int j = halfSum; j >= stone; j--) {
+                if (dpBool[j - stone]) {
+                    dpBool[j] = true;
+                }
+            }
+        }
+        int countDown = halfSum;
+        while (countDown > 0 && dpBool[countDown] != false) {
+            countDown--;
+        }
+        return (sum - (2 * countDown));
+    }
+
 
 
 
