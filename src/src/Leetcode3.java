@@ -1,3 +1,5 @@
+import com.sun.security.jgss.GSSUtil;
+
 import java.util.*;
 
 public class Leetcode3 {
@@ -130,10 +132,59 @@ public class Leetcode3 {
 
 
 
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> output = new ArrayList<>();
+        List<int[]> input = new ArrayList<>();
+        int n = intervals.length;
+        if (n == 0) {
+            int[][] out = new int[1][2];
+            out[0] = newInterval;
+            return out;
+        }
+        for (var i : intervals) input.add(i);
+        input.add(newInterval);
+        Collections.sort(input, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int aStart = a[0];
+                int bStart = b[0];
+                return (aStart-bStart);
+            }
+        });
+        int[] first = input.get(0);
+        for (int i = 1; i < input.size(); i++) {
+            System.out.println("i, currentstart, currentend");
+            int[] current = input.get(i);
+            int currentStart = current[0];
+            int currentEnd = current[1];
+            System.out.println(i);
+            System.out.println(currentStart);
+            System.out.println(currentEnd);
+            if (first[0] <= currentStart && currentStart <= first[1]) {
+                first[1] = Math.max(first[1], currentEnd);
+            } else {
+                output.add(first);
+                first = current;
+            }
+            if (i == input.size()-1) output.add(first);
+        }
+        int[][] out = new int[output.size()][2];
+        int counter = 0;
+        for (int[] i : output) {
+            out[counter] = i;
+            counter++;
+        }
+        return out;
+    }
+
+
+
 
 
 
     public static void main(String[] args) {
+        int i = Integer.MAX_VALUE;
+        System.out.println(i);
+        System.out.println(Integer.MAX_VALUE);
 
     }
 
