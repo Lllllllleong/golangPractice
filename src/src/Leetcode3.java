@@ -281,22 +281,13 @@ public class Leetcode3 {
                 default -> oneCount++;
             }
         }
-        dpArray3D[index][xZeros][xOnes] = maxForm(sArray, xZeros, xOnes, index+1);
-        if ((xZeros-zeroCount) >= 0 && (xOnes-oneCount) >= 0) {
+        dpArray3D[index][xZeros][xOnes] = maxForm(sArray, xZeros, xOnes, index + 1);
+        if ((xZeros - zeroCount) >= 0 && (xOnes - oneCount) >= 0) {
             dpArray3D[index][xZeros][xOnes]
-                    = Math.max(dpArray3D[index][xZeros][xOnes], maxForm(sArray, xZeros-zeroCount, xOnes-oneCount, index+1));
+                    = Math.max(dpArray3D[index][xZeros][xOnes], maxForm(sArray, xZeros - zeroCount, xOnes - oneCount, index + 1));
         }
         return dpArray3D[index][xZeros][xOnes];
     }
-
-
-
-
-
-
-
-
-
 
 
     public int findRadius(int[] houses, int[] heaters) {
@@ -327,18 +318,21 @@ public class Leetcode3 {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        if (n == 1) return (nums[0] == k) ? 1 : 0;
+        int output = 0;
+        for (int i = 1; i < nums.length; i++) {
+            nums[i] += nums[i - 1];
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == k) output++;
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i] - nums[j] == k) output++;
+            }
+        }
+        return output;
+    }
 
 
     public static void main(String[] args) {
