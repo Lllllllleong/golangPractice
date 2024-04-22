@@ -310,6 +310,10 @@ public class Leetcode3 {
             for (int i = heaterIndex; i < heaters.length; i++) {
                 int heaterPos = heaters[i];
                 int currentDistance = Math.abs(heaterPos - house);
+                if (currentDistance <= minDistance) {
+                    distance = currentDistance;
+                    break;
+                }
                 if (currentDistance <= distance) {
                     distance = currentDistance;
                     heaterIndex = i;
