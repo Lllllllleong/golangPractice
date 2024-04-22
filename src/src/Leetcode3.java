@@ -290,6 +290,53 @@ public class Leetcode3 {
     }
 
 
+
+
+
+
+
+
+
+
+
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int heaterIndex = 0;
+        //House to heater distance
+        int minDistance = -1;
+        for (int house : houses) {
+            int distance = Integer.MAX_VALUE;
+            for (int i = heaterIndex; i < heaters.length; i++) {
+                int heaterPos = heaters[i];
+                int currentDistance = Math.abs(heaterPos - house);
+                if (currentDistance <= distance) {
+                    distance = currentDistance;
+                    heaterIndex = i;
+                } else {
+                    break;
+                }
+            }
+            minDistance = Math.max(minDistance, distance);
+        }
+        return minDistance;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
