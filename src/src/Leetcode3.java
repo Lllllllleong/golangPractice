@@ -335,6 +335,49 @@ public class Leetcode3 {
     }
 
 
+
+
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        double distanceA = Double.MAX_VALUE;
+        double distanceB = Double.MIN_VALUE;
+        double[][] square = new double[4][2];
+        square[0][0] = p1[0];
+        square[0][1] = p1[1];
+        square[1][0] = p2[0];
+        square[1][1] = p2[1];
+        square[2][0] = p3[0];
+        square[2][1] = p3[1];
+        square[3][0] = p4[0];
+        square[3][1] = p4[1];
+        double x = square[0][0];
+        double y = square[0][1];
+        for (int i = 1; i < 4; i++) {
+            double[] currentSquare = square[i];
+            double xx = currentSquare[0];
+            double yy = currentSquare[1];
+            double currentDistance = Math.sqrt(Math.pow(Math.abs(xx-x),2) + Math.pow(Math.abs(yy - y),2));
+            distanceA = Math.min(distanceA, currentDistance);
+            distanceB = Math.max(distanceB, currentDistance);
+        }
+        for (int i = 1; i < 4; i++) {
+            int checkSum = 0;
+            x = square[i][0];
+            y = square[i][1];
+            for (int j = 0; j < 4; j++) {
+                if (j == i) continue;
+                double xx = square[j][0];
+                double yy = square[j][1];
+                double currentDistance = Math.sqrt(Math.pow(Math.abs(xx-x),2) + Math.pow(Math.abs(yy - y),2));
+                if (currentDistance == distanceA) checkSum++;
+                else if (currentDistance == distanceB) checkSum = checkSum+2;
+                else return false;
+            }
+            if (checkSum != 4) return false;
+        }
+        return true;
+    }
+
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
