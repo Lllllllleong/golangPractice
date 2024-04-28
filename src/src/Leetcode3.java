@@ -548,6 +548,29 @@ public class Leetcode3 {
 
 
 
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> output = new ArrayList<>();
+        if (root == null) return output;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.add(root);
+        while (!dq.isEmpty()) {
+            int currentMax = Integer.MAX_VALUE;
+            Deque<TreeNode> nextDQ = new ArrayDeque<>();
+            while (!dq.isEmpty()) {
+                TreeNode tn = dq.pollFirst();
+                currentMax = Math.max(currentMax, tn.val);
+                if (tn.left != null) nextDQ.add(tn.left);
+                if (tn.right != null) nextDQ.add(tn.right);
+            }
+            output.add(output.size(), currentMax);
+            dq = nextDQ;
+        }
+        return output;
+    }
+
+
+
+
 
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
