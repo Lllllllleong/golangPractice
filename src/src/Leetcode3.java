@@ -637,6 +637,17 @@ public class Leetcode3 {
     }
 
 
+    public int findCenter(int[][] edges) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int[] edge : edges) {
+            for (int i : edge) {
+                hm.merge(i, 1, Integer::sum);
+            }
+        }
+        int key = Collections.max(hm.entrySet(), Map.Entry.comparingByValue()).getKey();
+        return key;
+    }
+
 
 
 
