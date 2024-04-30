@@ -720,6 +720,31 @@ public class Leetcode3 {
     }
 
 
+
+
+
+    public int countStudents(int[] students, int[] sandwiches) {
+        int n = students.length;
+        if (n == 1) return (students[0] == sandwiches[0]) ? 0 : 1;
+        Deque<Integer> queue = new ArrayDeque<>();
+        Deque<Integer> food = new ArrayDeque<>();
+        for (int i : students) queue.addLast(i);
+        for (int i : sandwiches) queue.addLast(i);
+        while (n > 0) {
+            n--;
+            int currentStudent = queue.pollFirst();
+            int currentFood = food.pollFirst();
+            if (currentStudent != currentFood) {
+                queue.addLast(currentStudent);
+                food.addLast(currentFood);
+            } else {
+                n = queue.size();
+            }
+        }
+        return queue.size();
+    }
+
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
