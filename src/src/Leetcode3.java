@@ -856,10 +856,104 @@ public class Leetcode3 {
         return -1;
     }
 
+
+
+
+
+
+
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        Set<Integer> recurrentStates = new HashSet<>();
+        List<Integer> output = new ArrayList<>();
+        boolean activeSearch = true;
+        while (activeSearch) {
+            int priorSetSize = recurrentStates.size();
+            for (int i = 0; i < graph.length; i++) {
+                if (recurrentStates.contains(i)) continue;
+                int[] pathTo = graph[i];
+                if (pathTo.length == 0) recurrentStates.add(i);
+                else {
+                    boolean allPathToRecurrent = true;
+                    for (int path : pathTo) {
+                        if (!recurrentStates.contains(path)) {
+                            allPathToRecurrent = false;
+                            break;
+                        }
+                    }
+                    if (allPathToRecurrent) recurrentStates.add(i);
+                }
+            }
+            activeSearch = (priorSetSize != recurrentStates.size());
+        }
+        System.out.println(recurrentStates);
+        for (int i = 0; i < graph.length; i++) {
+            if (recurrentStates.contains(i)) continue;
+            int[] pathTo = graph[i];
+            for (int path : pathTo) {
+                if (recurrentStates.contains(path)) {
+                    output.add(i);
+                    break;
+                }
+            }
+        }
+        for (int i : recurrentStates) output.add(i);
+        Collections.sort(output);
+        return output;
+    }
+
+
+
+
+
+
+
+
+    public static List<List<Integer>> permute(int[] nums) {
+        List<Integer> list = new ArrayList<>(Arrays.stream(nums).boxed().toList());
+        if (nums.length == 1) {
+            List<List<Integer>> output = new ArrayList<>();
+            output.add(list);
+            return output;
+        } else {
+            return permute2(list);
+        }
+
+    }
+    public static List<List<Integer>> permute2(List<Integer> input) {
+        List<Integer> currentList = new ArrayList<>(input);
+        List<List<Integer>> output = new ArrayList<>();
+        if (input.size() == 1) {
+            output.add(currentList);
+            return output;
+        } else if (input.size() == 2) {
+            output.add(currentList);
+            currentList = new ArrayList<>(currentList);
+            Collections.rotate(currentList,-1);
+            output.add(currentList);
+            return output;
+        } else {
+            for (int i = 0; i < input.size(); i++) {
+                Integer first = currentList.get(0);
+                List<List<Integer>> nextList = permute2(currentList.subList(1, currentList.size()));
+                for (List<Integer> l : nextList) {
+                    List<Integer> ll = new ArrayList<>(l);
+                    ll.add(0, first);
+                    output.add(ll);
+                }
+                Collections.rotate(currentList, -1);
+            }
+        }
+        return output;
+    }
+
+
+
+
+
     public static void main(String[] args) {
-        int[] a = {-2,-2,1,-2};
+        int[] a = {1,2,3};
 
-
+        var v = permute(a);
     }
 
 
