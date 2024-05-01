@@ -787,6 +787,35 @@ public class Leetcode3 {
 
 
 
+
+    public boolean isRobotBounded(String instructions) {
+        int x = 0;
+        int y = 0;
+        List<int[]> pathLogic = Arrays.asList(
+                new int[]{0, 1},  // Right
+                new int[]{1, 0},  // Down
+                new int[]{0, -1}, // Left
+                new int[]{-1, 0}  // Up
+        );
+        for (int i = 0; i < 4; i++) {
+            for (char c : instructions.toCharArray()) {
+                switch (c) {
+                    case 'G' -> {
+                        int[] path = pathLogic.get(0);
+                        x += path[0];
+                        y += path[1];
+                    }
+                    case 'R' -> Collections.rotate(pathLogic,-1);
+                    case 'L' -> Collections.rotate(pathLogic, 1);
+                }
+            }
+            if (x == 0 && y == 0) return true;
+        }
+        return (x == 0 && y == 0);
+    }
+
+
+
     public static void main(String[] args) {
         int[] a = {-2,-2,1,-2};
 
