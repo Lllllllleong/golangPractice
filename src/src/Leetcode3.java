@@ -769,9 +769,26 @@ public class Leetcode3 {
     }
 
 
+    public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
+        long evenSum = 0;
+        for (int i : nums) if (i%2==0) evenSum += i;
+        int[] output = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            int addValue = query[0];
+            int index = query[1];
+            if (nums[index]%2==0) evenSum -= nums[index];
+            nums[index] += addValue;
+            if (nums[index]%2==0) evenSum += nums[index];
+            output[i] = (int) evenSum;
+        }
+        return output;
+    }
+
+
+
     public static void main(String[] args) {
         int[] a = {-2,-2,1,-2};
-        int[] b = asteroidCollision(a);
 
 
     }
