@@ -816,6 +816,26 @@ public class Leetcode3 {
 
 
 
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int totalRolls = rolls.length + n;
+        int upperBound = n*6;
+        int lowerBound = n*1;
+        int knownSum = 0;
+        for (int i : rolls) knownSum += i;
+        int missingSum = (mean * totalRolls) - knownSum;
+        if (missingSum < lowerBound || upperBound < missingSum) return new int[0];
+        int[] output = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (i == n-1) {
+                output[i] = missingSum;
+            } else {
+                output[i] = missingSum / (n-i);
+                missingSum = missingSum - output[i];
+            }
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
         int[] a = {-2,-2,1,-2};
 
