@@ -1137,6 +1137,27 @@ public class Leetcode3 {
     }
 
 
+    public String addSpaces(String s, int[] spaces) {
+        int sLength = s.length();
+        char[] cArray = new char[sLength + spaces.length];
+        int outputIndex = 0;
+        int spaceIndex = 0;
+        int sIndex = 0;
+        for (char c : s.toCharArray()) {
+            int currentSpace = spaces[spaceIndex];
+            if (sIndex == currentSpace) {
+                cArray[outputIndex] = ' ';
+                outputIndex++;
+                spaceIndex = Math.min(spaceIndex+1, spaces.length-1);
+            }
+            cArray[outputIndex] = c;
+            outputIndex++;
+            sIndex++;
+        }
+        return String.valueOf(cArray);
+    }
+
+
 
 
 
@@ -1144,6 +1165,9 @@ public class Leetcode3 {
 
     public static void main(String[] args) {
         int[] a = {1,2,3};
+
+
+        System.out.println(' ' - '0');
 
     }
 
