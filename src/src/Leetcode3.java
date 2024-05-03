@@ -1090,8 +1090,27 @@ public class Leetcode3 {
 
 
 
-
-
+    public int[] pivotArray(int[] nums, int pivot) {
+        int n = nums.length;
+        int[] output = new int[n];
+        Deque<Integer> dq = new ArrayDeque<>();
+        int index = 0;
+        for (int i : nums) {
+            if (i < pivot) {
+                output[index] = i;
+                index++;
+            } else if (i == pivot) {
+                dq.addFirst(i);
+            } else {
+                dq.addLast(i);
+            }
+        }
+        while (!dq.isEmpty()) {
+            output[index] = dq.pollFirst();
+            index++;
+        }
+        return output;
+    }
 
 
 
