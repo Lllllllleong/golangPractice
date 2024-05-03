@@ -1113,7 +1113,28 @@ public class Leetcode3 {
     }
 
 
-
+    public int[] rearrangeArray(int[] nums) {
+        int n = nums.length;
+        Deque<Integer> positive = new ArrayDeque<>();
+        Deque<Integer> negative = new ArrayDeque<>();
+        for (int i : nums) {
+            if (i < 0) negative.addLast(i);
+            else positive.addLast(i);
+        }
+        int index = 0;
+        while (!positive.isEmpty() && !negative.isEmpty()) {
+            nums[index] = positive.pollFirst();
+            index++;
+            nums[index] = negative.pollFirst();
+            index++;
+        }
+        positive = (positive.isEmpty()) ? negative : positive;
+        while(!positive.isEmpty()) {
+            nums[index] = positive.pollFirst();
+            index++;
+        }
+        return nums;
+    }
 
 
 
