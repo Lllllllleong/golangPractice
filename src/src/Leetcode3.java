@@ -1271,6 +1271,77 @@ public class Leetcode3 {
     }
 
 
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> output = new ArrayList<>();
+        int a, b, c;
+        Arrays.sort(nums);
+        int priorJ = 0;
+        int priorK = 0;
+        Set<Integer> seen = new HashSet<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (seen.contains(nums[i])) continue;
+            Set<Integer> seen2 = new HashSet<>();
+            for (int j = Math.max(i+1, priorJ); j < nums.length - 1; j++) {
+                if (seen2.contains(nums[j])) continue;
+                Set<Integer> seen3 = new HashSet<>();
+                for (int k = Math.max(j+1, priorK); k < nums.length; k++) {
+                    if (seen3.contains(nums[k])) continue;
+                    a = nums[i];
+                    b = nums[j];
+                    c = nums[k];
+                    if (a + b + c == 0) {
+                        output.add(Arrays.asList(a, b, c));
+                        priorJ = j;
+                        priorK = k;
+                        break;
+                    }
+                    seen3.add(nums[k]);
+                }
+                seen2.add(nums[j]);
+            }
+            seen.add(nums[i]);
+        }
+        return new ArrayList<>(output);
+    }
+
+
+
+
+
+    public boolean isMatch(String s, String p) {
+        int sLength = s.length();
+        while (p.length() >= 2 && p.charAt(0) == '*' && p.charAt(1) == '*') p = p.substring(1);
+        if (p.equals("*")) return true;
+        int pLength = p.length();
+        Boolean[][] memory = new Boolean[sLength][pLength];
+        return isMatch(s, p, 0, 0, memory);
+    }
+    public boolean isMatch(String s, String p, int sIndex, int pIndex, Boolean[][] memory) {
+        if (pIndex == p.length()) return sIndex == s.length();
+        if (sIndex == s.length()) {
+            for (int i = pIndex; i < p.length(); i++) {
+                if (p.charAt(i) != '*') return false;
+            }
+            return true;
+        }
+        if (memory[sIndex][pIndex] != null) return memory[sIndex][pIndex];
+        char sChar = s.charAt(sIndex);
+        char pChar = p.charAt(pIndex);
+        System.out.println(sChar);
+        System.out.println(pChar);
+        if (sChar == pChar || pChar == '?') {
+            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex+1, memory);
+        }
+        else if (pChar == '*') {
+            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex, memory)
+                    || isMatch(s, p, sIndex, pIndex+1, memory);
+        } else {
+            memory[sIndex][pIndex] = false;
+        }
+        return memory[sIndex][pIndex];
+    }
+
+
 
     public static void main(String[] args) {
         int[] a = {1,2,3};
