@@ -1159,6 +1159,54 @@ public class Leetcode3 {
 
 
 
+    public int[] arrayChange(int[] nums, int[][] operations) {
+        int n = nums.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int[] operation : operations) {
+            int target = operation[0];
+            int replacement = operation[1];
+            hm.put(target, replacement);
+        }
+        for (int i = 0; i < n; i++) {
+            Integer key = nums[i];
+            System.out.println("key before " + key);
+            while (hm.containsKey(key)) key = hm.get(key);
+            System.out.println("key after " + key);
+            nums[i] = key;
+            hm.remove(key);
+        }
+        return nums;
+    }
+
+
+
+
+
+    public int[][] onesMinusZeros(int[][] grid) {
+        int yMax = grid.length;
+        int xMax = grid[0].length;
+        int[][] output = new int[yMax][xMax];
+        int[] rowSum = new int[yMax];
+        int[] colSum = new int[xMax];
+
+
+
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                int currentSquare = grid[y][x];
+                currentSquare = (currentSquare == 1) ? 1 : -1;
+                rowSum[y] += currentSquare;
+                colSum[x] += currentSquare;
+            }
+        }
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                output[y][x] = rowSum[y] + colSum[x];
+            }
+        }
+
+        return output;
+    }
 
 
 
