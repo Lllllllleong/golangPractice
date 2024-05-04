@@ -1229,6 +1229,22 @@ public class Leetcode3 {
 
 
 
+    public List<Integer> relocateMarbles(int[] nums, int[] moveFrom, int[] moveTo) {
+        int n = nums.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) hm.put(i,i);
+        int m = moveFrom.length;
+        for (int i = 0; i < m; i++) {
+            int from = moveFrom[i];
+            int to = moveTo[i];
+            hm.remove(from);
+            hm.put(to, to);
+        }
+        List<Integer> output = new ArrayList<>(hm.keySet());
+        Collections.sort(output);
+        return output;
+    }
+
 
 
 
