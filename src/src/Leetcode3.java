@@ -1159,29 +1159,6 @@ public class Leetcode3 {
 
 
 
-    public int[] arrayChange(int[] nums, int[][] operations) {
-        int n = nums.length;
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        for (int[] operation : operations) {
-            int target = operation[0];
-            int replacement = operation[1];
-            hm.put(target, replacement);
-        }
-        for (int i = 0; i < n; i++) {
-            Integer key = nums[i];
-            System.out.println("key before " + key);
-            while (hm.containsKey(key)) key = hm.get(key);
-            System.out.println("key after " + key);
-            nums[i] = key;
-            hm.remove(key);
-        }
-        return nums;
-    }
-
-
-
-
-
     public int[][] onesMinusZeros(int[][] grid) {
         int yMax = grid.length;
         int xMax = grid[0].length;
@@ -1223,6 +1200,31 @@ public class Leetcode3 {
             hmIndex.put(task, dayCounter);
         }
         return dayCounter;
+    }
+
+
+
+
+
+    public int[] arrayChange(int[] nums, int[][] operations) {
+        int n = nums.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        //HashMap
+        //Key = An element of nums. Note: Every element in nums is unique
+        //Value = The index in nums corresponding to the Key
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            hm.put(num, i);
+        }
+        for (int[] operation : operations) {
+            int a = operation[0];
+            int b = operation[1];
+            hm.put(b,hm.remove(a));
+        }
+        for (var entry : hm.entrySet()) {
+            nums[entry.getValue()] = entry.getKey();
+        }
+        return nums;
     }
 
 
