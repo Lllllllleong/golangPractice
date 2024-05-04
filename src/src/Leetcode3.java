@@ -1314,21 +1314,19 @@ public class Leetcode3 {
         if (p.equals("*")) return true;
         int pLength = p.length();
         Boolean[][] memory = new Boolean[sLength][pLength];
-        return isMatch(s, p, 0, 0, memory);
+        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0, memory);
     }
-    public boolean isMatch(String s, String p, int sIndex, int pIndex, Boolean[][] memory) {
-        if (pIndex == p.length()) return sIndex == s.length();
-        if (sIndex == s.length()) {
-            for (int i = pIndex; i < p.length(); i++) {
-                if (p.charAt(i) != '*') return false;
+    public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex, Boolean[][] memory) {
+        if (pIndex == p.length) return sIndex == s.length;
+        if (sIndex == s.length) {
+            for (int i = pIndex; i < p.length; i++) {
+                if (p[i] != '*') return false;
             }
             return true;
         }
         if (memory[sIndex][pIndex] != null) return memory[sIndex][pIndex];
-        char sChar = s.charAt(sIndex);
-        char pChar = p.charAt(pIndex);
-        System.out.println(sChar);
-        System.out.println(pChar);
+        char sChar = s[sIndex];
+        char pChar = p[pIndex];
         if (sChar == pChar || pChar == '?') {
             memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex+1, memory);
         }
@@ -1341,6 +1339,13 @@ public class Leetcode3 {
         return memory[sIndex][pIndex];
     }
 
+
+
+
+    public boolean isMatch(String s, String p) {
+        return isMatch(s, p, 0, 0);
+    }
+    public boolean isMatch(String s, String p, int sIndex, int pIndex,)
 
 
     public static void main(String[] args) {
