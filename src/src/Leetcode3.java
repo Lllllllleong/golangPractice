@@ -1401,6 +1401,25 @@ public class Leetcode3 {
         }
     }
 
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        Set<List<Integer>> output = new HashSet<>();
+        List<Integer> base = new ArrayList<>();
+        output.add(base);
+        subsetsWithDup(output, new ArrayList<>(), nums, 0);
+        return new ArrayList<>(output);
+    }
+    public void subsetsWithDup(Set<List<Integer>> output, List<Integer> subOutput, int[] nums, int index) {
+        if (index == nums.length) return;
+        for (int i = index; i < nums.length; i++) {
+            subOutput.add(nums[i]);
+            output.add(new ArrayList<>(subOutput));
+            subsetsWithDup(output, subOutput, nums, i+1);
+            subOutput.remove(subOutput.size()-1);
+        }
+    }
+
 
     public static void main(String[] args) {
         int[] a = {1,2,3};
