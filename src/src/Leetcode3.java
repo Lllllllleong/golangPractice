@@ -1421,11 +1421,43 @@ public class Leetcode3 {
     }
 
 
+
+
+    public Node connect(Node root) {
+        if (root == null) return null;
+        Deque<Node> dq = new ArrayDeque<>();
+        dq.add(root);
+        connect(dq);
+        return root;
+    }
+    public void connect(Deque<Node> dq) {
+        if (dq.isEmpty()) return;
+        Deque<Node> nextDQ = new ArrayDeque<>();
+        while (!dq.isEmpty()) {
+            Node current = dq.pollFirst();
+            if (current == null) continue;
+            current.next = dq.peekFirst();
+            if (current.left != null) nextDQ.addLast(current.left);
+            if (current.right != null) nextDQ.addLast(current.right);
+        }
+        connect(nextDQ);
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] a = {1,2,3};
-
+        Deque<Node> dq = new ArrayDeque<>();
+        Node n = new Node(2);
+        n.next = dq.peekFirst();
+        System.out.println(n.next);
 
         System.out.println(' ' - '0');
+        dq.addLast(new Node());
+        System.out.println(dq.poll());
 
     }
 
@@ -1448,6 +1480,33 @@ public class Leetcode3 {
             this.right = right;
         }
     }
+
+
+
+    static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    }
+
+
+
+
+
 }
 
 
