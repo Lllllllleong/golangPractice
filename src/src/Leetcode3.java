@@ -1383,6 +1383,25 @@ public class Leetcode3 {
 
 
 
+    public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> output = new ArrayList<>();
+        List<Integer> base = new ArrayList<>();
+        output.add(base);
+        subsets(output, new ArrayList<>(), nums, 0);
+        return output;
+    }
+    public void subsets(List<List<Integer>> output, List<Integer> subOutput, int[] nums, int index) {
+        if (index == nums.length) return;
+        for (int i = index; i < nums.length; i++) {
+            subOutput.add(nums[i]);
+            output.add(new ArrayList<>(subOutput));
+            subsets(output, subOutput, nums, i+1);
+            subOutput.remove(subOutput.size()-1);
+        }
+    }
+
+
     public static void main(String[] args) {
         int[] a = {1,2,3};
 
