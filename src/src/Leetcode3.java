@@ -1540,13 +1540,19 @@ public class Leetcode3 {
 
 
     public int singleNumber(int[] nums) {
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        for (int i : nums) hm.merge(i, 1, Integer::sum);
-        List<Integer> keyList = new ArrayList<>(hm.keySet());
-        for (int key : keyList) {
-            if (hm.get(key) == 1) return key;
+        int n = nums.length;
+        if (n < 4) return nums[0];
+        Arrays.sort(nums);
+        for (int i = 2; i < n; i = i + 3) {
+            int a = nums[i-2];
+            int b = nums[i-1];
+            int c = nums[i];
+            if (a != b || b != c) {
+                int output = (a == b) ? c : (b == c) ? a : b;
+                return output;
+            }
         }
-        return -1;
+        return nums[n-1];
     }
 
 
