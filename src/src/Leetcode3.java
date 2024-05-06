@@ -1308,44 +1308,79 @@ public class Leetcode3 {
 
 
 
+//    public boolean isMatch(String s, String p) {
+//        int sLength = s.length();
+//        while (p.length() >= 2 && p.charAt(0) == '*' && p.charAt(1) == '*') p = p.substring(1);
+//        if (p.equals("*")) return true;
+//        int pLength = p.length();
+//        Boolean[][] memory = new Boolean[sLength][pLength];
+//        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0, memory);
+//    }
+//    public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex, Boolean[][] memory) {
+//        if (pIndex == p.length) return sIndex == s.length;
+//        if (sIndex == s.length) {
+//            for (int i = pIndex; i < p.length; i++) {
+//                if (p[i] != '*') return false;
+//            }
+//            return true;
+//        }
+//        if (memory[sIndex][pIndex] != null) return memory[sIndex][pIndex];
+//        char sChar = s[sIndex];
+//        char pChar = p[pIndex];
+//        if (sChar == pChar || pChar == '?') {
+//            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex+1, memory);
+//        }
+//        else if (pChar == '*') {
+//            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex, memory)
+//                    || isMatch(s, p, sIndex, pIndex+1, memory);
+//        } else {
+//            memory[sIndex][pIndex] = false;
+//        }
+//        return memory[sIndex][pIndex];
+//    }
+
+
+
+
     public boolean isMatch(String s, String p) {
-        int sLength = s.length();
-        while (p.length() >= 2 && p.charAt(0) == '*' && p.charAt(1) == '*') p = p.substring(1);
-        if (p.equals("*")) return true;
-        int pLength = p.length();
-        Boolean[][] memory = new Boolean[sLength][pLength];
-        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0, memory);
+        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0);
     }
-    public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex, Boolean[][] memory) {
-        if (pIndex == p.length) return sIndex == s.length;
-        if (sIndex == s.length) {
-            for (int i = pIndex; i < p.length; i++) {
-                if (p[i] != '*') return false;
-            }
-            return true;
-        }
-        if (memory[sIndex][pIndex] != null) return memory[sIndex][pIndex];
-        char sChar = s[sIndex];
+    public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex) {
+        if (pIndex >= p.length) return sIndex == s.length;
+        if (sIndex >= s.length) return false;
         char pChar = p[pIndex];
-        if (sChar == pChar || pChar == '?') {
-            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex+1, memory);
-        }
-        else if (pChar == '*') {
-            memory[sIndex][pIndex] = isMatch(s, p, sIndex+1, pIndex, memory)
-                    || isMatch(s, p, sIndex, pIndex+1, memory);
+        if (pChar == '*') return isMatch(s, p, sIndex, pIndex+1);
+        if (sIndex == s.length) return p[p.length-1] == '*';
+        boolean nextCharWC = (pIndex+1 < p.length && p[pIndex+1] == '*');
+        char sChar = s[sIndex];
+        if (nextCharWC) {
+            if (pChar == sChar || pChar == '?') {
+                return isMatch(s, p, sIndex+1, pIndex) || isMatch(s, p, sIndex, pIndex+2);
+            } else {
+                return isMatch(s, p, sIndex, pIndex+2);
+            }
         } else {
-            memory[sIndex][pIndex] = false;
+            if (pChar == sChar || pChar == '?') return isMatch(s, p, sIndex+1, pIndex+1);
+            else return false;
         }
-        return memory[sIndex][pIndex];
     }
 
 
-
-
-    public boolean isMatch(String s, String p) {
-        return isMatch(s, p, 0, 0);
+    public int removeElement(int[] nums, int val) {
+        int index = 0;
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (num == val) {
+                continue;
+            } else {
+                nums[index] = num;
+                index++;
+            }
+        }
+        return index;
     }
-    public boolean isMatch(String s, String p, int sIndex, int pIndex,)
+
 
 
     public static void main(String[] args) {
