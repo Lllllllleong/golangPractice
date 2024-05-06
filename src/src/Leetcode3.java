@@ -1521,19 +1521,20 @@ public class Leetcode3 {
         int n = ratings.length;
         if (n == 1) return 1;
         int output = 0;
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        for (int i = 0; i < n; i++) hm.put(i, ratings[i]);
-        List<Integer> keyList = new ArrayList<>(hm.keySet());
-        Collections.sort(keyList, (a,b) ->  (hm.get(a) - hm.get(b)));
         int[] candyArray = new int[n];
-        for (int i : keyList) {
-            int rating = ratings[i];
-            int candy = 1;
-            if (i != 0 && ratings[i-1] < rating) candy = candyArray[i-1]+1;
-            if (i != n-1 && ratings[i+1] < rating) candy = Math.max(candy, candyArray[i+1]+1);
-            candyArray[i] = candy;
-            output += candy;
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i-1]) {
+                candyArray[i] = candyArray[i-1] + 1;
+            } else {
+                candyArray[i] = 1;
+            }
         }
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i+1]) {
+                candyArray[i] = Math.max(candyArray[i], candyArray[i+1] + 1);
+            }
+        }
+        for (int candy : candyArray) output += candy;
         return output;
     }
 
