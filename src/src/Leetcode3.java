@@ -1712,6 +1712,26 @@ public class Leetcode3 {
     }
 
 
+    public boolean[] canEat(int[] candiesCount, int[][] queries) {
+        int n = queries.length;
+        int candies = candiesCount.length;
+        boolean[] output = new boolean[n];
+        long[] mustEat = new long[candies];
+        mustEat[0] = candiesCount[0];
+        for (int i = 1; i < candies; i++) {
+            mustEat[i] += mustEat[i - 1] + candiesCount[i];
+        }
+        for (int i = 0; i < n; i++) {
+            int favType = queries[i][0];
+            int favDay = queries[i][1];
+            long dailyCap = queries[i][2];
+            long maxCandy = (favDay + 1) * dailyCap;
+            long minCandy = (favType == 0) ? 0 : mustEat[favType-1];
+            output[i] = (maxCandy > minCandy) && ((favDay+1) <= mustEat[favType]);
+        }
+        return output;
+    }
+
 
 
 
