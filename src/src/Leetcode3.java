@@ -771,21 +771,19 @@ public class Leetcode3 {
 
     public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
         long evenSum = 0;
-        for (int i : nums) if (i%2==0) evenSum += i;
+        for (int i : nums) if (i % 2 == 0) evenSum += i;
         int[] output = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
             int[] query = queries[i];
             int addValue = query[0];
             int index = query[1];
-            if (nums[index]%2==0) evenSum -= nums[index];
+            if (nums[index] % 2 == 0) evenSum -= nums[index];
             nums[index] += addValue;
-            if (nums[index]%2==0) evenSum += nums[index];
+            if (nums[index] % 2 == 0) evenSum += nums[index];
             output[i] = (int) evenSum;
         }
         return output;
     }
-
-
 
 
     public boolean isRobotBounded(String instructions) {
@@ -805,7 +803,7 @@ public class Leetcode3 {
                         x += path[0];
                         y += path[1];
                     }
-                    case 'R' -> Collections.rotate(pathLogic,-1);
+                    case 'R' -> Collections.rotate(pathLogic, -1);
                     case 'L' -> Collections.rotate(pathLogic, 1);
                 }
             }
@@ -815,21 +813,20 @@ public class Leetcode3 {
     }
 
 
-
     public int[] missingRolls(int[] rolls, int mean, int n) {
         int totalRolls = rolls.length + n;
-        int upperBound = n*6;
-        int lowerBound = n*1;
+        int upperBound = n * 6;
+        int lowerBound = n * 1;
         int knownSum = 0;
         for (int i : rolls) knownSum += i;
         int missingSum = (mean * totalRolls) - knownSum;
         if (missingSum < lowerBound || upperBound < missingSum) return new int[0];
         int[] output = new int[n];
         for (int i = 0; i < n; i++) {
-            if (i == n-1) {
+            if (i == n - 1) {
                 output[i] = missingSum;
             } else {
-                output[i] = missingSum / (n-i);
+                output[i] = missingSum / (n - i);
                 missingSum = missingSum - output[i];
             }
         }
@@ -837,29 +834,21 @@ public class Leetcode3 {
     }
 
 
-
-
-
     public int findJudge(int n, int[][] trust) {
-        if (n == 1) return (trust.length==0) ? 1 : -1;
-        if (trust.length < n-1) return -1;
+        if (n == 1) return (trust.length == 0) ? 1 : -1;
+        if (trust.length < n - 1) return -1;
         Set<Integer> visited = new HashSet<>();
-        int[] trustArray = new int[n+1];
+        int[] trustArray = new int[n + 1];
         for (int[] t : trust) {
             visited.add(t[0]);
             trustArray[t[1]]++;
         }
         System.out.println(Arrays.toString(trustArray));
-        for (int i = 1; i < n+1; i++) {
-            if (trustArray[i] == n-1 && !visited.contains(i)) return i;
+        for (int i = 1; i < n + 1; i++) {
+            if (trustArray[i] == n - 1 && !visited.contains(i)) return i;
         }
         return -1;
     }
-
-
-
-
-
 
 
     public List<Integer> eventualSafeNodes(int[][] graph) {
@@ -900,12 +889,6 @@ public class Leetcode3 {
         Collections.sort(output);
         return output;
     }
-
-
-
-
-
-
 
 
 //    public static List<List<Integer>> permute(int[] nums) {
@@ -972,8 +955,6 @@ public class Leetcode3 {
 //    }
 
 
-
-
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> output = new ArrayList<>();
         Deque<Integer> dqNums = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
@@ -985,6 +966,7 @@ public class Leetcode3 {
             return output;
         }
     }
+
     public void permute2(List<List<Integer>> output, Deque<Integer> dq, Deque<Integer> nums) {
         int n = nums.size();
         if (n == 0) {
@@ -1010,6 +992,7 @@ public class Leetcode3 {
             return output;
         }
     }
+
     public void permuteUnique2(List<List<Integer>> output, Deque<Integer> dq, Deque<Integer> nums) {
         int n = nums.size();
         if (n == 0) {
@@ -1038,8 +1021,8 @@ public class Leetcode3 {
             scoreArray[edgeTo] += i;
         }
         System.out.println(Arrays.toString(scoreArray));
-        long currentMax = scoreArray[n-1];
-        int maxNode = n-1;
+        long currentMax = scoreArray[n - 1];
+        int maxNode = n - 1;
         for (int i = n - 1; i >= 0; i--) {
             long score = scoreArray[i];
             if (score >= currentMax) {
@@ -1049,7 +1032,6 @@ public class Leetcode3 {
         }
         return maxNode;
     }
-
 
 
     public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
@@ -1086,8 +1068,6 @@ public class Leetcode3 {
         for (Character c : charList) output += c;
         return output;
     }
-
-
 
 
     public int[] pivotArray(int[] nums, int pivot) {
@@ -1129,7 +1109,7 @@ public class Leetcode3 {
             index++;
         }
         positive = (positive.isEmpty()) ? negative : positive;
-        while(!positive.isEmpty()) {
+        while (!positive.isEmpty()) {
             nums[index] = positive.pollFirst();
             index++;
         }
@@ -1148,7 +1128,7 @@ public class Leetcode3 {
             if (sIndex == currentSpace) {
                 cArray[outputIndex] = ' ';
                 outputIndex++;
-                spaceIndex = Math.min(spaceIndex+1, spaces.length-1);
+                spaceIndex = Math.min(spaceIndex + 1, spaces.length - 1);
             }
             cArray[outputIndex] = c;
             outputIndex++;
@@ -1158,14 +1138,12 @@ public class Leetcode3 {
     }
 
 
-
     public int[][] onesMinusZeros(int[][] grid) {
         int yMax = grid.length;
         int xMax = grid[0].length;
         int[][] output = new int[yMax][xMax];
         int[] rowSum = new int[yMax];
         int[] colSum = new int[xMax];
-
 
 
         for (int y = 0; y < yMax; y++) {
@@ -1203,9 +1181,6 @@ public class Leetcode3 {
     }
 
 
-
-
-
     public int[] arrayChange(int[] nums, int[][] operations) {
         int n = nums.length;
         HashMap<Integer, Integer> hm = new HashMap<>();
@@ -1219,7 +1194,7 @@ public class Leetcode3 {
         for (int[] operation : operations) {
             int a = operation[0];
             int b = operation[1];
-            hm.put(b,hm.remove(a));
+            hm.put(b, hm.remove(a));
         }
         for (var entry : hm.entrySet()) {
             nums[entry.getValue()] = entry.getKey();
@@ -1228,11 +1203,10 @@ public class Leetcode3 {
     }
 
 
-
     public List<Integer> relocateMarbles(int[] nums, int[] moveFrom, int[] moveTo) {
         int n = nums.length;
         HashMap<Integer, Integer> hm = new HashMap<>();
-        for (int i : nums) hm.put(i,i);
+        for (int i : nums) hm.put(i, i);
         int m = moveFrom.length;
         for (int i = 0; i < m; i++) {
             int from = moveFrom[i];
@@ -1246,7 +1220,6 @@ public class Leetcode3 {
     }
 
 
-
     public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
         int maxProfit = 0;
         int profitRotations = -1;
@@ -1256,7 +1229,7 @@ public class Leetcode3 {
         while (!dq.isEmpty()) {
             int customer = dq.pollFirst();
             if (customer > 4) {
-                dq.addFirst(customer-4);
+                dq.addFirst(customer - 4);
                 customer = 4;
 
             }
@@ -1281,10 +1254,10 @@ public class Leetcode3 {
         for (int i = 0; i < nums.length - 2; i++) {
             if (seen.contains(nums[i])) continue;
             Set<Integer> seen2 = new HashSet<>();
-            for (int j = Math.max(i+1, priorJ); j < nums.length - 1; j++) {
+            for (int j = Math.max(i + 1, priorJ); j < nums.length - 1; j++) {
                 if (seen2.contains(nums[j])) continue;
                 Set<Integer> seen3 = new HashSet<>();
-                for (int k = Math.max(j+1, priorK); k < nums.length; k++) {
+                for (int k = Math.max(j + 1, priorK); k < nums.length; k++) {
                     if (seen3.contains(nums[k])) continue;
                     a = nums[i];
                     b = nums[j];
@@ -1303,9 +1276,6 @@ public class Leetcode3 {
         }
         return new ArrayList<>(output);
     }
-
-
-
 
 
 //    public boolean isMatch(String s, String p) {
@@ -1340,27 +1310,26 @@ public class Leetcode3 {
 //    }
 
 
-
-
     public boolean isMatch(String s, String p) {
         return isMatch(s.toCharArray(), p.toCharArray(), 0, 0);
     }
+
     public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex) {
         if (pIndex >= p.length) return sIndex == s.length;
         if (sIndex >= s.length) return false;
         char pChar = p[pIndex];
-        if (pChar == '*') return isMatch(s, p, sIndex, pIndex+1);
-        if (sIndex == s.length) return p[p.length-1] == '*';
-        boolean nextCharWC = (pIndex+1 < p.length && p[pIndex+1] == '*');
+        if (pChar == '*') return isMatch(s, p, sIndex, pIndex + 1);
+        if (sIndex == s.length) return p[p.length - 1] == '*';
+        boolean nextCharWC = (pIndex + 1 < p.length && p[pIndex + 1] == '*');
         char sChar = s[sIndex];
         if (nextCharWC) {
             if (pChar == sChar || pChar == '?') {
-                return isMatch(s, p, sIndex+1, pIndex) || isMatch(s, p, sIndex, pIndex+2);
+                return isMatch(s, p, sIndex + 1, pIndex) || isMatch(s, p, sIndex, pIndex + 2);
             } else {
-                return isMatch(s, p, sIndex, pIndex+2);
+                return isMatch(s, p, sIndex, pIndex + 2);
             }
         } else {
-            if (pChar == sChar || pChar == '?') return isMatch(s, p, sIndex+1, pIndex+1);
+            if (pChar == sChar || pChar == '?') return isMatch(s, p, sIndex + 1, pIndex + 1);
             else return false;
         }
     }
@@ -1382,7 +1351,6 @@ public class Leetcode3 {
     }
 
 
-
     public List<List<Integer>> subsets(int[] nums) {
         int n = nums.length;
         List<List<Integer>> output = new ArrayList<>();
@@ -1391,13 +1359,14 @@ public class Leetcode3 {
         subsets(output, new ArrayList<>(), nums, 0);
         return output;
     }
+
     public void subsets(List<List<Integer>> output, List<Integer> subOutput, int[] nums, int index) {
         if (index == nums.length) return;
         for (int i = index; i < nums.length; i++) {
             subOutput.add(nums[i]);
             output.add(new ArrayList<>(subOutput));
-            subsets(output, subOutput, nums, i+1);
-            subOutput.remove(subOutput.size()-1);
+            subsets(output, subOutput, nums, i + 1);
+            subOutput.remove(subOutput.size() - 1);
         }
     }
 
@@ -1410,17 +1379,16 @@ public class Leetcode3 {
         subsetsWithDup(output, new ArrayList<>(), nums, 0);
         return new ArrayList<>(output);
     }
+
     public void subsetsWithDup(Set<List<Integer>> output, List<Integer> subOutput, int[] nums, int index) {
         if (index == nums.length) return;
         for (int i = index; i < nums.length; i++) {
             subOutput.add(nums[i]);
             output.add(new ArrayList<>(subOutput));
-            subsetsWithDup(output, subOutput, nums, i+1);
-            subOutput.remove(subOutput.size()-1);
+            subsetsWithDup(output, subOutput, nums, i + 1);
+            subOutput.remove(subOutput.size() - 1);
         }
     }
-
-
 
 
     public Node connect(Node root) {
@@ -1430,6 +1398,7 @@ public class Leetcode3 {
         connect(dq);
         return root;
     }
+
     public void connect(Deque<Node> dq) {
         if (dq.isEmpty()) return;
         Deque<Node> nextDQ = new ArrayDeque<>();
@@ -1444,13 +1413,13 @@ public class Leetcode3 {
     }
 
 
-
     public int numDistinct(String s, String t) {
         int sLength = s.length();
         int tLength = t.length();
-        Integer[][] dp = new Integer[sLength+1][tLength+1];
-        return numDistinct(s,t,0,0,dp);
+        Integer[][] dp = new Integer[sLength + 1][tLength + 1];
+        return numDistinct(s, t, 0, 0, dp);
     }
+
     public int numDistinct(String s, String t, int sIndex, int tIndex, Integer[][] dp) {
         if (tIndex == t.length()) return dp[sIndex][tIndex] = 1;
         if (sIndex == s.length()) return dp[sIndex][tIndex] = 0;
@@ -1458,9 +1427,9 @@ public class Leetcode3 {
         char sChar = s.charAt(sIndex);
         char tChar = t.charAt(tIndex);
         if (sChar == tChar) {
-            return dp[sIndex][tIndex] = numDistinct(s,t,sIndex+1,tIndex+1,dp) + numDistinct(s,t,sIndex+1,tIndex,dp);
+            return dp[sIndex][tIndex] = numDistinct(s, t, sIndex + 1, tIndex + 1, dp) + numDistinct(s, t, sIndex + 1, tIndex, dp);
         } else {
-            return dp[sIndex][tIndex] = numDistinct(s,t,sIndex+1,tIndex,dp);
+            return dp[sIndex][tIndex] = numDistinct(s, t, sIndex + 1, tIndex, dp);
         }
     }
 
@@ -1470,13 +1439,13 @@ public class Leetcode3 {
         int[] dpArray = new int[n];
         int maxProfit = 0;
         if (n < 3) {
-            maxProfit = Math.max(maxProfit, prices[n-1] - prices[0]);
+            maxProfit = Math.max(maxProfit, prices[n - 1] - prices[0]);
             return maxProfit;
         }
-        int maxSell = prices[n-1];
+        int maxSell = prices[n - 1];
         for (int i = n - 2; i >= 0; i--) {
             int price = prices[i];
-            dpArray[i] = Math.max(maxSell - price, dpArray[i+1]);
+            dpArray[i] = Math.max(maxSell - price, dpArray[i + 1]);
             maxSell = Math.max(maxSell, price);
         }
         int minBuy = prices[0];
@@ -1487,7 +1456,6 @@ public class Leetcode3 {
         }
         return maxProfit;
     }
-
 
 
     public int longestConsecutive(int[] nums) {
@@ -1514,24 +1482,21 @@ public class Leetcode3 {
     }
 
 
-
-
-
     public int candy(int[] ratings) {
         int n = ratings.length;
         if (n == 1) return 1;
         int output = 0;
         int[] candyArray = new int[n];
         for (int i = 1; i < n; i++) {
-            if (ratings[i] > ratings[i-1]) {
-                candyArray[i] = candyArray[i-1] + 1;
+            if (ratings[i] > ratings[i - 1]) {
+                candyArray[i] = candyArray[i - 1] + 1;
             } else {
                 candyArray[i] = 1;
             }
         }
         for (int i = n - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i+1]) {
-                candyArray[i] = Math.max(candyArray[i], candyArray[i+1] + 1);
+            if (ratings[i] > ratings[i + 1]) {
+                candyArray[i] = Math.max(candyArray[i], candyArray[i + 1] + 1);
             }
         }
         for (int candy : candyArray) output += candy;
@@ -1544,18 +1509,16 @@ public class Leetcode3 {
         if (n < 4) return nums[0];
         Arrays.sort(nums);
         for (int i = 2; i < n; i = i + 3) {
-            int a = nums[i-2];
-            int b = nums[i-1];
+            int a = nums[i - 2];
+            int b = nums[i - 1];
             int c = nums[i];
             if (a != b || b != c) {
                 int output = (a == b) ? c : (b == c) ? a : b;
                 return output;
             }
         }
-        return nums[n-1];
+        return nums[n - 1];
     }
-
-
 
 
     public int maximumGap(int[] nums) {
@@ -1573,7 +1536,6 @@ public class Leetcode3 {
     }
 
 
-
     public int findDuplicate(int[] nums) {
         boolean[] b = new boolean[100000];
         for (int i : nums) {
@@ -1581,6 +1543,19 @@ public class Leetcode3 {
             else b[i] = true;
         }
         return 2;
+    }
+
+
+    public String removeDuplicateLetters(String s) {
+        Set<Character> set = new HashSet<>();
+        for (char c : s.toCharArray()) set.add(c);
+        char[] cArray = new char[set.size()];
+        int index = 0;
+        for (Character c : set) {
+            cArray[index] = c;
+            index++;
+        }
+        return String.valueOf(cArray);
     }
 
     public int findKthLargest(int[] nums, int k) {
@@ -1595,58 +1570,163 @@ public class Leetcode3 {
         return pq.poll();
     }
 
+
+    public boolean canMeasureWater(int x, int y, int target) {
+        Boolean[][] memory = new Boolean[x + 1][y + 1];
+        return canMeasureWater(0, 0, x, y, target, memory);
+    }
+
+    public boolean canMeasureWater(int x, int y, int xMax, int yMax, int target, Boolean[][] memory) {
+        if (x == target || y == target || x + y == target) return true;
+        if (memory[x][y] != null) return memory[x][y];
+        memory[x][y] = false;
+        boolean a = canMeasureWater(Math.min(xMax, x + y), 0, xMax, yMax, target, memory);
+        boolean b = canMeasureWater(0, Math.min(yMax, x + y), xMax, yMax, target, memory);
+        boolean c = canMeasureWater(0, y, xMax, yMax, target, memory);
+        boolean d = canMeasureWater(x, 0, xMax, yMax, target, memory);
+        boolean e = canMeasureWater(xMax, y, xMax, yMax, target, memory);
+        boolean f = canMeasureWater(x, yMax, xMax, yMax, target, memory);
+        memory[x][y] = a || b || c || d || e || f;
+        return memory[x][y];
+    }
+
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> output = new ArrayList<>();
+        return kSmallestPairs(nums1, nums2, 0, 0, k, output);
+    }
+
+    public List<List<Integer>> kSmallestPairs(int[] a, int[] b, int aIndex, int bIndex, int k, List<List<Integer>> output) {
+        if (output.size() == k) return output;
+        List<Integer> list = new ArrayList<>();
+        list.add(a[aIndex]);
+        list.add(b[bIndex]);
+        output.add(list);
+        if (aIndex == a.length - 1 && bIndex == b.length - 1) return output;
+        if (aIndex == a.length - 1) {
+            aIndex = 0;
+            bIndex++;
+        } else if (bIndex == b.length - 1) {
+            bIndex = 0;
+            aIndex++;
+        } else {
+            int nextA = a[aIndex + 1];
+            int nextB = b[bIndex + 1];
+            if (nextA + b[bIndex] > a[aIndex] + nextB) {
+                bIndex++;
+            } else {
+                aIndex++;
+            }
+        }
+        return kSmallestPairs(a, b, aIndex, bIndex, k, output);
+    }
+
+
+    public int minMoves(int[] nums) {
+        long max = 0;
+        long sum = 0;
+        for (int i : nums) {
+            max = Math.max(max, i);
+            sum += i;
+        }
+        return (int) (sum - max * nums.length);
+    }
+
+
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return true;
+        Integer[][] dp = new Integer[n][n];
+        boolean flag = false;
+        predictTheWinner(nums, dp, 0, n - 1, 0, flag);
+        return flag;
+    }
+
+    public void predictTheWinner(int[] nums, Integer[][] dp, int leftPointer, int rightPointer, int score, boolean flag) {
+        if (leftPointer >= rightPointer) {
+            if (score >= 0) flag = true;
+            return;
+        } else {
+            if (dp[leftPointer][rightPointer] != null) {
+                if (dp[leftPointer][rightPointer] >= 0) flag = true;
+                return;
+            }
+            int left = nums[leftPointer];
+            int right = nums[rightPointer];
+            int leftScore = score + left;
+            int rightScore = score + right;
+            predictTheWinner(nums, dp, leftPointer + 1, rightPointer, leftScore, flag);
+            predictTheWinner(nums, dp, leftPointer, rightPointer - 1, rightScore, flag);
+            dp[leftPointer][rightPointer] = Math.max(leftScore, rightScore);
+        }
+    }
+
+
+    public int arrangeCoins(int n) {
+        int i = 1;
+        int counter = 0;
+        while (i <= n) {
+            counter++;
+            n = n - i;
+            i++;
+        }
+        return counter;
+    }
+
+
+}
+
+
     public static void main(String[] args) {
-        int[] a = {1,2,3};
+        int[] a = {1, 2, 3};
         Deque<Node> dq = new ArrayDeque<>();
         Node n = new Node(2);
         n.next = dq.peekFirst();
         System.out.println(n.next);
 
 
-
     }
 
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
+public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
 
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
+    TreeNode() {
     }
 
-
-
-    static class Node {
-        public int val;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() {}
-
-        public Node(int _val) {
-            val = _val;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next) {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
+    TreeNode(int val) {
+        this.val = val;
     }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+
+static class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {
+    }
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+}
 
 
 
