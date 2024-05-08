@@ -1672,8 +1672,51 @@ public class Leetcode3 {
         return counter;
     }
 
+    HashMap<Integer, Integer> subtreeHM;
+    public int[] findFrequentTreeSum(TreeNode root) {
+        subtreeHM = new HashMap<>();
+        if (root.left == null && root.right == null) {
+            int[] output = {root.val};
+            return output;
+        } else {
+            findFrequentTreeSum2(root);
+            List<Integer> keyList = new ArrayList<>(subtreeHM.keySet());
+            System.out.println(keyList);
+            //Sort the list based on hashmap value
+            Collections.sort(keyList, new Comparator<Integer>() {
+                public int compare(Integer a, Integer b) {
+                    return (subtreeHM.get(b) - subtreeHM.get(a));
+                }
+            });
+            int maxFrequency = subtreeHM.get(keyList.get(0));
+            List<Integer> output = new ArrayList<>();
+            for (Integer key : keyList) {
+                int currentFrequency = subtreeHM.get(key);
+                if (currentFrequency == maxFrequency) output.add(key);
+                else break;
+            }
+            return output.stream().mapToInt(i->i).toArray();
+        }
+    }
+    public Integer findFrequentTreeSum2(TreeNode root) {
+        if (root.left == null && root.right == null) {
+            subtreeHM.merge(root.val, 1, Integer::sum);
+            return root.val;
+        } else {
+            Integer left = (root.left == null) ? 0 : findFrequentTreeSum2(root.left);
+            Integer right = (root.right == null) ? 0 : findFrequentTreeSum2(root.right);
+            Integer sum = left + right + root.val;
+            subtreeHM.merge(sum, 1, Integer::sum);
+            return sum;
+        }
+    }
 
-}
+
+
+
+
+
+
 
 
     public static void main(String[] args) {
