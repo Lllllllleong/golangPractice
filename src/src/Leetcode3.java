@@ -1805,21 +1805,27 @@ public class Leetcode3 {
 
 
     public int maximumUniqueSubarray(int[] nums) {
-        Deque<Integer> dq = new ArrayDeque<>();
+        int n = nums.length;
         int output = 0;
+        HashMap<Integer, Integer> indexHM = new HashMap<>();
+        int currentStartingIndex = 0;
         int currentSum = 0;
-        for (int i : nums) {
-            while (dq.contains(i)) {
-                int removed = dq.pollFirst();
-                currentSum -= removed;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (indexHM.containsKey(num) && indexHM.get(num) >= currentStartingIndex) {
+                currentStartingIndex = indexHM.get(num) + 1;
+                currentSum = 0;
+                for (int j = currentStartingIndex; j <= i; j++) {
+                    currentSum += nums[j];
+                }
+            } else {
+                currentSum += num;
             }
-            dq.addLast(i);
-            currentSum += i;
+            indexHM.put(num, i);
             output = Math.max(output, currentSum);
         }
         return output;
     }
-
 
 
 
