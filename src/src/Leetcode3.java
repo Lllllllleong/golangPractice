@@ -2057,51 +2057,48 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
-    HashMap<Character, Integer> minWindowHM;
-    public String minWindow(String s, String t) {
+    public static String minWindow(String s, String t) {
         if (t.length() == 1) {
             if (s.contains(t)) return t;
             else return "";
         }
-        StringBuilder sb = new StringBuilder();
-        minWindowHM = new HashMap<>();
         char[] sChar = s.toCharArray();
         char[] tChar = t.toCharArray();
-        for (char c : tChar) minWindowHM.merge(c, 1, Integer::sum);
+        HashMap<Character, Integer> frequencyMap = new HashMap<>();
+        HashMap<Character, List<Integer>> indexMap = new HashMap<>();
+        for (Character C : tChar) frequencyMap.merge(C, 1, Integer::sum);
+        for (int i = 0; i < sChar.length; i++) {
+            Character S = sChar[i];
+            if (!indexMap.containsKey(S)) indexMap.put(S, new ArrayList<>());
+            indexMap.get(S).add(i);
+        }
         String output = "";
-        Deque<Character> dq = new ArrayDeque<>();
-        for (Character C : sChar) {
-            dq.addLast(C);
-            if (minWindowHM.containsKey(C)) {
-                minWindowHM.merge(C, -1, Integer::sum);
-                if (isMatch()) {
-                    String current = dqToString(dq);
-                    if (output.equals("") || current.length() < output.length()) output = current;
-                    while (!oneCharacterMissing()) {
-                        Character first = dq.pollFirst();
-                        if (minWindowHM.containsKey(first)) minWindowHM.merge(first, 1, Integer::sum);
-                        if (isMatch()) {
-                            current = dqToString(dq);
-                            if (output.equals("") || current.length() < output.length()) output = current;
-                        }
+        try {
+            while (true) {
+                String current = "";
+                int startIndex = Integer.MAX_VALUE;
+                int endIndex = Integer.MIN_VALUE;
+                Character toRemove = null;
+                for (Character C : frequencyMap.keySet()) {
+                    Integer frequencyRequired = frequencyMap.get(C) - 1;
+                    List<Integer> list = indexMap.get(C);
+                    Integer firstIndex = list.get(0);
+                    Integer lastIndex = list.get(frequencyRequired);
+                    if (firstIndex < startIndex) {
+                        startIndex = firstIndex;
+                        toRemove = C;
                     }
+                    endIndex = Math.max(endIndex, lastIndex);
                 }
+                current = s.substring(startIndex, endIndex + 1);
+                if (output.equals("") || current.length() < output.length()) output = current;
+                indexMap.get(toRemove).remove(0);
             }
+        } catch (Exception e) {
+            return output;
         }
-        return output;
     }
-    public boolean isMatch() {
-        for (Integer I : minWindowHM.values()) {
-            if (I > 0) return false;
-        }
-        return true;
-    }
-    public boolean oneCharacterMissing() {
-        for (Integer I : minWindowHM.values()) {
-            if (I == 1) return true;
-        }
-        return false;
-    }
+
     public String dqToString(Deque<Character> dq) {
         StringBuilder sb = new StringBuilder();
         for (Character C : dq) {
@@ -2127,6 +2124,11 @@ public class Leetcode3 extends Leetcode2 {
         set.add(aList);
         set.add(aList);
         System.out.println(set);
+
+
+        String s = "ADOBECODEBANC";
+        String t = "ABC";
+        minWindow(s, t);
     }
 
 
