@@ -2,8 +2,9 @@ import com.sun.security.jgss.GSSUtil;
 import com.sun.source.tree.Tree;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Leetcode3 extends Leetcode2{
+public class Leetcode3 extends Leetcode2 {
 
     public List<Integer> diffWaysToCompute(String expression) {
         int n = expression.length();
@@ -1245,9 +1246,6 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
-
-
 //    public boolean isMatch(String s, String p) {
 //        int sLength = s.length();
 //        while (p.length() >= 2 && p.charAt(0) == '*' && p.charAt(1) == '*') p = p.substring(1);
@@ -1643,6 +1641,7 @@ public class Leetcode3 extends Leetcode2{
     }
 
     HashMap<Integer, Integer> subtreeHM;
+
     public int[] findFrequentTreeSum(TreeNode root) {
         subtreeHM = new HashMap<>();
         if (root.left == null && root.right == null) {
@@ -1665,9 +1664,10 @@ public class Leetcode3 extends Leetcode2{
                 if (currentFrequency == maxFrequency) output.add(key);
                 else break;
             }
-            return output.stream().mapToInt(i->i).toArray();
+            return output.stream().mapToInt(i -> i).toArray();
         }
     }
+
     public Integer findFrequentTreeSum2(TreeNode root) {
         if (root.left == null && root.right == null) {
             subtreeHM.merge(root.val, 1, Integer::sum);
@@ -1696,11 +1696,12 @@ public class Leetcode3 extends Leetcode2{
             int favDay = queries[i][1];
             long dailyCap = queries[i][2];
             long maxCandy = (favDay + 1) * dailyCap;
-            long minCandy = (favType == 0) ? 0 : mustEat[favType-1];
-            output[i] = (maxCandy > minCandy) && ((favDay+1) <= mustEat[favType]);
+            long minCandy = (favType == 0) ? 0 : mustEat[favType - 1];
+            output[i] = (maxCandy > minCandy) && ((favDay + 1) <= mustEat[favType]);
         }
         return output;
     }
+
     public int sumOfUnique(int[] nums) {
         Boolean[] flag = new Boolean[101];
         long sum = 0;
@@ -1719,18 +1720,17 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
     public int maxOperations(int[] nums, int k) {
         int n = nums.length;
         if (k == 1 || n == 1) return 0;
         Arrays.sort(nums);
         int leftIndex = 0;
-        int rightIndex = n-1;
+        int rightIndex = n - 1;
         int output = 0;
         while (leftIndex < rightIndex) {
             int left = nums[leftIndex];
             int right = nums[rightIndex];
-            int currentSum = left+right;
+            int currentSum = left + right;
             if (currentSum == k) {
                 leftIndex++;
                 rightIndex--;
@@ -1743,8 +1743,6 @@ public class Leetcode3 extends Leetcode2{
         }
         return output;
     }
-
-
 
 
     public boolean isEvenOddTree(TreeNode root) {
@@ -1771,7 +1769,6 @@ public class Leetcode3 extends Leetcode2{
         }
         return true;
     }
-
 
 
     public int maximumUniqueSubarray(int[] nums) {
@@ -1826,12 +1823,11 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
     public int maxCoins(int[] piles) {
         Arrays.sort(piles);
         int n = piles.length;
-        int steps = n/3;
-        int index = n-2;
+        int steps = n / 3;
+        int index = n - 2;
         int output = 0;
         while (steps != 0) {
             output += piles[index];
@@ -1849,8 +1845,6 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
-
     public List<List<Integer>> threeSum(int[] nums) {
         int n = nums.length;
         List<List<Integer>> output = new ArrayList<>();
@@ -1861,12 +1855,12 @@ public class Leetcode3 extends Leetcode2{
             int num = nums[i];
             hm.put(num, i);
         }
-        for (int i = 0; i < n-2; i++) {
+        for (int i = 0; i < n - 2; i++) {
             int first = nums[i];
             if (first > 0) break;
-            if (i > 0 && first == nums[i-1]) continue;
-            for (int j = i+1; j < n-1; j++) {
-                if (j > i+1 && nums[j] == nums[j-1]) continue;
+            if (i > 0 && first == nums[i - 1]) continue;
+            for (int j = i + 1; j < n - 1; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
                 int second = nums[j];
                 int third = (first + second) * -1;
                 if (hm.containsKey(third) && hm.get(third) > j) {
@@ -1878,25 +1872,23 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
-
     public static List<List<Integer>> fourSum(int[] nums, int target) {
         int n = nums.length;
         List<List<Integer>> output = new ArrayList<>();
         if (n < 4) return output;
         Arrays.sort(nums);
 
-        for (int i = 0; i < n-3; i++) {
-            if (i > 0 && nums[i] == nums[i-1]) continue;  // Skip duplicate numbers
-            for (int j = i+1; j < n-2; j++) {
-                if (j > i+1 && nums[j] == nums[j-1]) continue;  // Skip duplicate numbers
-                int k = j+1, l = n-1;
+        for (int i = 0; i < n - 3; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;  // Skip duplicate numbers
+            for (int j = i + 1; j < n - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;  // Skip duplicate numbers
+                int k = j + 1, l = n - 1;
                 while (k < l) {
                     long sum = (long) nums[i] + nums[j] + nums[k] + nums[l];  // Use long to prevent overflow
                     if (sum == target) {
                         output.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
-                        while (k < l && nums[k] == nums[k+1]) k++;  // Skip duplicate numbers
-                        while (k < l && nums[l] == nums[l-1]) l--;  // Skip duplicate numbers
+                        while (k < l && nums[k] == nums[k + 1]) k++;  // Skip duplicate numbers
+                        while (k < l && nums[l] == nums[l - 1]) l--;  // Skip duplicate numbers
                         k++;
                         l--;
                     } else if (sum < target) {
@@ -1911,22 +1903,19 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
-
-
     public int threeSumClosest(int[] nums, int target) {
         int n = nums.length;
         Arrays.sort(nums);
         int difference = Integer.MAX_VALUE;
         int output = 0;
-        for (int i = 0; i < n-2; i++) {
+        for (int i = 0; i < n - 2; i++) {
             int first = nums[i];
-            if (i > 0 && first == nums[i-1]) continue;
-            for (int j = i+1; j < n-1; j++) {
-                if (j > i+1 && nums[j] == nums[j-1]) continue;
+            if (i > 0 && first == nums[i - 1]) continue;
+            for (int j = i + 1; j < n - 1; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
                 int second = nums[j];
-                for (int k = j+1; k < n; k++) {
-                    if (k > j+1 && nums[k] == nums[k-1]) continue;
+                for (int k = j + 1; k < n; k++) {
+                    if (k > j + 1 && nums[k] == nums[k - 1]) continue;
                     int third = nums[k];
                     int currentSum = first + second + third;
                     int currentDifference = Math.abs(target - currentSum);
@@ -1946,8 +1935,8 @@ public class Leetcode3 extends Leetcode2{
         List<String> output = new ArrayList<>();
         if (n < 10) return output;
         HashMap<String, Integer> hm = new HashMap<>();
-        for (int i = 0; i < n-9; i++) {
-            String sub = s.substring(i, i+10);
+        for (int i = 0; i < n - 9; i++) {
+            String sub = s.substring(i, i + 10);
             hm.merge(sub, 1, Integer::sum);
         }
         for (var entry : hm.entrySet()) {
@@ -1955,8 +1944,6 @@ public class Leetcode3 extends Leetcode2{
         }
         return output;
     }
-
-
 
 
     public List<Integer> majorityElement(int[] nums) {
@@ -1971,9 +1958,9 @@ public class Leetcode3 extends Leetcode2{
         Arrays.sort(nums);
         for (int i = 0; i < n; i++) {
             int first = nums[i];
-            if (i > 0 && first == nums[i-1]) continue;
+            if (i > 0 && first == nums[i - 1]) continue;
             if (i + threshold >= n) break;
-            int second = nums[i+threshold];
+            int second = nums[i + threshold];
             if (first == second) {
                 output.add(first);
                 i += threshold;
@@ -1983,11 +1970,8 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
-
-
-
     int globalPathSum;
+
     public int pathSum(TreeNode root, int targetSum) {
         if (root == null) return 0;
         pathSumFromNode(root, targetSum, 0);
@@ -2007,7 +1991,6 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
-
     public ListNode swapNodes(ListNode head, int k) {
         ListNode ln = head;
         List<ListNode> list = new ArrayList<>();
@@ -2015,9 +1998,9 @@ public class Leetcode3 extends Leetcode2{
             list.add(ln);
             ln = ln.next;
         }
-        int tmp = list.get(k-1).val;
-        list.get(k-1).val = list.get(list.size()-k).val;
-        list.get(list.size()-k).val = tmp;
+        int tmp = list.get(k - 1).val;
+        list.get(k - 1).val = list.get(list.size() - k).val;
+        list.get(list.size() - k).val = tmp;
         return head;
     }
 
@@ -2028,7 +2011,7 @@ public class Leetcode3 extends Leetcode2{
         int prev = 1;
         for (int i = 0; i < n; i++) {
             if (nums[i] <= 0) continue;
-            if (i > 0 && nums[i] == nums[i-1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
             if (nums[i] == prev) {
                 prev++;
             }
@@ -2038,56 +2021,155 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<int[]> events = new ArrayList<>();
+        for (int[] b : buildings) {
+            events.add(new int[]{b[0], b[2], 1}); // start of building
+            events.add(new int[]{b[1], b[2], -1}); // end of building
+        }
+        Collections.sort(events, (a, b) -> {
+            if (a[0] != b[0]) return a[0] - b[0];
+            return (a[2] * b[1]) - (b[2] * a[1]);
+        });
+        TreeMap<Integer, Integer> heightMap = new TreeMap<>(Collections.reverseOrder());
+        heightMap.put(0, 1);
+        List<List<Integer>> result = new ArrayList<>();
+        int prevHeight = 0;
+        for (int[] event : events) {
+            int x = event[0], height = event[1], type = event[2];
+            if (type == 1) {
+                heightMap.put(height, heightMap.getOrDefault(height, 0) + 1);
+            } else {
+                heightMap.put(height, heightMap.get(height) - 1);
+                if (heightMap.get(height) == 0) heightMap.remove(height);
+            }
+            int currentHeight = heightMap.firstKey();
+            if (currentHeight != prevHeight) {
+                result.add(Arrays.asList(x, currentHeight));
+                prevHeight = currentHeight;
+            }
+        }
+        List<List<Integer>> output = new ArrayList<>();
+        for (List<Integer> skyline : result) if (skyline.get(1) != 0) output.add(skyline);
+        return output;
+    }
+
+
+
+
+    HashMap<Character, Integer> minWindowHM;
+    public String minWindow(String s, String t) {
+        if (t.length() == 1) {
+            if (s.contains(t)) return t;
+            else return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        minWindowHM = new HashMap<>();
+        char[] sChar = s.toCharArray();
+        char[] tChar = t.toCharArray();
+        for (char c : tChar) minWindowHM.merge(c, 1, Integer::sum);
+        String output = "";
+        Deque<Character> dq = new ArrayDeque<>();
+        for (Character C : sChar) {
+            dq.addLast(C);
+            if (minWindowHM.containsKey(C)) {
+                minWindowHM.merge(C, -1, Integer::sum);
+                if (isMatch()) {
+                    String current = dqToString(dq);
+                    if (output.equals("") || current.length() < output.length()) output = current;
+                    while (!oneCharacterMissing()) {
+                        Character first = dq.pollFirst();
+                        if (minWindowHM.containsKey(first)) minWindowHM.merge(first, 1, Integer::sum);
+                        if (isMatch()) {
+                            current = dqToString(dq);
+                            if (output.equals("") || current.length() < output.length()) output = current;
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
+    public boolean isMatch() {
+        for (Integer I : minWindowHM.values()) {
+            if (I > 0) return false;
+        }
+        return true;
+    }
+    public boolean oneCharacterMissing() {
+        for (Integer I : minWindowHM.values()) {
+            if (I == 1) return true;
+        }
+        return false;
+    }
+    public String dqToString(Deque<Character> dq) {
+        StringBuilder sb = new StringBuilder();
+        for (Character C : dq) {
+            sb.append(C);
+        }
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
-        int[] a = {1,1,1,1};
+        int[] a = {1, 1, 1, 1};
         List<Integer> aList = Arrays.stream(a).boxed().toList();
         Set<List<Integer>> set = new HashSet<>();
         set.add(aList);
         set.add(aList);
-        System.out.println(set );
+        System.out.println(set);
     }
 
 
-public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
 
-    TreeNode() {
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 
-    TreeNode(int val) {
-        this.val = val;
+
+    static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {
+        }
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
     }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
-
-
-static class Node {
-    public int val;
-    public Node left;
-    public Node right;
-    public Node next;
-
-    public Node() {
-    }
-
-    public Node(int _val) {
-        val = _val;
-    }
-
-    public Node(int _val, Node _left, Node _right, Node _next) {
-        val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
-    }
-}
 
     class Trie {
         Node root;
@@ -2137,7 +2219,6 @@ static class Node {
             }
         }
     }
-
 
 
 }
