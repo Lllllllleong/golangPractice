@@ -1842,6 +1842,15 @@ public class Leetcode3 {
     }
 
 
+    public int addedInteger(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        return nums2[0] - nums1[0];
+    }
+
+
+
+
     public List<List<Integer>> threeSum(int[] nums) {
         int n = nums.length;
         List<List<Integer>> output = new ArrayList<>();
@@ -1871,20 +1880,46 @@ public class Leetcode3 {
 
 
 
-    public int addedInteger(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        return nums2[0] - nums1[0];
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        int n = nums.length;
+        List<List<Integer>> output = new ArrayList<>();
+        if (n < 4) return output;
+        Arrays.sort(nums);
+
+        for (int i = 0; i < n-3; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) continue;  // Skip duplicate numbers
+            for (int j = i+1; j < n-2; j++) {
+                if (j > i+1 && nums[j] == nums[j-1]) continue;  // Skip duplicate numbers
+                int k = j+1, l = n-1;
+                while (k < l) {
+                    long sum = (long) nums[i] + nums[j] + nums[k] + nums[l];  // Use long to prevent overflow
+                    if (sum == target) {
+                        output.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
+                        while (k < l && nums[k] == nums[k+1]) k++;  // Skip duplicate numbers
+                        while (k < l && nums[l] == nums[l-1]) l--;  // Skip duplicate numbers
+                        k++;
+                        l--;
+                    } else if (sum < target) {
+                        k++;
+                    } else {
+                        l--;
+                    }
+                }
+            }
+        }
+        return output;
     }
 
+
+
     public static void main(String[] args) {
-        int[] a = {1, 2, 3};
+        int[] a = {1,0,-1,0,-2,2};
         List<Integer> aList = Arrays.stream(a).boxed().toList();
         Set<List<Integer>> set = new HashSet<>();
         set.add(aList);
         set.add(aList);
-        System.out.println(set  );
-
+        System.out.println(set );
+        var v = fourSum(a, 0);
     }
 
 
