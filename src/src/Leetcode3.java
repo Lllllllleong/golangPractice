@@ -1941,6 +1941,22 @@ public class Leetcode3 {
     }
 
 
+    public List<String> findRepeatedDnaSequences(String s) {
+        int n = s.length();
+        List<String> output = new ArrayList<>();
+        if (n < 10) return output;
+        HashMap<String, Integer> hm = new HashMap<>();
+        for (int i = 0; i < n-9; i++) {
+            String sub = s.substring(i, i+10);
+            hm.merge(sub, 1, Integer::sum);
+        }
+        for (var entry : hm.entrySet()) {
+            if (entry.getValue() > 1) output.add(entry.getKey());
+        }
+        return output;
+    }
+
+
 
 
 
@@ -1952,7 +1968,6 @@ public class Leetcode3 {
         set.add(aList);
         set.add(aList);
         System.out.println(set );
-        var v = threeSumClosest(a, 0);
     }
 
 
@@ -1997,7 +2012,54 @@ static class Node {
     }
 }
 
+    class Trie {
+        Node root;
 
+        public Trie() {
+            root = new Node();
+        }
+
+        public void insert(String word) {
+            root.insert(word, 0);
+        }
+
+        public boolean search(String word) {
+            return root.search(word, 0);
+        }
+
+        class Node {
+            Node[] children;
+            boolean eow;
+
+            public Node() {
+                children = new Node[26];
+            }
+
+            public void insert(String s, int index) {
+                if (index == s.length()) {
+                    return;
+                } else {
+                    char c = s.charAt(index);
+                    int cIndex = c - 'a';
+                    if (children[cIndex] == null) {
+                        children[cIndex] = new Node();
+                    }
+                    children[cIndex].insert(s, index + 1);
+                    if (index == s.length() - 1) children[cIndex].eow = true;
+                }
+            }
+
+            public boolean search(String s, int index) {
+                if (index == s.length()) return false;
+                char c = s.charAt(index);
+                int cIndex = c - 'a';
+                Node n = children[cIndex];
+                if (n == null) return false;
+                if (index == s.length() - 1) return n.eow;
+                return n.search(s, index + 1);
+            }
+        }
+    }
 
 
 
