@@ -1245,38 +1245,7 @@ public class Leetcode3 {
     }
 
 
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> output = new ArrayList<>();
-        int a, b, c;
-        Arrays.sort(nums);
-        int priorJ = 0;
-        int priorK = 0;
-        Set<Integer> seen = new HashSet<>();
-        for (int i = 0; i < nums.length - 2; i++) {
-            if (seen.contains(nums[i])) continue;
-            Set<Integer> seen2 = new HashSet<>();
-            for (int j = Math.max(i + 1, priorJ); j < nums.length - 1; j++) {
-                if (seen2.contains(nums[j])) continue;
-                Set<Integer> seen3 = new HashSet<>();
-                for (int k = Math.max(j + 1, priorK); k < nums.length; k++) {
-                    if (seen3.contains(nums[k])) continue;
-                    a = nums[i];
-                    b = nums[j];
-                    c = nums[k];
-                    if (a + b + c == 0) {
-                        output.add(Arrays.asList(a, b, c));
-                        priorJ = j;
-                        priorK = k;
-                        break;
-                    }
-                    seen3.add(nums[k]);
-                }
-                seen2.add(nums[j]);
-            }
-            seen.add(nums[i]);
-        }
-        return new ArrayList<>(output);
-    }
+
 
 
 //    public boolean isMatch(String s, String p) {
@@ -1873,7 +1842,31 @@ public class Leetcode3 {
     }
 
 
-
+    public List<List<Integer>> threeSum(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> output = new ArrayList<>();
+        if (n < 3) return output;
+        Arrays.sort(nums);
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            hm.put(num, i);
+        }
+        for (int i = 0; i < n-2; i++) {
+            int first = nums[i];
+            if (first > 0) break;
+            if (i > 0 && first == nums[i-1]) continue;
+            for (int j = i+1; j < n-1; j++) {
+                if (j > i+1 && nums[j] == nums[j-1]) continue;
+                int second = nums[j];
+                int third = (first + second) * -1;
+                if (hm.containsKey(third) && hm.get(third) > j) {
+                    output.add(Arrays.asList(first, second, third));
+                }
+            }
+        }
+        return output;
+    }
 
 
 
@@ -1886,7 +1879,11 @@ public class Leetcode3 {
 
     public static void main(String[] args) {
         int[] a = {1, 2, 3};
-
+        List<Integer> aList = Arrays.stream(a).boxed().toList();
+        Set<List<Integer>> set = new HashSet<>();
+        set.add(aList);
+        set.add(aList);
+        System.out.println(set  );
 
     }
 
