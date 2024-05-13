@@ -2099,13 +2099,25 @@ public class Leetcode3 extends Leetcode2 {
         }
     }
 
-    public String dqToString(Deque<Character> dq) {
-        StringBuilder sb = new StringBuilder();
-        for (Character C : dq) {
-            sb.append(C);
+
+
+    public int eraseOverlapIntervals(int[][] intervals) {
+        //Sort by end time, first to last
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        int n = intervals.length;
+        int overlapCounter = 0;
+        for (int i = 1; i < n; i++) {
+            int[] previousInterval = intervals[i-1];
+            int[] currentInterval = intervals[i];
+            if (currentInterval[0] < previousInterval[1]) {
+                overlapCounter++;
+                intervals[i] = previousInterval;
+            }
         }
-        return sb.toString();
+        return overlapCounter;
     }
+
+
 
 
 
