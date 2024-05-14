@@ -2117,6 +2117,45 @@ public class Leetcode3 extends Leetcode2 {
         return overlapCounter;
     }
 
+    public class Point {
+        int index;
+        int sum;
+        public Point(int index, int sum) {
+            this.index = index;
+            this.sum = sum;
+        }
+    }
+
+
+
+    public boolean makesquare(int[] matchsticks) {
+        Arrays.sort(matchsticks);
+        int sum = 0;
+        for (int i : matchsticks) sum += i;
+        if (sum % 4 != 0) return false;
+        int maxLength = sum / 4;
+        if (matchsticks[matchsticks.length - 1] > maxLength) return false;
+        int[] lengths = new int[4];
+        Arrays.fill(lengths, maxLength);
+        return makesquare(matchsticks, 0, lengths);
+    }
+    public boolean makesquare(int[] matchsticks, int matchIndex, int[] lengths) {
+        int n = matchsticks.length;
+        if (matchIndex == n) {
+            for (int l : lengths) if (l != 0) return false;
+            return true;
+        }
+        int currentMatch = matchsticks[matchIndex];
+        for (int i = 0; i < 4; i++) {
+            if (lengths[i] >= currentMatch) {
+                lengths[i] -= currentMatch;
+                if (makesquare(matchsticks, matchIndex + 1, lengths)) return true;
+                lengths[i] += currentMatch;
+            }
+        }
+        return false;
+    }
+
 
 
 
@@ -2142,6 +2181,9 @@ public class Leetcode3 extends Leetcode2 {
         String t = "ABC";
         minWindow(s, t);
     }
+
+
+
 
 
     public class TreeNode {
