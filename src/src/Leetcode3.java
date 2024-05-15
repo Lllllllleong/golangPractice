@@ -2211,6 +2211,30 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int lengthOfLongestSubsequence(List<Integer> nums, int target) {
+        int n = nums.size();
+        if (n == 1) {
+            if (nums.get(0) == target) return 1;
+            return -1;
+        }
+        Collections.sort(nums);
+        int[] dp = new int[target+1];
+        int first = nums.get(0);
+        if (first > target) return -1;
+        dp[first] = 1;
+        for (int i = 1; i < n; i++) {
+            int num = nums.get(i);
+            for (int j = target-num; j >= 0; j--) {
+                if (j == 0) {
+                    dp[j+num] = Math.max(dp[j+num], 1);
+                } else {
+                    if (dp[j] > 0) dp[j+num] = Math.max(dp[j+num], dp[j] + 1);
+                }
+            }
+        }
+        return (dp[target] == 0) ? -1 : dp[target];
+    }
+
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
         int[][] g = {{1,2},{2,3},{3,4},{1,4},{1,5}};
