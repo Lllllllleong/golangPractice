@@ -2250,6 +2250,25 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+
+    public int findLength(int[] nums1, int[] nums2) {
+        int yMax = nums1.length;
+        int xMax = nums2.length;
+        int[][] dpMatrix = new int[yMax+1][xMax+1];
+        int output = 0;
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
+                if (nums1[y] == nums2[x]) {
+                    dpMatrix[y][x] = dpMatrix[y+1][x+1] + 1;
+                    output = Math.max(output, dpMatrix[x][y]);
+                }
+            }
+        }
+        for (int[] a : dpMatrix) System.out.println(Arrays.toString(a));
+        return output;
+    }
+
+
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
         int[][] g = {{1, 2}, {2, 3}, {3, 4}, {1, 4}, {1, 5}};
