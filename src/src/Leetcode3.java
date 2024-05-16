@@ -2232,7 +2232,7 @@ public class Leetcode3 extends Leetcode2 {
 
     public int maxValueOfCoins(List<List<Integer>> piles, int k) {
         int xMax = piles.size();
-        int[][] dp = new int[xMax+1][k+1];
+        int[][] dp = new int[xMax + 1][k + 1];
         for (int x = 0; x < xMax; x++) {
             List<Integer> pile = piles.get(x);
             for (int y = 0; y <= k; y++) {
@@ -2242,7 +2242,7 @@ public class Leetcode3 extends Leetcode2 {
             for (int c = 0; c < pile.size() && c < k; c++) {
                 currentSum += pile.get(c);
                 for (int y = k; y >= c + 1; y--) {
-                    dp[x+1][y] = Math.max(dp[x+1][y], dp[x][y-(c+1)] + currentSum);
+                    dp[x + 1][y] = Math.max(dp[x + 1][y], dp[x][y - (c + 1)] + currentSum);
                 }
             }
         }
@@ -2250,16 +2250,15 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
     public int findLength(int[] nums1, int[] nums2) {
         int yMax = nums1.length;
         int xMax = nums2.length;
-        int[][] dpMatrix = new int[yMax+1][xMax+1];
+        int[][] dpMatrix = new int[yMax + 1][xMax + 1];
         int output = 0;
         for (int y = yMax - 1; y >= 0; y--) {
             for (int x = xMax - 1; x >= 0; x--) {
                 if (nums1[y] == nums2[x]) {
-                    dpMatrix[y][x] = dpMatrix[y+1][x+1] + 1;
+                    dpMatrix[y][x] = dpMatrix[y + 1][x + 1] + 1;
                     output = Math.max(output, dpMatrix[x][y]);
                 }
             }
@@ -2267,6 +2266,26 @@ public class Leetcode3 extends Leetcode2 {
         for (int[] a : dpMatrix) System.out.println(Arrays.toString(a));
         return output;
     }
+
+
+    public static int longestCommonSubsequence(String text1, String text2) {
+        char[] a = text1.toCharArray();
+        char[] b = text2.toCharArray();
+        int yMax = text1.length();
+        int xMax = text2.length();
+        int[][] dpMatrix = new int[yMax+1][xMax+1];
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
+                if (a[y] == b[x]) {
+                    dpMatrix[y][x] = Math.max(dpMatrix[y+1][x+1] + 1, dpMatrix[y][x+1]);
+                } else {
+                    dpMatrix[y][x] = Math.max(dpMatrix[y][x+1], dpMatrix[y+1][x]);
+                }
+            }
+        }
+        return dpMatrix[0][0];
+    }
+
 
 
     public static void main(String[] args) {
