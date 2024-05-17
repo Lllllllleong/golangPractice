@@ -2306,6 +2306,30 @@ public class Leetcode3 extends Leetcode2 {
         return output;
     }
 
+
+
+
+    public int lengthOfLIS(int[] nums) {
+        TreeMap<Integer,Integer> tm = new TreeMap<>();
+        for (int i : nums) {
+            int currentLIS = 0;
+            Integer lKey = tm.lowerKey(i);
+            while (lKey != null) {
+                currentLIS = Math.max(currentLIS, tm.get(lKey));
+                lKey = tm.lowerKey(lKey);
+            }
+            tm.put(i, currentLIS+1);
+        }
+        int output = 0;
+        for (Integer I : tm.values()) output = Math.max(output, I);
+        return output;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
         int[][] g = {{1, 2}, {2, 3}, {3, 4}, {1, 4}, {1, 5}};
