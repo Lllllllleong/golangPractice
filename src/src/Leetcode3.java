@@ -2325,6 +2325,24 @@ public class Leetcode3 extends Leetcode2 {
         return output;
     }
 
+    int maxDiff = 0;
+    public int maxAncestorDiff(TreeNode root) {
+        if (root == null) return maxDiff;
+        if (root.left == null && root.right == null) return maxDiff;
+        maxAncestorDiff(root.left, root.val, root.val);
+        maxAncestorDiff(root.right, root.val, root.val);
+        return maxDiff;
+    }
+    public void maxAncestorDiff(TreeNode root, int min, int max) {
+        if (root == null) return;
+        int value = root.val;
+        maxDiff = Math.max(maxDiff, Math.max(Math.abs(value - min), Math.abs(value - max)));
+        min = Math.min(min, value);
+        max = Math.max(max, value);
+        maxAncestorDiff(root.left, min, max);
+        maxAncestorDiff(root.right, min, max);
+    }
+
 
 
 
