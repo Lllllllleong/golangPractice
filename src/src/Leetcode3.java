@@ -2415,16 +2415,20 @@ public class Leetcode3 extends Leetcode2 {
     public int maximalNetworkRank(int n, int[][] roads) {
         if (n == 2) return roads.length;
         int maxRank = 0;
+        boolean[][] isConnected = new boolean[n][n];
+        int[] individualRank = new int[n];
+        for (var road : roads) {
+            int a = road[0];
+            int b = road[1];
+            isConnected[a][b] = true;
+            isConnected[b][a] = true;
+            individualRank[a]++;
+            individualRank[b]++;
+        }
         for (int i = 0; i < n-1; i++) {
             for (int j = i+1; j < n; j++) {
-                int currentRank = 0;
-                for (int[] road : roads) {
-                    int a = (road[0] < road[1]) ? road[0] : road[1];
-                    int b = (road[0] < road[1]) ? road[1] : road[0];
-                    if (i == a && j == b) currentRank++;
-                    else if (i == a || i == b) currentRank++;
-                    else if (j == a || j == b) currentRank++;
-                }
+                int currentRank = individualRank[i] + individualRank[j];
+                if (isConnected[i][j]) currentRank--;
                 maxRank = Math.max(maxRank, currentRank);
             }
         }
