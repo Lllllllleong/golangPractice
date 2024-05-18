@@ -491,33 +491,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        List<List<Integer>> a = combSum2(candidates, 0, target);
-        Set<List<Integer>> s = new HashSet<>(a);
-        return new ArrayList<>(s);
-    }
-
-    public List<List<Integer>> combSum2(int[] marks, int startIndex, int target) {
-        List<List<Integer>> out = new ArrayList<>();
-        if (target < 0 || startIndex == marks.length) return out;
-        if (target == 0) {
-            out.add(new ArrayList<>());
-            return out;
-        } else {
-            out = combSum2(marks, startIndex + 1, target);
-            int currentMark = marks[startIndex];
-            var nextComb = combSum2(marks, startIndex + 1, target - currentMark);
-            for (var v : nextComb) {
-                v.add(currentMark);
-                Collections.sort(v);
-                if (!out.contains(v)) out.add(v);
-            }
-            return out;
-        }
-    }
-
-
     static HashMap<Integer, List<List<Integer>>> pathsFromKeyToEnd;
 
     public static List<List<Integer>> allPathsSourceTarget(int[][] graph) {
@@ -2400,6 +2373,43 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+    public static List<List<Integer>> combinationSum22(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> output = new ArrayList<>();
+        List<Integer> l = new ArrayList<>();
+        int n = candidates.length;
+        if (n == 1) {
+            if (candidates[0] == target) {
+                l.add(target);
+                output.add(l);
+            }
+            return output;
+        }
+        combinationSum22(candidates, target, output, l, 0);
+        return output;
+    }
+    public static void combinationSum22(int[] candidates, int target, List<List<Integer>> output, List<Integer> innerList, int index) {
+        int n = candidates.length;
+        Set<Integer> set = new HashSet<>();
+        if (index == n) return;
+        for (int i = index; i < n; i++) {
+            int currentNumber = candidates[i];
+            if (set.contains(currentNumber)) continue;
+            set.add(currentNumber);
+            if (target - currentNumber < 0) break;
+            innerList.add(currentNumber);
+            int newTarget = target - currentNumber;
+            if (newTarget == 0) {
+                List<Integer> l = new ArrayList<>();
+                for (Integer I : innerList) l.add(I);
+                if (!output.contains(l)) output.add(l);
+            } else {
+                combinationSum22(candidates, newTarget, output, innerList, i+1);
+            }
+            innerList.remove(innerList.size()-1);
+        }
+    }
+
 
 
 
@@ -2407,6 +2417,9 @@ public class Leetcode3 extends Leetcode2 {
         int[] a = {1, 1, 1, 1};
         int[][] points = { {2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0} };
 //        minCostConnectPoints(points);
+
+        int[] candidates = {10,1,2,7,6,1,5};
+        var v = combinationSum22(candidates, 8);
     }
 
 
