@@ -2440,6 +2440,7 @@ public class Leetcode3 extends Leetcode2 {
 
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
         if (n == 1) return new ArrayList<>(Arrays.asList(0));
+        int[] edgeCount = new int[n];
         HashMap<Integer, List<Integer>> hm = new HashMap<>();
         for (int[] edge : edges) {
             int a = edge[0];
@@ -2449,36 +2450,89 @@ public class Leetcode3 extends Leetcode2 {
             hm.get(a).add(b);
             hm.get(b).add(a);
         }
-        List<Integer> leafNodes = new ArrayList<>();
-        boolean flag = true;
-        while (flag) {
-            flag = false;
-            for (Integer leaf : leafNodes) {
-                hm.remove(leaf);
-                for (List<Integer> l : hm.values()) {
-                    if (l.contains(leaf)) l.remove(leaf);
+        boolean bfs = true;
+        while (bfs) {
+            Set<Map.Entry<Integer, List<Integer>>> entrySet = new HashSet<>(hm.entrySet());
+            for (var entry : entrySet) {
+                Integer key = entry.getKey();
+                List<Integer> value = entry.getValue();
+                if (value.size() == 1) {
+                    hm.get(value.get(0)).remove(key);
+                    hm.remove(key);
                 }
             }
-            for (var entry: hm.entrySet()) {
-                if (entry.getValue().size() == 1) {
-                    leafNodes.add(entry.getKey());
-                } else if (entry.getValue().size() > 1) flag = true;
-            }
+            bfs = hm.size() > 2;
         }
-        List<Integer> output = new ArrayList<>(hm.keySet());
-        return output;
+        return new ArrayList<>(hm.keySet());
     }
 
 
 
+    public static int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int[] charFrequency = new int[26];
+        for (char c : letters) charFrequency[c - 'a']++;
+        int n = words.length;
+        int[][] charWords = new int[n][26];
+        for (int i = 0; i < n; i++) {
+            char[] word = words[i].toCharArray();
+            for (char c : word) charWords[i][c - 'a']++;
+        }
+        return maxScoreWords(charWords, charFrequency, score, 0);
+    }
+
+    private static int maxScoreWords(int[][] charWords, int[] charFrequency, int[] score, int index) {
+        if (index == charWords.length) return 0;
+
+        // Option 1: Skip the current word
+        int skipWord = maxScoreWords(charWords, charFrequency, score, index + 1);
+
+        // Option 2: Include the current word (if possible)
+        int[] currentWord = charWords[index];
+        boolean canFormWord = true;
+        int wordScore = 0;
+        for (int i = 0; i < 26; i++) {
+            if (currentWord[i] > charFrequency[i]) {
+                canFormWord = false;
+                break;
+            }
+            wordScore += currentWord[i] * score[i];
+        }
+        int useWord = 0;
+        if (canFormWord) {
+            // Create a copy of charFrequency array to pass to the recursive call
+            int[] newCharFrequency = charFrequency.clone();
+            for (int i = 0; i < 26; i++) {
+                newCharFrequency[i] -= currentWord[i];
+            }
+            useWord = wordScore + maxScoreWords(charWords, newCharFrequency, score, index + 1);
+        }
+
+        return Math.max(skipWord, useWord);
+    }
+
+
 
     public static void main(String[] args) {
+
         int[] a = {1, 1, 1, 1};
         int[][] points = { {2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0} };
 //        minCostConnectPoints(points);
 
         int[][] edges ={{3,0},{3,1},{3,2},{3,4},{5,4}};
         findMinHeightTrees(6, edges);
+
+        String[] words = {"dog","cat","dad","good"};
+        char[] letters = {'a','a','c','d','d','d','g','o','o'};
+        int[] score = {1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0};
+        int res = maxScoreWords(words, letters, score);
+
+
+
+        int[] b = {1,15,7,9,2,5,10};
+
+
+
+
     }
 
 
