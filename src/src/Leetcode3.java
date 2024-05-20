@@ -2318,17 +2318,15 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
         if (n == 1) return 0;
         boolean[] searchedPoints = new boolean[n];
         //int[]: {Distance, Index of the point}
         //Priority based on smallest distance
-        PriorityQueue<int[]> distanceIndexPQ = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+        PriorityQueue<int[]> distanceIndexPQ = new PriorityQueue<>((a, b) -> a[0] - b[0]);
         //First point has no cost
-        int[] first = {0,0};
+        int[] first = {0, 0};
         distanceIndexPQ.add(first);
         //Minimum cost per point, array
         int[] minimumCost = new int[n];
@@ -2352,7 +2350,7 @@ public class Leetcode3 extends Leetcode2 {
                 int queryDistance = Math.abs(currentPoint[0] - queryPoint[0]) + Math.abs(currentPoint[1] - queryPoint[1]);
                 if (queryDistance < minimumCost[i]) {
                     minimumCost[i] = queryDistance;
-                    distanceIndexPQ.add(new int[] {queryDistance, i});
+                    distanceIndexPQ.add(new int[]{queryDistance, i});
                 }
             }
         }
@@ -2367,7 +2365,7 @@ public class Leetcode3 extends Leetcode2 {
         System.out.println(list);
         if (list.size() == 1) return true;
         for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) == list.get(i-1)) return false;
+            if (list.get(i) == list.get(i - 1)) return false;
         }
         return true;
     }
@@ -2388,6 +2386,7 @@ public class Leetcode3 extends Leetcode2 {
         combinationSum22(candidates, target, output, l, 0);
         return output;
     }
+
     public static void combinationSum22(int[] candidates, int target, List<List<Integer>> output, List<Integer> innerList, int index) {
         int n = candidates.length;
         Set<Integer> set = new HashSet<>();
@@ -2404,12 +2403,11 @@ public class Leetcode3 extends Leetcode2 {
                 for (Integer I : innerList) l.add(I);
                 if (!output.contains(l)) output.add(l);
             } else {
-                combinationSum22(candidates, newTarget, output, innerList, i+1);
+                combinationSum22(candidates, newTarget, output, innerList, i + 1);
             }
-            innerList.remove(innerList.size()-1);
+            innerList.remove(innerList.size() - 1);
         }
     }
-
 
 
     public int maximalNetworkRank(int n, int[][] roads) {
@@ -2425,8 +2423,8 @@ public class Leetcode3 extends Leetcode2 {
             individualRank[a]++;
             individualRank[b]++;
         }
-        for (int i = 0; i < n-1; i++) {
-            for (int j = i+1; j < n; j++) {
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
                 int currentRank = individualRank[i] + individualRank[j];
                 if (isConnected[i][j]) currentRank--;
                 maxRank = Math.max(maxRank, currentRank);
@@ -2434,8 +2432,6 @@ public class Leetcode3 extends Leetcode2 {
         }
         return maxRank;
     }
-
-
 
 
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
@@ -2465,7 +2461,6 @@ public class Leetcode3 extends Leetcode2 {
         }
         return new ArrayList<>(hm.keySet());
     }
-
 
 
     public static int maxScoreWords(String[] words, char[] letters, int[] score) {
@@ -2511,9 +2506,8 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     Integer[] dpPower;
+
     public int getKth(int lo, int hi, int k) {
         dpPower = new Integer[3000];
         dpPower[1] = 0;
@@ -2523,19 +2517,20 @@ public class Leetcode3 extends Leetcode2 {
         for (int i = lo; i <= hi; i++) {
             range.add(i);
         }
-        Collections.sort(range, (a,b) -> {
-            if (getPowerNumber(a) == getPowerNumber(b)) return (a-b);
+        Collections.sort(range, (a, b) -> {
+            if (getPowerNumber(a) == getPowerNumber(b)) return (a - b);
             else return (getPowerNumber(a) - getPowerNumber(b));
         });
-        return range.get(k-1);
+        return range.get(k - 1);
     }
+
     public int getPowerNumber(int i) {
         if (dpPower[i] != null) return dpPower[i];
-        boolean even = (i%2==0);
+        boolean even = (i % 2 == 0);
         if (even) {
-            dpPower[i] = getPowerNumber(i/2) + 1;
+            dpPower[i] = getPowerNumber(i / 2) + 1;
         } else {
-            dpPower[i] = getPowerNumber(i*3 + 1) + 1;
+            dpPower[i] = getPowerNumber(i * 3 + 1) + 1;
         }
         return dpPower[i];
     }
@@ -2543,56 +2538,105 @@ public class Leetcode3 extends Leetcode2 {
 
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[] dpArray = new int[n+10];
+        int[] dpArray = new int[n + 10];
         for (int i = n - 2; i >= 0; i--) {
             int price = prices[i];
             int profit = 0;
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 int futurePrice = dpArray[j];
                 System.out.println(price);
                 System.out.println(futurePrice);
-                int currentProfit = price - futurePrice + dpArray[j+2];
+                int currentProfit = price - futurePrice + dpArray[j + 2];
                 profit = Math.max(profit, currentProfit);
             }
-            dpArray[i] = Math.max(dpArray[i+1], profit);
+            dpArray[i] = Math.max(dpArray[i + 1], profit);
         }
         return dpArray[0];
     }
 
 
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        graph.ensureCapacity(4000);
+        for (int i = 0; i < 4000; i++) {
+            ArrayList<Integer> innerList = new ArrayList<>();
+            innerList.ensureCapacity(4000);
+            graph.add(innerList);
+        }
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph.get(a).add(b);
+            graph.get(b).add(a);
+        }
+        int[] output = new int[n];
+        for (int i = 0; i < n; i++) {
+            Set<Integer> visited = new HashSet<>();
+            visited.add(i);
+            int distance = 0;
+            ArrayList<Integer> current = graph.get(i);
+            while (!current.isEmpty()) {
+                distance++;
+                output[i] += current.size() * distance;
+                ArrayList<Integer> next = new ArrayList<>();
+                for (Integer I : current) {
+                    visited.add(I);
+                    for (Integer II : graph.get(I)) {
+                        if (!visited.contains(II)) {
+                            next.add(II);
+                        }
+                    }
+                }
+                current = next;
+            }
+        }
+        return output;
+    }
 
 
 
-
-
-
-
-
-
-
-
-
-
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        if (n == 2) {
+            int tmp = nums[0];
+            nums[0] = nums[1];
+            nums[1] = tmp;
+            return nums;
+        }
+        int[] leftDP = new int[n];
+        int[] rightDP = new int[n];
+        leftDP[0] = nums[0];
+        rightDP[n-1]= nums[n-1];
+        for (int i = 1; i < n; i++) {
+            leftDP[i] = leftDP[i-1] * nums[i];
+        }
+        for (int i = n - 2; i >= 0; i--) {
+            rightDP[i] = rightDP[i+1] * nums[i];
+        }
+        nums[0] = rightDP[1];
+        nums[n-1] = leftDP[n-2];
+        for (int i = 1; i < n-1; i++) {
+            nums[i] = leftDP[i-1] * rightDP[i+1];
+        }
+        return nums;
+    }
 
     public static void main(String[] args) {
 
         int[] a = {1, 1, 1, 1};
-        int[][] points = { {2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0} };
+        int[][] points = {{2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0}};
 //        minCostConnectPoints(points);
 
-        int[][] edges ={{3,0},{3,1},{3,2},{3,4},{5,4}};
+        int[][] edges = {{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}};
         findMinHeightTrees(6, edges);
 
-        String[] words = {"dog","cat","dad","good"};
-        char[] letters = {'a','a','c','d','d','d','g','o','o'};
-        int[] score = {1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0};
+        String[] words = {"dog", "cat", "dad", "good"};
+        char[] letters = {'a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'};
+        int[] score = {1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         int res = maxScoreWords(words, letters, score);
 
 
-
-        int[] b = {1,15,7,9,2,5,10};
-
-
+        int[] b = {1, 15, 7, 9, 2, 5, 10};
 
 
     }
@@ -2687,9 +2731,11 @@ public class Leetcode3 extends Leetcode2 {
             }
         }
     }
-
-
 }
+
+
+
+
 
 
 //class Solution extends SolBase {
