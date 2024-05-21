@@ -2677,8 +2677,21 @@ public class Leetcode3 extends Leetcode2 {
 
     public static int countRoutes(int[] locations, int start, int finish, int fuel) {
         int n = locations.length;
+        int oldStart = locations[start];
+        int oldFinish = locations[finish];
+        Arrays.sort(locations);
+        int newFinish = 0;
+        int newStart = 0;
+        for (int i : locations) {
+            if (i == oldFinish) break;
+            newFinish++;
+        }
+        for (int i : locations) {
+            if (i == oldStart) break;
+            newStart++;
+        }
         Integer[][] dpMemory = new Integer[n][fuel+1];
-        Integer output = countRoutes(locations, start, finish, fuel, dpMemory);
+        Integer output = countRoutes(locations, newStart, newFinish, fuel, dpMemory);
         return output;
     }
     public static Integer countRoutes(int[] locations, int currentLocation, int target, int currentFuel, Integer[][] dpMemory) {
@@ -2689,7 +2702,7 @@ public class Leetcode3 extends Leetcode2 {
             if (i == currentLocation) continue;
             int nextFuelCost = Math.abs(locations[currentLocation] - locations[i]);
             int nextFuel = currentFuel - nextFuelCost;
-            if (nextFuel < 0) continue;
+            if (nextFuel < 0) break;
             output += countRoutes(locations, i, target, nextFuel, dpMemory);
         }
         long mod = 1000000007;
