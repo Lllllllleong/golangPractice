@@ -2633,25 +2633,7 @@ public class Leetcode3 extends Leetcode2 {
         return nums;
     }
 
-    public static void main(String[] args) {
 
-        int[] a = {1, 1, 1, 1};
-        int[][] points = {{2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0}};
-//        minCostConnectPoints(points);
-
-        int[][] edges = {{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}};
-        findMinHeightTrees(6, edges);
-
-        String[] words = {"dog", "cat", "dad", "good"};
-        char[] letters = {'a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'};
-        int[] score = {1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        int res = maxScoreWords(words, letters, score);
-
-
-        int[] b = {1, 15, 7, 9, 2, 5, 10};
-
-
-    }
 
 
 
@@ -2690,6 +2672,52 @@ public class Leetcode3 extends Leetcode2 {
         return result;
     }
 
+
+
+
+    public static int countRoutes(int[] locations, int start, int finish, int fuel) {
+        int n = locations.length;
+        Integer[][] dpMemory = new Integer[n][fuel+1];
+        Integer output = countRoutes(locations, start, finish, fuel, dpMemory);
+        return output;
+    }
+    public static Integer countRoutes(int[] locations, int currentLocation, int target, int currentFuel, Integer[][] dpMemory) {
+        int n = locations.length;
+        if (dpMemory[currentLocation][currentFuel] != null) return dpMemory[currentLocation][currentFuel];
+        Integer output = (currentLocation == target) ? 1 : 0;
+        for (int i = 0; i < n; i++) {
+            if (i == currentLocation) continue;
+            int nextFuelCost = Math.abs(locations[currentLocation] - locations[i]);
+            int nextFuel = currentFuel - nextFuelCost;
+            if (nextFuel < 0) continue;
+            output += countRoutes(locations, i, target, nextFuel, dpMemory);
+        }
+        long mod = 1000000007;
+        return dpMemory[currentLocation][currentFuel] = Math.toIntExact(output % mod);
+    }
+
+
+    public static void main(String[] args) {
+        long mod = 1000000007;
+
+        int[] a = {1, 1, 1, 1};
+        int[][] points = {{2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0}};
+//        minCostConnectPoints(points);
+
+        int[][] edges = {{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}};
+        findMinHeightTrees(6, edges);
+
+        String[] words = {"dog", "cat", "dad", "good"};
+        char[] letters = {'a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'};
+        int[] score = {1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        int res = maxScoreWords(words, letters, score);
+
+
+        int[] b = {2,3,6,8,4};
+        int cr = countRoutes(b, 1,3,5);
+
+
+    }
 
     public class TreeNode {
         int val;
