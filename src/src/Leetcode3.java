@@ -2581,7 +2581,7 @@ public class Leetcode3 extends Leetcode2 {
         //Fill in the sumDistance array, as the number of child
         sumDistanceDFS(-1, 0);
         //Reverse DFS from root to leaf
-        reverseSumDistanceDFS(-1,0);
+        reverseSumDistanceDFS(-1, 0);
         return distanceSum;
     }
 
@@ -2595,6 +2595,7 @@ public class Leetcode3 extends Leetcode2 {
             }
         }
     }
+
     public void reverseSumDistanceDFS(Integer parentNode, Integer currentNode) {
         int n = childCount.length;
         for (Integer childNode : graph.get(currentNode)) {
@@ -2634,9 +2635,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
-
     public List<TreeNode> allPossibleFBT(int n) {
         Map<Integer, List<TreeNode>> memoryMap = new HashMap<>();
         return allPossibleFBT(n, memoryMap);
@@ -2673,8 +2671,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     public static int countRoutes(int[] locations, int start, int finish, int fuel) {
         int n = locations.length;
         int oldStart = locations[start];
@@ -2690,10 +2686,11 @@ public class Leetcode3 extends Leetcode2 {
             if (i == oldStart) break;
             newStart++;
         }
-        Integer[][] dpMemory = new Integer[n][fuel+1];
+        Integer[][] dpMemory = new Integer[n][fuel + 1];
         Integer output = countRoutes(locations, newStart, newFinish, fuel, dpMemory);
         return output;
     }
+
     public static Integer countRoutes(int[] locations, int currentLocation, int target, int currentFuel, Integer[][] dpMemory) {
         int n = locations.length;
         if (dpMemory[currentLocation][currentFuel] != null) return dpMemory[currentLocation][currentFuel];
@@ -2708,10 +2705,6 @@ public class Leetcode3 extends Leetcode2 {
         long mod = 1000000007;
         return dpMemory[currentLocation][currentFuel] = Math.toIntExact(output % mod);
     }
-
-
-
-
 
 
     public int[] rowAndMaximumOnes(int[][] mat) {
@@ -2730,9 +2723,89 @@ public class Leetcode3 extends Leetcode2 {
         return new int[]{maxIndex, maxFrequency};
     }
 
+    public class DoubleKey {
+        Integer index;
+        Integer sum;
+        public DoubleKey(Integer index, Integer sum) {
+            this.index = index;
+            this.sum = sum;
+        }
+    }
+
+    public int findTargetSumWays(int[] nums, int target) {
+        int n = nums.length;
+        HashMap<DoubleKey, Integer> hm = new HashMap<>();
+        return findTargetSumWays(nums, hm, target, 0);
+    }
+
+    public int findTargetSumWays(int[] nums, HashMap<DoubleKey, Integer> hm, int target, int currentIndex) {
+        int n = nums.length;
+        if (currentIndex == n) {
+            if (target == 0) return 1;
+            return 0;
+        }
+        DoubleKey dk = new DoubleKey(currentIndex, target);
+        if (hm.containsKey(dk)) return hm.get(dk);
+        int num = nums[currentIndex];
+        int a = findTargetSumWays(nums, hm, target - num, currentIndex + 1);
+        int b = findTargetSumWays(nums, hm, target + num, currentIndex + 1);
+        hm.put(dk, a + b);
+        return hm.get(dk);
+    }
 
 
 
+
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        if (n == 1) {
+            return 0;
+        }
+        int[] dpArray = new int[n+10];
+        for (int i = n - 2; i >= 0; i--) {
+            int price = prices[i];
+            int currentProfit = 0;
+            for (int j = i+1; j < n; j++) {
+                int secondPrice = prices[j];
+                if (secondPrice > price) {
+                    int thisProfit = secondPrice - price - fee;
+                    thisProfit += dpArray[j+1];
+                    currentProfit = Math.max(currentProfit, thisProfit);
+                }
+            }
+            currentProfit = Math.max(currentProfit, dpArray[i+1]);
+            dpArray[i] = currentProfit;
+        }
+        return dpArray[0];
+    }
+
+
+
+
+
+    public int distributeCookies(int[] cookies, int k) {
+        int[] buckets = new int[k];
+        return distributeCookies(cookies, buckets, 0);
+    }
+    public int distributeCookies(int[] cookies, int[] buckets, int index) {
+        int n = cookies.length;
+        if (index == n) {
+            int max = -1;
+            for (int i : buckets) max = Math.max(max, i);
+            return max;
+        }
+        int currentCookie = cookies[index];
+        int min = Integer.MAX_VALUE;
+        int m = buckets.length;
+        for (int i = 0; i < m; i++) {
+            buckets[i] = buckets[i] + currentCookie;
+            int next = distributeCookies(cookies, buckets, index+1);
+            min = Math.min(min, next);
+            buckets[i] = buckets[i] - currentCookie;
+            if (buckets[i] == 0) break;
+        }
+        return min;
+    }
 
     public static void main(String[] args) {
         long mod = 1000000007;
@@ -2750,8 +2823,8 @@ public class Leetcode3 extends Leetcode2 {
         int res = maxScoreWords(words, letters, score);
 
 
-        int[] b = {2,3,6,8,4};
-        int cr = countRoutes(b, 1,3,5);
+        int[] b = {2, 3, 6, 8, 4};
+        int cr = countRoutes(b, 1, 3, 5);
 
 
     }
