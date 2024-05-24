@@ -2902,6 +2902,18 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int maxSumDivThree(int[] nums) {
+        int[] dpModulo = new int[3];
+        for (int i : nums) {
+            int a = dpModulo[0] + i;
+            int b = dpModulo[1] + i;
+            int c = dpModulo[2] + i;
+            dpModulo[a%3] = Math.max(dpModulo[a%3], a);
+            dpModulo[b%3] = Math.max(dpModulo[b%3], b);
+            dpModulo[c%3] = Math.max(dpModulo[c%3], c);
+        }
+        return dpModulo[0];
+    }
 
 
 
