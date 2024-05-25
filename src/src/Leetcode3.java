@@ -3048,6 +3048,29 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int mincostTickets(int[] days, int[] costs) {
+        int n = days.length;
+        int firstDay = days[0];
+        int oneDay = costs[0];
+        int sevenDay = costs[1];
+        int thirtyDay = costs[2];
+        int[] dpArray = new int[365 + 1 + 30];
+        int pointer = 365;
+        for (int i = n - 1; i >= 0; i--) {
+            int currentDay = days[i];
+            while (currentDay < pointer) {
+                pointer--;
+                dpArray[pointer] = dpArray[pointer+1];
+            }
+            int costOne = oneDay + dpArray[currentDay + 1];
+            int costSeven = sevenDay + dpArray[currentDay + 7];
+            int costThirty = thirtyDay + dpArray[currentDay + 30];
+            int minCost = Math.min(costOne, Math.min(costSeven, costThirty));
+            dpArray[currentDay] = minCost;
+        }
+        return dpArray[firstDay];
+    }
+
 
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
