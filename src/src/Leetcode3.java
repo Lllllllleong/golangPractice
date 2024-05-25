@@ -3072,6 +3072,27 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+
+
+    public int maxResult(int[] nums, int k) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Deque<Integer> deque = new LinkedList<>();
+        dp[0] = nums[0];
+        deque.addFirst(0);
+        for (int i = 1; i < n; i++) {
+            if (deque.peekFirst() < i - k) {
+                deque.pollFirst();
+            }
+            dp[i] = nums[i] + dp[deque.peekFirst()];
+            while (!deque.isEmpty() && dp[i] >= dp[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.addLast(i);
+        }
+        return dp[n - 1];
+    }
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
