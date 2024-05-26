@@ -3177,6 +3177,49 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+
+
+
+
+    public static int maxProfit(int k, int[] prices) {
+        int n = prices.length;
+        if (n == 1) return 0;
+        if (n == 2) {
+            return Math.max(prices[1]-prices[0], 0);
+        }
+        int[][] dpReferenceMatrix = new int[n+1][n+1];
+        for (int i = 0; i < n-1; i++) {
+            int minPrice = prices[i];
+            for (int j = i+1; j < n; j++) {
+                minPrice = Math.min(minPrice, prices[j]);
+                dpReferenceMatrix[i][j] = Math.max(dpReferenceMatrix[i][j-1], Math.max(dpReferenceMatrix[i][j], prices[j] - minPrice));
+            }
+        }
+        int[][] dpMatrix = new int[k][n+1];
+        for (int i = 0; i < n; i++) {
+            dpMatrix[0][i] = dpReferenceMatrix[i][n-1];
+        }
+        //i is the level
+        for (int i = 1; i < k; i++) {
+            int currentProfit = 0;
+            //j is the start
+            for (int j = n - 2; j >= 0; j--) {
+                int currentLevelProfit = 0;
+                //l is the end
+                for (int l = n - 1; l > j; l--) {
+                    int currentSingleProfit = dpReferenceMatrix[j][l];
+                    int priorLevelProfit = dpMatrix[i-1][l+1];
+                    int currentLevelBoundedProfit = currentSingleProfit + priorLevelProfit;
+                    currentLevelProfit = Math.max(currentLevelProfit, currentLevelBoundedProfit);
+                }
+                dpMatrix[i][j] = Math.max(dpMatrix[i][j+1], currentLevelProfit);
+            }
+        }
+        return dpMatrix[k-1][0];
+    }
+
+
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
@@ -3191,6 +3234,12 @@ public class Leetcode3 extends Leetcode2 {
         System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,0.5d));
 
         boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
+
+        int[] prices = {7, 1, 5, 3, 6, 4};
+        int ndf = maxProfit(1, prices);
+
+
+
 //        long mod = 1000000007;
 //
 //        int[] a = {1, 1, 1, 1};
@@ -3213,10 +3262,6 @@ public class Leetcode3 extends Leetcode2 {
 //        int fewji = minHeightShelves(books,4);
 
     }
-
-
-
-
 
 
 
