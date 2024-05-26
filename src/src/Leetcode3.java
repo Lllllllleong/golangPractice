@@ -3128,6 +3128,46 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        char[] sCharArray = s.toCharArray();
+        char[][] charDictionary = new char[wordDict.size()][];
+        Collections.sort(wordDict, Collections.reverseOrder());
+        System.out.println(wordDict.get(0));
+        for (int i = 0; i < wordDict.size(); i++) {
+            char[] word = wordDict.get(i).toCharArray();
+            charDictionary[i] = word;
+        }
+        return wordBreak(sCharArray, charDictionary, 0, 0);
+    }
+    public static boolean wordBreak(char[] sCharArray, char[][] charDictionary, int sCharIndex, int dictionaryIndex) {
+        int n = sCharArray.length;
+        int m = charDictionary.length;
+        if (dictionaryIndex == m) return false;
+        if (sCharIndex == n) return true;
+        char[] currentDictionaryWord = charDictionary[dictionaryIndex];
+        int remainingChars = n - sCharIndex;
+        if (currentDictionaryWord.length > remainingChars) {
+            return wordBreak(sCharArray, charDictionary, sCharIndex, dictionaryIndex+1);
+        }
+        boolean match = true;
+        int sCharIndexNext = sCharIndex;
+        for (char c : currentDictionaryWord) {
+            if (sCharArray[sCharIndexNext] == c) {
+                sCharIndexNext++;
+            } else {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            boolean nextSubstringMatch = wordBreak(sCharArray, charDictionary, sCharIndexNext, 0);
+            if (nextSubstringMatch) return true;
+        }
+        boolean nextDictionaryMatch = wordBreak(sCharArray, charDictionary, sCharIndex, dictionaryIndex+1);
+        return nextDictionaryMatch;
+    }
+
+
 
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
@@ -3142,7 +3182,7 @@ public class Leetcode3 extends Leetcode2 {
         System.out.println(levenshteinDistance("Hello World!", "Hello",1,0.5d));
         System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,0.5d));
 
-
+        boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
 //        long mod = 1000000007;
 //
 //        int[] a = {1, 1, 1, 1};
