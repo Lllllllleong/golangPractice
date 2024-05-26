@@ -3150,6 +3150,32 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int minDistance(String word1, String word2) {
+        char[] a = word1.toLowerCase().toCharArray();
+        char[] b = word2.toLowerCase().toCharArray();
+        int[][] dpArray = new int[a.length + 1][b.length + 1];
+        for (int i = 0; i <= a.length; i++) {
+            for (int j = 0; j <= b.length; j++) {
+                if (i == 0) {
+                    dpArray[i][j] = j;
+                } else if (j == 0) {
+                    dpArray[i][j] = i;
+                } else {
+                    int substitutionCost = (a[i - 1] == b[j - 1] ? 0 : 1);
+                    int substitution = dpArray[i - 1][j - 1] + substitutionCost;
+                    int insertion = dpArray[i - 1][j] + 1;
+                    int deletion = dpArray[i][j - 1] + 1;
+                    dpArray[i][j] = Math.min(substitution, Math.min(insertion, deletion));
+                }
+            }
+        }
+        return dpArray[a.length][b.length];
+    }
+
+
+
+
+
 
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
