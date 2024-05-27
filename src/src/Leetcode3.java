@@ -3288,6 +3288,40 @@ public class Leetcode3 extends Leetcode2 {
         return left;
     }
 
+
+
+
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        if (n == 2) return (stones[1] == 1);
+        Set<Integer> stoneSet = new HashSet<>();
+        for (int stone : stones) stoneSet.add(stone);
+        HashMap<Integer, Set<Integer>> hm = new HashMap<>();
+        int index = n-2;
+        while (index > 0) {
+            int lastJump = stones[n-1] - stones[index];
+            boolean output = canCross(stoneSet, hm, lastJump, stones[n-1]);
+            if (output) return true;
+        }
+        return false;
+    }
+    public boolean canCross(Set<Integer> stoneSet, HashMap<Integer, Set<Integer>> hm, int lastJump, int currentPos) {
+        if (currentPos == 0) {
+            if (lastJump == 1) return true;
+            return false;
+        }
+        if (lastJump <= 0) return false;
+        if (currentPos < 0) return false;
+        if (!stoneSet.contains(currentPos)) return false;
+        if (!hm.containsKey(lastJump)) hm.put(lastJump, new HashSet<>());
+        if (hm.get(lastJump).contains(currentPos)) return false;
+        hm.get(lastJump).add(currentPos);
+        if (canCross(stoneSet, hm, lastJump-1, currentPos - (lastJump-1))) return true;
+        if (canCross(stoneSet, hm, lastJump, currentPos - (lastJump))) return true;
+        if (canCross(stoneSet, hm, lastJump+1, currentPos - (lastJump+1))) return true;
+        return false;
+    }
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
