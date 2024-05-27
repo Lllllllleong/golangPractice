@@ -2732,27 +2732,6 @@ public class Leetcode3 extends Leetcode2 {
         }
     }
 
-    public int findTargetSumWays(int[] nums, int target) {
-        int n = nums.length;
-        HashMap<DoubleKey, Integer> hm = new HashMap<>();
-        return findTargetSumWays(nums, hm, target, 0);
-    }
-
-    public int findTargetSumWays(int[] nums, HashMap<DoubleKey, Integer> hm, int target, int currentIndex) {
-        int n = nums.length;
-        if (currentIndex == n) {
-            if (target == 0) return 1;
-            return 0;
-        }
-        DoubleKey dk = new DoubleKey(currentIndex, target);
-        if (hm.containsKey(dk)) return hm.get(dk);
-        int num = nums[currentIndex];
-        int a = findTargetSumWays(nums, hm, target - num, currentIndex + 1);
-        int b = findTargetSumWays(nums, hm, target + num, currentIndex + 1);
-        hm.put(dk, a + b);
-        return hm.get(dk);
-    }
-
 
 
 
@@ -3374,7 +3353,22 @@ public class Leetcode3 extends Leetcode2 {
         return -1;
     }
 
-
+    int targetSumCounter;
+    public int findTargetSumWays(int[] nums, int target) {
+        targetSumCounter = 0;
+        findTargetSumWays(nums, target, 0, 0);
+        return targetSumCounter;
+    }
+    public void findTargetSumWays(int[] nums, int target, int index, int currentSum) {
+        int n = nums.length;
+        if (index == n) {
+            if (currentSum == target) targetSumCounter++;
+            return;
+        }
+        int currentNumber = nums[index];
+        findTargetSumWays(nums, target, index+1, currentSum + currentNumber);
+        findTargetSumWays(nums, target, index+1, currentSum - currentNumber);
+    }
 
 
 
