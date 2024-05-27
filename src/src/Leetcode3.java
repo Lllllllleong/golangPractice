@@ -3254,6 +3254,40 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+    public int splitArray(int[] nums, int k) {
+        int maxWeight = 0;
+        int sumWeight = 0;
+        for (int weight : nums) {
+            maxWeight = Math.max(maxWeight, weight);
+            sumWeight += weight;
+        }
+
+        int left = maxWeight;
+        int right = sumWeight;
+
+        while (left < right) {
+            int middle = (left + right) / 2;
+            int currentWeight = 0;
+            int daysRequired = 1;
+
+            for (int weight : nums) {
+                if (currentWeight + weight > middle) {
+                    daysRequired++;
+                    currentWeight = 0;
+                }
+                currentWeight += weight;
+            }
+
+            if (daysRequired > k) {
+                left = middle + 1;
+            } else {
+                right = middle;
+            }
+        }
+
+        return left;
+    }
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
