@@ -1252,29 +1252,6 @@ public class Leetcode3 extends Leetcode2 {
 //    }
 
 
-    public boolean isMatch(String s, String p) {
-        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0);
-    }
-
-    public boolean isMatch(char[] s, char[] p, int sIndex, int pIndex) {
-        if (pIndex >= p.length) return sIndex == s.length;
-        if (sIndex >= s.length) return false;
-        char pChar = p[pIndex];
-        if (pChar == '*') return isMatch(s, p, sIndex, pIndex + 1);
-        if (sIndex == s.length) return p[p.length - 1] == '*';
-        boolean nextCharWC = (pIndex + 1 < p.length && p[pIndex + 1] == '*');
-        char sChar = s[sIndex];
-        if (nextCharWC) {
-            if (pChar == sChar || pChar == '?') {
-                return isMatch(s, p, sIndex + 1, pIndex) || isMatch(s, p, sIndex, pIndex + 2);
-            } else {
-                return isMatch(s, p, sIndex, pIndex + 2);
-            }
-        } else {
-            if (pChar == sChar || pChar == '?') return isMatch(s, p, sIndex + 1, pIndex + 1);
-            else return false;
-        }
-    }
 
 
     public int removeElement(int[] nums, int val) {
@@ -3398,6 +3375,24 @@ public class Leetcode3 extends Leetcode2 {
         }
         return maxOrder;
     }
+
+
+    public boolean isMatch(String s, String p) {
+        return isMatch(s.toCharArray(), p.toCharArray(), 0, 0);
+    }
+    private boolean isMatch(char[] s, char[] p, int sIndex, int pIndex) {
+        if (pIndex == p.length) {
+            return sIndex == s.length;
+        }
+        boolean firstMatch = (sIndex < s.length && (p[pIndex] == s[sIndex] || p[pIndex] == '.'));
+        if (pIndex + 1 < p.length && p[pIndex + 1] == '*') {
+            return (isMatch(s, p, sIndex, pIndex + 2) ||
+                    (firstMatch && isMatch(s, p, sIndex + 1, pIndex)));
+        } else {
+            return firstMatch && isMatch(s, p, sIndex + 1, pIndex + 1);
+        }
+    }
+
 
     public static void main(String[] args) {
 
