@@ -3462,6 +3462,29 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int lenLongestFibSubseq(int[] arr) {
+        int n = arr.length;
+        int maxLen = 0;
+        Map<Integer, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            indexMap.put(arr[i], i);
+        }
+        Map<Integer, Integer> dp = new HashMap<>();
+        for (int j = 1; j < n; j++) {
+            for (int i = 0; i < j; i++) {
+                int k = indexMap.getOrDefault(arr[j] - arr[i], -1);
+                if (k >= 0 && k < i) {
+                    int key = i * n + j;
+                    int length = dp.getOrDefault(k * n + i, 2) + 1;
+                    dp.put(key, length);
+                    maxLen = Math.max(maxLen, length);
+                }
+            }
+        }
+        return maxLen >= 3 ? maxLen : 0;
+    }
+
+
 
 
 
