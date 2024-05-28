@@ -3393,6 +3393,42 @@ public class Leetcode3 extends Leetcode2 {
         }
     }
 
+    public int minInsertions(String s) {
+        int n = s.length();
+        if (n == 1) return 0;
+        if (n == 2) {
+            if (s.charAt(0) == s.charAt(1)) return 0;
+            return 1;
+        }
+        int[][] dpMatrix = new int[n+1][n+1];
+        char[] sChar = s.toCharArray();
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                boolean flag = sChar[i] == sChar[j];
+                if (flag) {
+                    if (j == 0) dpMatrix[i][j] = 0;
+                    else {
+                        dpMatrix[i][j] = dpMatrix[i+1][j-1];
+                    }
+                } else {
+                    if (j == 0) dpMatrix[i][j] = dpMatrix[i+1][j] + 1;
+                    else {
+                        dpMatrix[i][j] = Math.min(dpMatrix[i + 1][j], dpMatrix[i][j - 1]) + 1;
+                    }
+                }
+            }
+        }
+        return dpMatrix[0][n-1];
+    }
+
+
+
+
+
+
+
+
 
     public static void main(String[] args) {
 
