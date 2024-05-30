@@ -3598,6 +3598,17 @@ public class Leetcode3 extends Leetcode2 {
         return output;
     }
 
+    public static long getWays(int n, List<Long> c) {
+        long[] dpArray = new long[n + 1];
+        dpArray[0] = 1;
+        for (long coin : c) {
+            for (int j = (int) coin; j <= n; j++) {
+                dpArray[j] += dpArray[j - (int) coin];
+            }
+        }
+        return dpArray[n];
+    }
+
 
     public static void main(String[] args) {
 
