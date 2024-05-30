@@ -3559,7 +3559,30 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
+    public static int formingMagicSquare(List<List<Integer>> s) {
+        // Define all possible 3x3 magic squares
+        int[][][] magicSquares = {
+                {{2, 7, 6}, {9, 5, 1}, {4, 3, 8}},
+                {{4, 9, 2}, {3, 5, 7}, {8, 1, 6}},
+                {{8, 3, 4}, {1, 5, 9}, {6, 7, 2}},
+                {{6, 1, 8}, {7, 5, 3}, {2, 9, 4}},
+                {{6, 7, 2}, {1, 5, 9}, {8, 3, 4}},
+                {{2, 9, 4}, {7, 5, 3}, {6, 1, 8}},
+                {{4, 3, 8}, {9, 5, 1}, {2, 7, 6}},
+                {{8, 1, 6}, {3, 5, 7}, {4, 9, 2}}
+        };
+        int output = Integer.MAX_VALUE;
+        for (int i = 0; i < magicSquares.length; i++) {
+            int currentScore = 0;
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    currentScore += Math.abs(magicSquares[i][j][k] - s.get(j).get(k));
+                }
+            }
+            output = Math.min(output,currentScore);
+        }
+        return output;
+    }
 
 
     public static void main(String[] args) {
@@ -3567,7 +3590,6 @@ public class Leetcode3 extends Leetcode2 {
         boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
 
         int[] prices = {4,5,0,-2,-3,1};
-        subarraysDivByK(prices, 5);
 
         System.out.println('*'-'a');
         System.out.println(-15%5);
