@@ -3584,6 +3584,20 @@ public class Leetcode3 extends Leetcode2 {
         return output;
     }
 
+    public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player) {
+        List<Integer> uniqueRanked = new ArrayList<>(new HashSet<>(ranked));
+        Collections.sort(uniqueRanked, Collections.reverseOrder());
+        List<Integer> output = new ArrayList<>();
+        int index = uniqueRanked.size() - 1;
+        for (int score : player) {
+            while (index >= 0 && score >= uniqueRanked.get(index)) {
+                index--;
+            }
+            output.add(index + 2);
+        }
+        return output;
+    }
+
 
     public static void main(String[] args) {
 
