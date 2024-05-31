@@ -3609,6 +3609,30 @@ public class Leetcode3 extends Leetcode2 {
         return dpArray[n];
     }
 
+    public static int equal(List<Integer> arr) {
+        int n = arr.size();
+        int min = 0;
+        int sum = arr.get(0);
+        if (n != 1) {
+            sum = 0;
+            Collections.sort(arr);
+            min = arr.get(0);
+            for (int i = 1; i < n; i++) {
+                 int current = arr.get(i);
+                 sum += current - min;
+            }
+        }
+        int output = 0;
+        output += sum / 5;
+        sum = sum % 5;
+        output += sum / 2;
+        sum = sum % 2;
+        output += sum;
+        return output;
+    }
+
+
+
 
     public static void main(String[] args) {
 
