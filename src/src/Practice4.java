@@ -1,7 +1,6 @@
 import java.util.*;
 
 
-
 public class Practice4 {
 
     public static List<Integer> maxSubarray(List<Integer> arr) {
@@ -20,6 +19,22 @@ public class Practice4 {
         return Arrays.asList(maxSubArray, maxSubsequence);
     }
 
+
+    public static int cost(List<Integer> B) {
+        int n = B.size();
+        int[] dpLow = new int[n];
+        int[] dpHigh = new int[n];
+
+        dpLow[0] = 0;
+        dpHigh[0] = 0;
+
+        for (int i = 1; i < n; i++) {
+            dpLow[i] = Math.max(dpLow[i - 1], dpHigh[i - 1] + Math.abs(1 - B.get(i - 1)));
+            dpHigh[i] = Math.max(dpLow[i - 1] + Math.abs(B.get(i) - 1), dpHigh[i - 1] + Math.abs(B.get(i) - B.get(i - 1)));
+        }
+        return Math.max(dpLow[n - 1], dpHigh[n - 1]);
+
+    }
 
     public static void main(String[] args) {
 
@@ -66,7 +81,6 @@ public class Practice4 {
             next = _next;
         }
     }
-
 
 
 }
