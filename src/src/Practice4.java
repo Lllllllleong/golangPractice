@@ -36,6 +36,42 @@ public class Practice4 {
 
     }
 
+
+
+    public int longestOnes(int[] nums, int k) {
+        int output = 0;
+        int counter = 0;
+        if (k == 0) {
+            for (int i : nums) {
+                switch (i) {
+                    case 0 -> {
+                        counter = 0;
+                    }
+                    case 1 -> {
+                        counter++;
+                        output = Math.max(output, counter);
+                    }
+                }
+            }
+        } else {
+            Deque<Integer> dq = new ArrayDeque<>();
+            for (int i : nums) {
+                dq.addLast(i);
+                if (i == 0) {
+                    if (k == 0) {
+                        int front = dq.pollFirst();
+                        while (front != 0) front = dq.pollFirst();
+                    } else {
+                        k = k - 1;
+                    }
+                }
+                output = Math.max(output, dq.size());
+            }
+
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
 
     }
