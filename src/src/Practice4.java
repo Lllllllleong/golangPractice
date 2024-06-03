@@ -456,6 +456,26 @@ public class Practice4 {
     }
 
 
+    public List<String> generateParenthesis(int n) {
+        List<String> output = new ArrayList<>();
+        return generateParenthesis(n, n);
+    }
+    public List<String> generateParenthesis(int left, int right) {
+        List<String> output = new ArrayList<>();
+        if (left == 0) {
+            String s = ")".repeat(right);
+            output.add(s);
+            return output;
+        }
+        List<String> listA = generateParenthesis(left-1, right);
+        for (String s : listA) output.add("(" + s);
+        if (left < right) {
+            List<String> listB = generateParenthesis(left, right-1);
+            for (String s : listB) output.add(")" + s);
+        }
+        return output;
+    }
+
 
     public static void main(String[] args) {
         int i = redJohn(5);
