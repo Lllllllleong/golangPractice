@@ -434,10 +434,37 @@ public class Practice4 {
 
 
 
+    public static int unboundedKnapsack(int k, List<Integer> arr) {
+        if (arr.contains(1)) return k;
+        boolean[] dpArray = new boolean[k+1];
+        dpArray[0] = true;
+        Collections.sort(arr, Collections.reverseOrder());
+        for (Integer I : arr) {
+            for (int i = 0; i <= k - I; i++) {
+                if (dpArray[i]) {
+                    if (i == k-I) return k;
+                    dpArray[i+I] = true;
+                }
+            }
+        }
+        boolean flag = dpArray[k];
+        while (!flag) {
+            k--;
+            flag = dpArray[k];
+        }
+        return k;
+    }
+
+
 
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
+        int ii = unboundedKnapsack(12, Arrays.asList(1, 6, 9));
+        int iii = unboundedKnapsack(9, Arrays.asList(3, 4, 4, 4, 8));
+        int iiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
+        int iiiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
+        int iiiiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
         int[] prices = {1, 2, 100};
         stockmax(new ArrayList<>(Arrays.stream(prices).boxed().toList()));
         String s = compressedString("abcde");
