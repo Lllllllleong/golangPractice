@@ -457,24 +457,52 @@ public class Practice4 {
 
 
     public List<String> generateParenthesis(int n) {
-        List<String> output = new ArrayList<>();
-        return generateParenthesis(n, n);
-    }
-    public List<String> generateParenthesis(int left, int right) {
-        List<String> output = new ArrayList<>();
-        if (left == 0) {
-            String s = ")".repeat(right);
-            output.add(s);
-            return output;
+        // Initialize the dpMatrix
+        List<StringBuilder>[][] dpMatrix = new List[n + 1][n + 1];
+
+        // Base case: an empty list for dpMatrix[0][0]
+        dpMatrix[0][0] = new ArrayList<>();
+        dpMatrix[0][0].add(new StringBuilder());
+
+        // Fill the dpMatrix
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= i; j++) {
+                // Initialize the current cell if not already initialized
+                if (dpMatrix[i][j] == null) {
+                    dpMatrix[i][j] = new ArrayList<>();
+                }
+
+                // Add an opening bracket '(' if possible
+                if (i > 0 && dpMatrix[i - 1][j] != null) {
+                    for (StringBuilder sb : dpMatrix[i - 1][j]) {
+                        dpMatrix[i][j].add(new StringBuilder(sb).append('('));
+                    }
+                }
+                // Add a closing bracket ')' if possible
+                if (j > 0 && dpMatrix[i][j - 1] != null) {
+                    for (StringBuilder sb : dpMatrix[i][j - 1]) {
+                        dpMatrix[i][j].add(new StringBuilder(sb).append(')'));
+                    }
+                }
+            }
         }
-        List<String> listA = generateParenthesis(left-1, right);
-        for (String s : listA) output.add("(" + s);
-        if (left < right) {
-            List<String> listB = generateParenthesis(left, right-1);
-            for (String s : listB) output.add(")" + s);
+
+        // Collect results from dpMatrix[n][n]
+        List<String> output = new ArrayList<>();
+        for (StringBuilder sb : dpMatrix[n][n]) {
+            output.add(sb.toString());
         }
+
         return output;
     }
+
+
+
+
+
+        return output;
+    }
+
 
 
     public static void main(String[] args) {
