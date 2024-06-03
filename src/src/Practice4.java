@@ -385,9 +385,40 @@ public class Practice4 {
         return output;
     }
 
+    public static int redJohn(int n) {
+        int[] dpArray = new int[n+1];
+        int prior = 1;
+        for (int i = 0; i <= n; i++) {
+            dpArray[i] += prior;
+            if (i+4 <= n) dpArray[i+4] = dpArray[i];
+            prior = dpArray[i];
+        }
+        int permutations = dpArray[n];
+        return countPrimes(permutations);
+    }
+
+    private static int countPrimes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for (int i = 2; i * i <= n; i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= n; j += i) {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        int primeCount = 0;
+        for (int i = 2; i <= n; i++) {
+            if (isPrime[i]) primeCount++;
+        }
+        return primeCount;
+    }
 
     public static void main(String[] args) {
-        int i = substrings("123");
+        int i = redJohn(5);
         int[] prices = {1, 2, 100};
         stockmax(new ArrayList<>(Arrays.stream(prices).boxed().toList()));
         String s = compressedString("abcde");
