@@ -500,9 +500,35 @@ public class Practice4 {
 
 
 
-        return output;
+    public static String abbreviation(String a, String b) {
+        char[] yCharArray = b.toCharArray();
+        char[] xCharArray = a.toCharArray();
+        int yMax = b.length();
+        int xMax = a.length();
+        boolean[][] dpMatrix = new boolean[yMax+1][xMax+1];
+        boolean[] last = dpMatrix[yMax];
+        last[xMax] = true;
+        for (int i = xMax - 1; i >= 0; i--) {
+            if (Character.isUpperCase(xCharArray[i])) last[i] = false;
+            else last[i] = last[i+1];
+        }
+        dpMatrix[yMax] = last;
+        for (int y = yMax-1; y >= 0; y--) {
+            for (int x = xMax-1; x >= 0; x--) {
+                char yChar = yCharArray[y];
+                char xChar = xCharArray[x];
+                if (yChar == xChar) {
+                    dpMatrix[y][x] = dpMatrix[y+1][x+1];
+                } else if (Character.toUpperCase(xChar) == yChar) {
+                    dpMatrix[y][x] = dpMatrix[y+1][x+1] || dpMatrix[y][x+1];
+                } else {
+                    dpMatrix[y][x] = dpMatrix[y][x+1];
+                }
+            }
+        }
+        System.out.println((dpMatrix[0][0]) ? "YES" : "NO");
+        return (dpMatrix[0][0]) ? "YES" : "NO";
     }
-
 
 
     public static void main(String[] args) {
