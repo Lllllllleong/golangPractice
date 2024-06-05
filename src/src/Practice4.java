@@ -859,6 +859,26 @@ public class Practice4 {
 
 
 
+
+    public int averageOfSubtree(TreeNode root) {
+        int[] a = averageOfSubtree2(root);
+        return a[2];
+    }
+    public int[] averageOfSubtree2(TreeNode root) {
+        if (root == null) return new int[3];
+        int[] left = averageOfSubtree2(root.left);
+        int[] right = averageOfSubtree2(root.right);
+        int sum = root.val + left[0] + right[0];
+        int nodeCount = 1 + left[1] + right[1];
+        int count = left[2] + right[2];
+        if (sum / nodeCount == root.val) {
+            count++;
+        }
+        return new int[]{sum, nodeCount, count};
+    }
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
