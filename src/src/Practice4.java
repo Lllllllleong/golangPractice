@@ -951,6 +951,52 @@ public class Practice4 {
 
 
 
+    public int countCompleteComponents(int n, int[][] edges) {
+        HashMap<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph.get(a).add(b);
+            graph.get(b).add(a);
+        }
+        Set<Integer> visited = new HashSet<>();
+        int completeComponentsCount = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visited.contains(i)) {
+                List<Integer> component = new ArrayList<>();
+                dfs(graph, i, visited, component);
+                if (isComplete(component, graph)) {
+                    completeComponentsCount++;
+                }
+            }
+        }
+        return completeComponentsCount;
+    }
+
+    private void dfs(HashMap<Integer, List<Integer>> graph, int node, Set<Integer> visited, List<Integer> component) {
+        visited.add(node);
+        component.add(node);
+        for (int neighbor : graph.get(node)) {
+            if (!visited.contains(neighbor)) {
+                dfs(graph, neighbor, visited, component);
+            }
+        }
+    }
+
+    private boolean isComplete(List<Integer> component, HashMap<Integer, List<Integer>> graph) {
+        int size = component.size();
+        for (int node : component) {
+            if (graph.get(node).size() != size - 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
