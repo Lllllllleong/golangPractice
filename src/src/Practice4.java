@@ -714,6 +714,24 @@ public class Practice4 {
 
 
 
+    public int maxSatisfaction(int[] satisfaction) {
+        int n = satisfaction.length;
+        int output = 0;
+        Arrays.sort(satisfaction);
+        for (int i = 0; i < n; i++) {
+            int points = 1;
+            int current = 0;
+            for (int j = i; j < n; j++) {
+                current += (points * satisfaction[j]);
+                points++;
+            }
+            if (current > output) output = current;
+            else break;
+        }
+        return output;
+    }
+
+
 
 
     public static void main(String[] args) {
