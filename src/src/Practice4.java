@@ -790,6 +790,46 @@ public class Practice4 {
         return length;
     }
 
+
+    public static List<Integer> longestCommonSubsequence(List<Integer> a, List<Integer> b) {
+        int yMax = a.size();
+        int xMax = b.size();
+        int[][] dpMatrix = new int[yMax + 1][xMax + 1];
+
+        // Fill the dpMatrix
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
+                if (a.get(y).equals(b.get(x))) {
+                    dpMatrix[y][x] = dpMatrix[y + 1][x + 1] + 1;
+                } else {
+                    dpMatrix[y][x] = Math.max(dpMatrix[y + 1][x], dpMatrix[y][x + 1]);
+                }
+            }
+        }
+
+        // Construct the LCS from dpMatrix
+        List<Integer> lcs = new ArrayList<>();
+        int i = 0, j = 0;
+        while (i < yMax && j < xMax) {
+            if (a.get(i).equals(b.get(j))) {
+                lcs.add(a.get(i));
+                i++;
+                j++;
+            } else if (dpMatrix[i + 1][j] >= dpMatrix[i][j + 1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return lcs;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
