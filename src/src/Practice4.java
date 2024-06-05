@@ -878,6 +878,46 @@ public class Practice4 {
     }
 
 
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        Map<Integer, List<double[]>> graph = new HashMap<>();
+        double[] maxProbabilities = new double[n];
+        Arrays.fill(maxProbabilities, 0d);
+        for (int i = 0; i < edges.length; i++) {
+            int a = edges[i][0];
+            int b = edges[i][1];
+            double probability = succProb[i];
+            graph.computeIfAbsent(a, key -> new ArrayList<>()).add(new double[]{b, probability});
+            graph.computeIfAbsent(b, key -> new ArrayList<>()).add(new double[]{a, probability});
+        }
+        PriorityQueue<double[]> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> -a[1]));
+        pq.offer(new double[]{start_node, 1.0});
+        maxProbabilities[start_node] = 1.0;
+        while (!pq.isEmpty()) {
+            double[] current = pq.poll();
+            int node = (int) current[0];
+            double probability = current[1];
+            if (node == end_node) {
+                return probability;
+            }
+            if (probability < maxProbabilities[node]) {
+                continue;
+            }
+            if (!graph.containsKey(node)) {
+                continue;
+            }
+            for (double[] neighbor : graph.get(node)) {
+                int neighborNode = (int) neighbor[0];
+                double edgeProbability = neighbor[1];
+                double newProbability = probability * edgeProbability;
+
+                if (newProbability > maxProbabilities[neighborNode]) {
+                    maxProbabilities[neighborNode] = newProbability;
+                    pq.offer(new double[]{neighborNode, newProbability});
+                }
+            }
+        }
+        return maxProbabilities[end_node];
+    }
 
     public static void main(String[] args) {
         int i = redJohn(5);
