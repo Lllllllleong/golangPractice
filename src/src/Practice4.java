@@ -840,6 +840,23 @@ public class Practice4 {
         return true;
     }
 
+    public int deepestLeavesSum(TreeNode root) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        deepestLeavesSum(root, 0,hm);
+        Integer maxKey = Collections.max(hm.keySet());
+        return hm.get(maxKey);
+    }
+    public void deepestLeavesSum(TreeNode root, int level, HashMap<Integer, Integer> hm ) {
+        if (root == null) return;
+        if (root.right == null && root.left == null) {
+            int i = root.val;
+            hm.merge(level, i, Integer::sum);
+        } else {
+            deepestLeavesSum(root.left, level + 1, hm);
+            deepestLeavesSum(root.right, level + 1, hm);
+        }
+    }
+
 
 
     public static void main(String[] args) {
