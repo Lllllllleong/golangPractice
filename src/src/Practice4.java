@@ -795,8 +795,6 @@ public class Practice4 {
         int yMax = a.size();
         int xMax = b.size();
         int[][] dpMatrix = new int[yMax + 1][xMax + 1];
-
-        // Fill the dpMatrix
         for (int y = yMax - 1; y >= 0; y--) {
             for (int x = xMax - 1; x >= 0; x--) {
                 if (a.get(y).equals(b.get(x))) {
@@ -806,8 +804,6 @@ public class Practice4 {
                 }
             }
         }
-
-        // Construct the LCS from dpMatrix
         List<Integer> lcs = new ArrayList<>();
         int i = 0, j = 0;
         while (i < yMax && j < xMax) {
@@ -821,10 +817,18 @@ public class Practice4 {
                 j++;
             }
         }
-
         return lcs;
     }
 
+
+    public int[] findArray(int[] pref) {
+        int n = pref.length;
+        if (n == 1) return pref;
+        for (int i = n - 1; i > 0; i--) {
+            pref[i] = pref[i-1]^pref[i];
+        }
+        return pref;
+    }
 
 
 
