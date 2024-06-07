@@ -1011,23 +1011,53 @@ public class Practice4 {
     }
 
 
+    public static int minSessions(int[] tasks, int sessionTime) {
+        Arrays.sort(tasks);
+        int left = 1, right = tasks.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (canScheduleTasks(tasks, sessionTime, mid)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    private static boolean canScheduleTasks(int[] tasks, int sessionTime, int numSessions) {
+        int[] sessions = new int[numSessions];
+        return backtrack(tasks, sessions, tasks.length - 1, sessionTime);
+    }
+
+    private static boolean backtrack(int[] tasks, int[] sessions, int index, int sessionTime) {
+        if (index < 0) {
+            return true;
+        }
+        int currentTask = tasks[index];
+        for (int i = 0; i < sessions.length; i++) {
+            if (sessions[i] + currentTask <= sessionTime) {
+                sessions[i] += currentTask;
+                if (backtrack(tasks, sessions, index - 1, sessionTime)) {
+                    return true;
+                }
+                sessions[i] -= currentTask;
+            }
+            if (sessions[i] == 0) {
+                break;
+            }
+        }
+
+        return false;
+    }
 
 
 
 
 
     public static void main(String[] args) {
-        int i = redJohn(5);
-        mandragora(Arrays.asList(3,2,5));
-        int ii = unboundedKnapsack(12, Arrays.asList(1, 6, 9));
-        int iii = unboundedKnapsack(9, Arrays.asList(3, 4, 4, 4, 8));
-        int iiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
-        int iiiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
-        int iiiiii = unboundedKnapsack(11, Arrays.asList(3 ,7, 9));
-        int[] prices = {1, 2, 100};
-        stockmax(new ArrayList<>(Arrays.stream(prices).boxed().toList()));
-        String s = compressedString("abcde");
-
+        int[] tasks = {10,6,6,8,3,7};
+        minSessions(tasks, 13);
 
 
         for (int p = 0; p < 3; p++) {
