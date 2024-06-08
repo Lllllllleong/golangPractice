@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 
 
 public class Practice4 {
@@ -1054,11 +1055,42 @@ public class Practice4 {
 
 
 
+    public static int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int n = potions.length;
+        HashMap<Long,Integer> hm = new HashMap<>();
+        Set<Long> spellSet = new HashSet<>();
+        for (int i : spells) spellSet.add((long) i);
+        List<Long> spellList = new ArrayList<>(spellSet);
+        Collections.sort(spellList);
+        Arrays.sort(potions);
+        int potionIndex = n-1;
+        int potionCounter = 0;
+        for (Long spell : spellList) {
+            while (potionIndex != -1) {
+                long currentPotion = potions[potionIndex];
+                long currentSuccess = spell * currentPotion;
+                if (currentSuccess >= success) {
+                    potionCounter++;
+                    potionIndex--;
+                } else {
+                    break;
+                }
+            }
+            hm.put(spell, potionCounter);
+        }
+        for (int i = 0; i < spells.length; i++) {
+            spells[i] = hm.get((long) spells[i]);
+        }
+        return spells;
+    }
+
 
     public static void main(String[] args) {
         int[] tasks = {10,6,6,8,3,7};
         minSessions(tasks, 13);
-
+        int[] spells = {3,1,2};
+        int[] potions = {8,5,8};
+        int[] b = successfulPairs(spells,potions, 16);
 
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {

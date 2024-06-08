@@ -125,6 +125,7 @@ public class References {
 
         //Get hashmap key with largest value
 //        Key key = Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+        // Collections.min(map.entrySet(), Map.Entry.comparingByValue()).getKey();
 
         //Max value in hashmap
         int maxValueInMap = (Collections.max(map.values()));
