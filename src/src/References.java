@@ -1,5 +1,15 @@
 
+import org.w3c.dom.*;
+
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import java.io.*;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 class Seed {
     int x;
@@ -20,6 +30,11 @@ class Seed {
                 ", y=" + y;
     }
 }
+
+enum Key {
+    RESET, UP, DOWN, RIGHT, LEFT, S, L;
+}
+
 
 public class References {
 
@@ -65,6 +80,9 @@ public class References {
 
         // Section 5: Miscellaneous Examples
         miscellaneousExamples();
+
+        // Section 6: Reading and Writing
+        readWrite();
     }
 
     // Section 1: Sorting Examples
@@ -213,8 +231,179 @@ public class References {
             }
         }
 
-        System.out.println("Middle of LinkedList: " + (slow.hasNext() ? slow.next() : "List is empty"));
     }
+
+
+
+
+    public static void readWrite() {
+        System.out.println("=== ReadWrite ===");
+        System.out.println(System.getProperty("user.dir"));
+        //Reading XML Triples example
+        List<List<String>> readTriple = readTripleXML("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/triples.xml");
+        //Reading XML readwrite example
+        List<List<String>> readXML = readXML("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/readwrite.xml");
+        //Writing XML readwrite example
+        List<String> keyNames = Arrays.asList("DOWN", "DOWN", "S", "RESET", "RIGHT", "DOWN", "RESET", "UP");
+        List<String> states = Arrays.asList("LieProneState", "LieProneState", "ShootState", "StandState", "RunState",  "RunState",  "StandState",  "StandState");
+        writeXML("xmlWriteFile.xml", keyNames, states);
+
+        //Read md
+        String mdString = readMD("src/src/res/data.md");
+        //Write md
+        writeMD("writeMD.md", mdString);
+
+    }
+
+
+    public static List<List<String>>  readTripleXML(String filePath) {
+        try {
+            File file = new File(filePath);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(file);
+            document.getDocumentElement().normalize();
+
+            System.out.println("Root element: " + document.getDocumentElement().getNodeName());
+            NodeList nodeList = document.getElementsByTagName("triple");
+            System.out.println("nodelist size");
+            System.out.println(nodeList.getLength());
+
+            List<List<String>> output = new ArrayList<>();
+            List<String> subjectString = new ArrayList<>();
+            List<String> predicateString = new ArrayList<>();
+            List<String> objectString = new ArrayList<>();
+
+            int n = nodeList.getLength();
+            for (int i = 0; i < n; i++) {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    String s = element.getElementsByTagName("subject").item(0).getTextContent();
+                    String p = element.getElementsByTagName("predicate").item(0).getTextContent();
+                    String o = element.getElementsByTagName("object").item(0).getTextContent();
+                    subjectString.add(s);
+                    predicateString.add(p);
+                    objectString.add(o);
+                }
+            }
+            output.add(subjectString);
+            output.add(predicateString);
+            output.add(objectString);
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static String STATE_ROOT_ELEMENT = "States";
+
+    public static List<List<String>> readXML(String fileName) {
+        File f = new File(fileName);
+        if (!f.exists()) {
+            return Collections.emptyList();
+        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        try {
+            db = dbf.newDocumentBuilder();
+            Document doc = db.parse(f);
+            doc.getDocumentElement().normalize();
+            // ########## YOUR CODE STARTS HERE ##########
+            // HINT: You can use getChildNodes() function in the XML library to obtain a
+            // list of child nodes of the parent tag STATE_ROOT_ELEMENT.
+            List<String> keys = new ArrayList<>();
+            List<String> states = new ArrayList<>();
+
+            NodeList nodeList = doc.getElementsByTagName(STATE_ROOT_ELEMENT);
+            NodeList childList = nodeList.item(0).getChildNodes();
+            for (int i = 0; i < childList.getLength(); i++) {
+                if (childList.item(i) instanceof Element) {
+                    Element e = (Element) childList.item(i);
+                    String tagName = e.getTagName();
+                    String text = e.getTextContent();
+                    keys.add(tagName);
+                    states.add(text);
+                }
+            }
+            List<List<String>> result = new ArrayList<>();
+            result.add(keys);
+            result.add(states);
+            return result;
+            // ########## YOUR CODE ENDS HERE ##########
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public static void writeXML(String fileName, List<String> keys, List<String> states) {
+        File f = new File(fileName);
+        if (f.exists()) {
+            f.delete();
+        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument();
+            // ########## YOUR CODE STARTS HERE ##########
+            Element rootElement = doc.createElement(STATE_ROOT_ELEMENT);
+            doc.appendChild(rootElement);
+
+            for (int i = 0; i < keys.size(); i++) {
+                Element stateElement = doc.createElement(keys.get(i));
+                stateElement.appendChild(doc.createTextNode(states.get(i)));
+                rootElement.appendChild(stateElement);
+            }
+            // ########## YOUR CODE ENDS HERE ##########
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(f);
+            transformer.transform(source, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public static String readMD(String filePath)  {
+        try {
+            String content = readMDFile(filePath);
+            return content;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    public static String readMDFile(String filePath) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        }
+        return content.toString();
+    }
+
+    public static void writeMD(String fileName, String content) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            bw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
 
 }

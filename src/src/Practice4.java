@@ -1111,10 +1111,24 @@ public class Practice4 {
         return maxLength == -1 ? -1 : nums.length - maxLength;
     }
 
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        Map<Integer, Integer> sumCountMap = new HashMap<>();
+        for (int num1 : nums1) {
+            for (int num2 : nums2) {
+                int sum = num1 + num2;
+                sumCountMap.put(sum, sumCountMap.getOrDefault(sum, 0) + 1);
+            }
+        }
+        int count = 0;
+        for (int num3 : nums3) {
+            for (int num4 : nums4) {
+                int sum = num3 + num4;
+                count += sumCountMap.getOrDefault(-sum, 0);
+            }
+        }
 
-
-
-
+        return count;
+    }
 
 
 
@@ -1125,6 +1139,11 @@ public class Practice4 {
         int[] spells = {3,1,2};
         int[] potions = {8,5,8};
         int[] b = successfulPairs(spells,potions, 16);
+
+
+        Arrays.sort(tasks);
+        System.out.println("here");
+        System.out.println(Arrays.binarySearch(tasks, 6));
 
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {
