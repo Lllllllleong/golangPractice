@@ -1130,6 +1130,23 @@ public class Practice4 {
         return count;
     }
 
+    public int[] findRightInterval(int[][] intervals) {
+        int n = intervals.length;
+        TreeMap<Integer, Integer> tm = new TreeMap<>();
+        for (int i = 0; i < n; i++) {
+            int[] interval = intervals[i];
+            int start = interval[0];
+            tm.put(start, i);
+        }
+        int[] output = new int[n];
+        for (int i = 0; i < n; i++) {
+            int[] interval = intervals[i];
+            int end = interval[1];
+            Integer key = tm.ceilingKey(end);
+            output[i] = (key == null) ? -1 : tm.get(key);
+        }
+        return output;
+    }
 
 
 
