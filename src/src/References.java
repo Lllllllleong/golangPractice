@@ -269,11 +269,10 @@ public class References {
 
 
     public static List<List<String>>  readTripleXML(String filePath) {
-        try {
-            File file = new File(filePath);
+        try (InputStream fileInputStream = new FileInputStream(filePath)) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(file);
+            Document document = builder.parse(fileInputStream);
             document.getDocumentElement().normalize();
 
             System.out.println("Root element: " + document.getDocumentElement().getNodeName());
@@ -351,6 +350,7 @@ public class References {
         return Collections.emptyList();
     }
 
+
     public static void writeXML(String fileName, List<String> keys, List<String> states) {
         File f = new File(fileName);
         if (f.exists()) {
@@ -412,6 +412,15 @@ public class References {
         }
     }
 
+    public static Company readJsonCompany(File file) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(file)) {
+            return gson.fromJson(reader, Company.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void writeJson(File file, Object object) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -422,15 +431,7 @@ public class References {
         }
     }
 
-    public static Company readJsonCompany(File file) {
-        Gson gson = new Gson();
-        try (FileReader reader = new FileReader(file)) {
-            return gson.fromJson(reader, Company.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
 
 

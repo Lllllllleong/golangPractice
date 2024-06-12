@@ -1221,6 +1221,30 @@ public class Practice4 {
         return count;
     }
 
+
+
+
+    public List<Integer> twoOutOfThree(int[] nums1, int[] nums2, int[] nums3) {
+        Set<Integer> set1 = new HashSet<>(Arrays.stream(nums1).boxed().toList());
+        Set<Integer> set2 = new HashSet<>(Arrays.stream(nums2).boxed().toList());
+        Set<Integer> set3 = new HashSet<>(Arrays.stream(nums3).boxed().toList());
+        List<Integer> output = new ArrayList<>();
+        int[] frequencyArray = new int[101];
+        for (Integer I : set1) frequencyArray[I]++;
+        for (Integer I : set2) frequencyArray[I]++;
+        for (Integer I : set3) frequencyArray[I]++;
+        for (int i = 1; i < 101; i++) {
+            if (frequencyArray[i] >= 2) output.add(i);
+
+        }
+        return output;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] tasks = {10,6,6,8,3,7};
         minSessions(tasks, 13);

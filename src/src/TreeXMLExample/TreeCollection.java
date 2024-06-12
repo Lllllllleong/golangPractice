@@ -109,43 +109,63 @@ public class TreeCollection {
 			doc.getDocumentElement().normalize();
 
 			Element rootElement = doc.getDocumentElement();
+			if (rootElement == null) {
+				System.out.println("Root element is missing in the XML file.");
+				return null;
+			}
 
 			NodeList treeNodes = rootElement.getElementsByTagName("Tree");
+			if (treeNodes == null || treeNodes.getLength() == 0) {
+				System.out.println("No tree elements found in the XML file.");
+				return null;
+			}
+
 			List<Tree> treeList = new ArrayList<>();
 			for (int i = 0; i < treeNodes.getLength(); i++) {
-				Element treeElement = (Element) treeNodes.item(i);
+				Node treeNode = treeNodes.item(i);
+				if (treeNode != null && treeNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element treeElement = (Element) treeNode;
 
-				String kind = treeElement.getAttribute("Kind");
-				String colour = treeElement.getAttribute("Colour");
+					String kind = treeElement.getAttribute("Kind");
+					String colour = treeElement.getAttribute("Colour");
 
-				Dimension dimension = null;
-				Element dimensionElement = (Element) treeElement.getElementsByTagName("Dimension").item(0);
-				if (dimensionElement != null) {
-					Integer diameter = Integer.parseInt(dimensionElement.getAttribute("Diameter"));
-					Integer height = Integer.parseInt(dimensionElement.getAttribute("Height"));
-					dimension = new Dimension(diameter, height);
-				}
-
-				List<String> types = new ArrayList<>();
-				Element typesElement = (Element) treeElement.getElementsByTagName("Types").item(0);
-				if (typesElement != null) {
-					NodeList typeNodes = typesElement.getElementsByTagName("Type");
-					for (int j = 0; j < typeNodes.getLength(); j++) {
-						types.add(typeNodes.item(j).getTextContent());
+					Dimension dimension = null;
+					NodeList dimensionNodeList = treeElement.getElementsByTagName("Dimension");
+					if (dimensionNodeList.getLength() > 0) {
+						Element dimensionElement = (Element) dimensionNodeList.item(0);
+						if (dimensionElement != null) {
+							Integer diameter = Integer.parseInt(dimensionElement.getAttribute("Diameter"));
+							Integer height = Integer.parseInt(dimensionElement.getAttribute("Height"));
+							dimension = new Dimension(diameter, height);
+						}
 					}
-				}
 
-				Tree tree = new Tree();
-				if (kind != null && !kind.isEmpty()) tree.withKind(kind);
-				if (colour != null && !colour.isEmpty()) tree.withColor(colour);
-				if (dimension != null ) tree.withDimension(dimension);
-				for (String type : types) {
-					tree.addType(type);
+					List<String> types = new ArrayList<>();
+					NodeList typesNodeList = treeElement.getElementsByTagName("Types");
+					if (typesNodeList.getLength() > 0) {
+						Element typesElement = (Element) typesNodeList.item(0);
+						if (typesElement != null) {
+							NodeList typeNodes = typesElement.getElementsByTagName("Type");
+							for (int j = 0; j < typeNodes.getLength(); j++) {
+								Node typeNode = typeNodes.item(j);
+								if (typeNode != null && typeNode.getNodeType() == Node.ELEMENT_NODE) {
+									types.add(typeNode.getTextContent());
+								}
+							}
+						}
+					}
+
+					Tree tree = new Tree();
+					if (kind != null && !kind.isEmpty()) tree.withKind(kind);
+					if (colour != null && !colour.isEmpty()) tree.withColor(colour);
+					if (dimension != null) tree.withDimension(dimension);
+					for (String type : types) {
+						tree.addType(type);
+					}
+					treeList.add(tree);
 				}
-				treeList.add(tree);
 			}
-			TreeCollection tc = new TreeCollection(treeList);
-			return tc;
+			return new TreeCollection(treeList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
