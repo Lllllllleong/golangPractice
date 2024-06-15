@@ -246,6 +246,7 @@ public class Practice4 {
         }
         return output;
     }
+
     public int[] buildArray(int[] nums) {
         int n = nums.length;
         int[] output = new int[n];
@@ -266,7 +267,7 @@ public class Practice4 {
             System.out.println(ind);
             System.out.println(list);
         }
-        return list.stream().mapToInt(i->i).toArray();
+        return list.stream().mapToInt(i -> i).toArray();
     }
 
 
@@ -285,7 +286,6 @@ public class Practice4 {
     }
 
 
-
     public int countArrangement(int n) {
         HashMap<Integer, List<Integer>> hm = new HashMap<>();
         for (int i = 1; i <= n; i++) {
@@ -301,14 +301,15 @@ public class Practice4 {
         }
         return countArrangement(hm, 0, n, new HashSet<Integer>());
     }
+
     public int countArrangement(HashMap<Integer, List<Integer>> hm, int index, int n, HashSet<Integer> set) {
-        if (index == n+1) return 1;
+        if (index == n + 1) return 1;
         List<Integer> list = hm.get(index);
         int output = 0;
         for (Integer I : list) {
             if (!set.contains(I)) {
                 set.add(I);
-                output += countArrangement(hm, index+1, n, set);
+                output += countArrangement(hm, index + 1, n, set);
                 set.remove(I);
             }
         }
@@ -316,10 +317,9 @@ public class Practice4 {
     }
 
 
-
     public static String compressedString(String word) {
         int n = word.length();
-        if (n == 1) return "1"+word;
+        if (n == 1) return "1" + word;
         char[] charArray = word.toCharArray();
         char prior = charArray[0];
         int length = 0;
@@ -347,12 +347,11 @@ public class Practice4 {
             }
         }
         String str = list.stream()
-                .map(e->e.toString())
-                .reduce((acc, e) -> acc  + e)
+                .map(e -> e.toString())
+                .reduce((acc, e) -> acc + e)
                 .get();
         return str;
     }
-
 
 
     public int minimumCardPickup(int[] cards) {
@@ -364,7 +363,7 @@ public class Practice4 {
             if (hm.containsKey(card)) {
                 difference = Math.min(difference, i - hm.get(card) + 1);
             }
-            hm.put(card,i);
+            hm.put(card, i);
         }
         if (difference == Integer.MAX_VALUE) return -1;
         return difference;
@@ -387,11 +386,11 @@ public class Practice4 {
     }
 
     public static int redJohn(int n) {
-        int[] dpArray = new int[n+1];
+        int[] dpArray = new int[n + 1];
         int prior = 1;
         for (int i = 0; i <= n; i++) {
             dpArray[i] += prior;
-            if (i+4 <= n) dpArray[i+4] = dpArray[i];
+            if (i + 4 <= n) dpArray[i + 4] = dpArray[i];
             prior = dpArray[i];
         }
         int permutations = dpArray[n];
@@ -419,32 +418,30 @@ public class Practice4 {
     }
 
 
-
     public static long mandragora(List<Integer> H) {
         int n = H.size();
         Collections.sort(H);
-        long[] dpArray = new long[n+1];
+        long[] dpArray = new long[n + 1];
         long currentSum = 0;
         for (int i = n - 1; i >= 0; i--) {
             long multiplier = i + 1;
             currentSum += H.get(i);
-            dpArray[i] = Math.max(dpArray[i+1], currentSum * multiplier);
+            dpArray[i] = Math.max(dpArray[i + 1], currentSum * multiplier);
         }
         return dpArray[0];
     }
 
 
-
     public static int unboundedKnapsack(int k, List<Integer> arr) {
         if (arr.contains(1)) return k;
-        boolean[] dpArray = new boolean[k+1];
+        boolean[] dpArray = new boolean[k + 1];
         dpArray[0] = true;
         Collections.sort(arr, Collections.reverseOrder());
         for (Integer I : arr) {
             for (int i = 0; i <= k - I; i++) {
                 if (dpArray[i]) {
-                    if (i == k-I) return k;
-                    dpArray[i+I] = true;
+                    if (i == k - I) return k;
+                    dpArray[i + I] = true;
                 }
             }
         }
@@ -498,40 +495,35 @@ public class Practice4 {
     }
 
 
-
-
-
     public static String abbreviationOG(String a, String b) {
         char[] yCharArray = b.toCharArray();
         char[] xCharArray = a.toCharArray();
         int yMax = b.length();
         int xMax = a.length();
-        boolean[][] dpMatrix = new boolean[yMax+1][xMax+1];
+        boolean[][] dpMatrix = new boolean[yMax + 1][xMax + 1];
         boolean[] last = dpMatrix[yMax];
         last[xMax] = true;
         for (int i = xMax - 1; i >= 0; i--) {
             if (Character.isUpperCase(xCharArray[i])) last[i] = false;
-            else last[i] = last[i+1];
+            else last[i] = last[i + 1];
         }
         dpMatrix[yMax] = last;
-        for (int y = yMax-1; y >= 0; y--) {
-            for (int x = xMax-1; x >= 0; x--) {
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
                 char yChar = yCharArray[y];
                 char xChar = xCharArray[x];
                 if (yChar == xChar) {
-                    dpMatrix[y][x] = dpMatrix[y+1][x+1];
+                    dpMatrix[y][x] = dpMatrix[y + 1][x + 1];
                 } else if (Character.toUpperCase(xChar) == yChar) {
-                    dpMatrix[y][x] = dpMatrix[y+1][x+1] || dpMatrix[y][x+1];
+                    dpMatrix[y][x] = dpMatrix[y + 1][x + 1] || dpMatrix[y][x + 1];
                 } else {
-                    dpMatrix[y][x] = dpMatrix[y][x+1];
+                    dpMatrix[y][x] = dpMatrix[y][x + 1];
                 }
             }
         }
         System.out.println((dpMatrix[0][0]) ? "YES" : "NO");
         return (dpMatrix[0][0]) ? "YES" : "NO";
     }
-
-
 
 
     public boolean containsDuplicate(int[] nums) {
@@ -560,7 +552,6 @@ public class Practice4 {
     }
 
 
-
     public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         HashMap<Integer, PriorityQueue<Integer>> indexMap = new HashMap<>();
         int n = nums.length;
@@ -578,20 +569,19 @@ public class Practice4 {
                 if (size <= 1) continue;
                 Collections.sort(indexes);
                 for (int i = 1; i < size; i++) {
-                    if (indexes.get(i) - indexes.get(i-1) <= indexDiff) return true;
+                    if (indexes.get(i) - indexes.get(i - 1) <= indexDiff) return true;
                 }
             }
             return false;
-        }
-        else {
+        } else {
             int keyListSize = keyList.size();
-            for (int i = 0; i < keyListSize-1; i++) {
+            for (int i = 0; i < keyListSize - 1; i++) {
                 int lowerKey = keyList.get(i);
                 for (int j = i; j < keyListSize; j++) {
                     if (j == i) {
                         List<Integer> indexes = new ArrayList<>(indexMap.get(lowerKey));
                         for (int k = 1; k < indexes.size(); k++) {
-                            if (indexes.get(k) - indexes.get(k-1) <= indexDiff) return true;
+                            if (indexes.get(k) - indexes.get(k - 1) <= indexDiff) return true;
                         }
                     } else {
                         int upperKey = keyList.get(j);
@@ -614,7 +604,6 @@ public class Practice4 {
             return false;
         }
     }
-
 
 
     boolean[][] boolGrid;
@@ -714,7 +703,6 @@ public class Practice4 {
     }
 
 
-
     public int maxSatisfaction(int[] satisfaction) {
         int n = satisfaction.length;
         int output = 0;
@@ -734,7 +722,7 @@ public class Practice4 {
 
 
     public int shortestSequence(int[] rolls, int k) {
-        boolean[] flagArray = new boolean[k+1];
+        boolean[] flagArray = new boolean[k + 1];
         int flagCount = k;
         int sequenceCounter = 0;
         for (int i : rolls) {
@@ -770,7 +758,6 @@ public class Practice4 {
         }
         return length;
     }
-
 
 
     public int lengthOfLIS(int[] nums) {
@@ -826,16 +813,16 @@ public class Practice4 {
         int n = pref.length;
         if (n == 1) return pref;
         for (int i = n - 1; i > 0; i--) {
-            pref[i] = pref[i-1]^pref[i];
+            pref[i] = pref[i - 1] ^ pref[i];
         }
         return pref;
     }
 
 
     public boolean isStrictlyPalindromic(int n) {
-        int max = n-2;
+        int max = n - 2;
         for (int i = 2; i <= max; i++) {
-            String binaryString = Integer.toString(n,i);
+            String binaryString = Integer.toString(n, i);
             if (!binaryString.equals(new StringBuilder(binaryString).reverse().toString())) return false;
         }
         return true;
@@ -843,11 +830,12 @@ public class Practice4 {
 
     public int deepestLeavesSum(TreeNode root) {
         HashMap<Integer, Integer> hm = new HashMap<>();
-        deepestLeavesSum(root, 0,hm);
+        deepestLeavesSum(root, 0, hm);
         Integer maxKey = Collections.max(hm.keySet());
         return hm.get(maxKey);
     }
-    public void deepestLeavesSum(TreeNode root, int level, HashMap<Integer, Integer> hm ) {
+
+    public void deepestLeavesSum(TreeNode root, int level, HashMap<Integer, Integer> hm) {
         if (root == null) return;
         if (root.right == null && root.left == null) {
             int i = root.val;
@@ -859,12 +847,11 @@ public class Practice4 {
     }
 
 
-
-
     public int averageOfSubtree(TreeNode root) {
         int[] a = averageOfSubtree2(root);
         return a[2];
     }
+
     public int[] averageOfSubtree2(TreeNode root) {
         if (root == null) return new int[3];
         int[] left = averageOfSubtree2(root.left);
@@ -921,7 +908,6 @@ public class Practice4 {
     }
 
 
-
     public int shortestPathLength(int[][] graph) {
         int n = graph.length;
         int finalState = (1 << n) - 1;
@@ -949,7 +935,6 @@ public class Practice4 {
         }
         return -1;
     }
-
 
 
     public int countCompleteComponents(int n, int[][] edges) {
@@ -1005,10 +990,10 @@ public class Practice4 {
         for (int i : nums) {
             int index = Collections.binarySearch(list, 0);
             System.out.println(index);
-            if (index < 0) index = -(index-1);
+            if (index < 0) index = -(index - 1);
             list.add(index, i);
         }
-        return list.stream().mapToInt(i->i).toArray();
+        return list.stream().mapToInt(i -> i).toArray();
     }
 
 
@@ -1053,17 +1038,15 @@ public class Practice4 {
     }
 
 
-
-
     public static int[] successfulPairs(int[] spells, int[] potions, long success) {
         int n = potions.length;
-        HashMap<Long,Integer> hm = new HashMap<>();
+        HashMap<Long, Integer> hm = new HashMap<>();
         Set<Long> spellSet = new HashSet<>();
         for (int i : spells) spellSet.add((long) i);
         List<Long> spellList = new ArrayList<>(spellSet);
         Collections.sort(spellList);
         Arrays.sort(potions);
-        int potionIndex = n-1;
+        int potionIndex = n - 1;
         int potionCounter = 0;
         for (Long spell : spellList) {
             while (potionIndex != -1) {
@@ -1083,8 +1066,6 @@ public class Practice4 {
         }
         return spells;
     }
-
-
 
 
     public int minOperations(int[] nums, int x) {
@@ -1152,9 +1133,9 @@ public class Practice4 {
     public int findGCD(int[] nums) {
         Arrays.sort(nums);
         int a = nums[0];
-        int b = nums[nums.length-1];
+        int b = nums[nums.length - 1];
         for (int i = a; i >= 1; i--) {
-            if (a%i == 0 && b%i == 0) return i;
+            if (a % i == 0 && b % i == 0) return i;
         }
         return -1;
     }
@@ -1222,8 +1203,6 @@ public class Practice4 {
     }
 
 
-
-
     public List<Integer> twoOutOfThree(int[] nums1, int[] nums2, int[] nums3) {
         Set<Integer> set1 = new HashSet<>(Arrays.stream(nums1).boxed().toList());
         Set<Integer> set2 = new HashSet<>(Arrays.stream(nums2).boxed().toList());
@@ -1239,8 +1218,6 @@ public class Practice4 {
         }
         return output;
     }
-
-
 
 
     public boolean isAnagram(String s, String t) {
@@ -1271,10 +1248,10 @@ public class Practice4 {
         int xMax = b.length();
         char[] yCharArray = a.toCharArray();
         char[] xCharArray = b.toCharArray();
-        boolean[][] dpMatrix = new boolean[yMax+1][xMax+1];
+        boolean[][] dpMatrix = new boolean[yMax + 1][xMax + 1];
         dpMatrix[0][0] = true;
         for (int y = 1; y < yMax; y++) {
-            if (Character.isLowerCase(yCharArray[y-1])) {
+            if (Character.isLowerCase(yCharArray[y - 1])) {
                 dpMatrix[y][0] = true;
             } else {
                 break;
@@ -1282,8 +1259,8 @@ public class Practice4 {
         }
         for (int y = 1; y <= yMax; y++) {
             for (int x = 1; x <= xMax; x++) {
-                char yChar = yCharArray[y-1];
-                char xChar = xCharArray[x-1];
+                char yChar = yCharArray[y - 1];
+                char xChar = xCharArray[x - 1];
 
                 if (Character.toUpperCase(yChar) == xChar) {
                     dpMatrix[y][x] = dpMatrix[y - 1][x - 1] || (Character.isLowerCase(yChar) && dpMatrix[y - 1][x]);
@@ -1339,23 +1316,29 @@ public class Practice4 {
     }
 
 
-
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        while (a != null) {
+            ListNode b = headB;
+            while (b != null) {
+                if (a == b) return a;
+                b = b.next;
+            }
+            a = a.next;
+        }
+        return null;
+    }
 
 
     public static void main(String[] args) {
-        int[] tasks = {10,6,6,8,3,7};
+        int[] tasks = {10, 6, 6, 8, 3, 7};
         minSessions(tasks, 13);
-        int[] spells = {3,1,2};
-        int[] potions = {8,5,8};
+        int[] spells = {3, 1, 2};
+        int[] potions = {8, 5, 8};
 
 
         String og = abbreviationOG("daBcD", "ABCD");
         String ab = abbreviation("daBcD", "ABCD");
-
-
-
-
-
 
 
         for (int p = 0; p < 3; p++) {
@@ -1396,8 +1379,8 @@ public class Practice4 {
         }
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {
-                int rhs = intuitionisticAnd(p,q);
-                int lhs = intuitionisticNegate(intuitionisticNegate(intuitionisticAnd(p,q)));
+                int rhs = intuitionisticAnd(p, q);
+                int lhs = intuitionisticNegate(intuitionisticNegate(intuitionisticAnd(p, q)));
                 if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
                     System.out.println(p);
                     System.out.println(q);
@@ -1409,8 +1392,8 @@ public class Practice4 {
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {
                 for (int r = 0; r < 3; r++) {
-                    int lhs = relevantAnd(p, relevantAnd(q,r));
-                    int rhs = relevantAnd(relevantImplication(p,q),relevantImplication(p,r));
+                    int lhs = relevantAnd(p, relevantAnd(q, r));
+                    int rhs = relevantAnd(relevantImplication(p, q), relevantImplication(p, r));
                     if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
                         System.out.println(p);
                         System.out.println(q);
@@ -1423,8 +1406,8 @@ public class Practice4 {
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {
                 for (int r = 0; r < 3; r++) {
-                    int lhs = intuitionisticAnd(p, intuitionisticAnd(q,r));
-                    int rhs = intuitionisticAnd(intuitionisticImplication(p,q),intuitionisticImplication(p,r));
+                    int lhs = intuitionisticAnd(p, intuitionisticAnd(q, r));
+                    int rhs = intuitionisticAnd(intuitionisticImplication(p, q), intuitionisticImplication(p, r));
                     if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
                         System.out.println(p);
                         System.out.println(q);
@@ -1436,13 +1419,11 @@ public class Practice4 {
         }
 
 
-        int lhs = intuitionisticAnd(2,2);
+        int lhs = intuitionisticAnd(2, 2);
         int rhs = intuitionisticNegate(intuitionisticAnd(intuitionisticNegate(2), intuitionisticNegate(2)));
         System.out.println(lhs);
         System.out.println(rhs);
     }
-
-
 
 
     public static int fuzzyAnd(int a, int b) {
@@ -1454,6 +1435,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int intuitionisticAnd(int a, int b) {
         if (a == 0) return 0;
         if (a == 1) return b;
@@ -1463,6 +1445,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int relevantAnd(int a, int b) {
         if (a == 0) return 0;
         if (a == 1) return b;
@@ -1482,6 +1465,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int intuitionisticOr(int a, int b) {
         if (a == 0) return b;
         if (a == 1) return 1;
@@ -1491,6 +1475,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int relevantOr(int a, int b) {
         if (a == 0) return b;
         if (a == 1) return 1;
@@ -1500,6 +1485,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int fuzzyImplication(int a, int b) {
         if (a == 0) return 1;
         if (a == 1) return b;
@@ -1509,6 +1495,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int intuitionisticImplication(int a, int b) {
         if (a == 0) return 1;
         if (a == 1) return b;
@@ -1518,6 +1505,7 @@ public class Practice4 {
         }
         return -1;
     }
+
     public static int relevantImplication(int a, int b) {
         if (a == 0) return 1;
         if (a == 1) {
@@ -1527,18 +1515,21 @@ public class Practice4 {
         if (a == 2) return b;
         return -1;
     }
+
     public static int fuzzyNegate(int a) {
         if (a == 0) return 1;
         if (a == 1) return 0;
         if (a == 2) return 2;
         return -1;
     }
+
     public static int intuitionisticNegate(int a) {
         if (a == 0) return 1;
         if (a == 1) return 0;
         if (a == 2) return 0;
         return -1;
     }
+
     public static int relevantNegate(int a) {
         if (a == 0) return 1;
         if (a == 1) return 0;
@@ -1566,5 +1557,15 @@ public class Practice4 {
         }
     }
 
+
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
 
 }
