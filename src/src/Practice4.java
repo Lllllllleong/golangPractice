@@ -1256,6 +1256,15 @@ public class Practice4 {
     }
 
 
+    public int numberOfChild(int n, int k) {
+        int effectiveTime = k % (2 * (n - 1));
+        if (effectiveTime < n) {
+            return effectiveTime;
+        } else {
+            return 2 * (n - 1) - effectiveTime;
+        }
+    }
+
 
 
     public static void main(String[] args) {
