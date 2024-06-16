@@ -1361,6 +1361,33 @@ public class Practice4 {
         return initialHealth;
     }
 
+
+
+
+
+    public static void plusMinus(List<Integer> arr) {
+        Collections.sort(arr);
+        double pos = 0, neg = 0;
+        double n = arr.size();
+        for (int i : arr) {
+            if (i < 0) neg++;
+            if (i > 0) pos++;
+        }
+        System.out.println(pos/n);
+        System.out.println(neg/n);
+        System.out.println((n - pos - neg)/n);
+
+    }
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] tasks = {10, 6, 6, 8, 3, 7};
         minSessions(tasks, 13);
