@@ -1362,9 +1362,6 @@ public class Practice4 {
     }
 
 
-
-
-
     public static void plusMinus(List<Integer> arr) {
         Collections.sort(arr);
         double pos = 0, neg = 0;
@@ -1376,9 +1373,37 @@ public class Practice4 {
         System.out.println(pos/n);
         System.out.println(neg/n);
         System.out.println((n - pos - neg)/n);
-
     }
 
+
+    public static int equalStacks(List<Integer> h1, List<Integer> h2, List<Integer> h3) {
+        Deque<Integer> q1 = new ArrayDeque<>();
+        Deque<Integer> q2 = new ArrayDeque<>();
+        Deque<Integer> q3 = new ArrayDeque<>();
+        long a = 0, b = 0, c = 0;
+        for (int i : h1) {
+            q1.addLast(i);
+            a += i;
+        }
+        for (int i : h2) {
+            q2.addLast(i);
+            b += i;
+        }
+        for (int i : h3) {
+            q3.addLast(i);
+            c += i;
+        }
+        while (a != b && b != c && a != c) {
+            if (a > b && a > c) {
+                a -= q1.pollFirst();
+            } else if (b > a && b > c) {
+                b -= q2.pollFirst();
+            } else {
+                c -= q3.pollFirst();
+            }
+        }
+        return (int) a;
+    }
 
 
 
