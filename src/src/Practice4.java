@@ -1440,14 +1440,21 @@ public class Practice4 {
 
     public int appendCharacters(String s, String t) {
         int output = 0;
-        Deque<Character> sDQ = new ArrayDeque<>();
-        for (Character C : s.toCharArray()) sDQ.addLast(C);
-        Deque<Character> tDQ = new ArrayDeque<>();
-        for (Character C : t.toCharArray()) tDQ.addLast(C);
-        while (!sDQ.isEmpty() && !tDQ.isEmpty()) {
-            if (sDQ.poll() == tDQ.peek()) tDQ.poll();
+        char[] sCharArray = s.toCharArray();
+        char[] tCharArray = t.toCharArray();
+        int tMax = t.length();
+        int sMax = s.length();
+        int tIndex = 0;
+        int sIndex = 0;
+        while (tIndex < tMax && sIndex < sMax) {
+            char sChar = sCharArray[sIndex];
+            char tChar = tCharArray[tIndex];
+            if (sChar == tChar) {
+                tIndex++;
+            }
+            sIndex++;
         }
-        return tDQ.size();
+        return (tMax - tIndex);
     }
 
 
