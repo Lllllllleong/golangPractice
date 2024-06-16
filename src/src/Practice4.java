@@ -1330,6 +1330,37 @@ public class Practice4 {
     }
 
 
+    public static int calculateMinimumHP(int[][] dungeon) {
+        int yMax = dungeon.length;
+        int xMax = dungeon[0].length;
+        Integer[][] healthRequirement = new Integer[yMax][xMax];
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt((int[] x) -> x[2]));
+        pq.add(new int[]{yMax - 1, xMax - 1, 1});
+
+        while (!pq.isEmpty()) {
+            int[] currentPosition = pq.poll();
+            int y = currentPosition[0];
+            int x = currentPosition[1];
+            int health = currentPosition[2];
+            if (healthRequirement[y][x] != null && healthRequirement[y][x] <= health) continue;
+            healthRequirement[y][x] = health;
+            int nextHealth = Math.max(1, health - dungeon[y][x]);
+            if (y != 0) pq.offer(new int[]{y - 1, x, nextHealth});
+            if (x != 0) pq.offer(new int[]{y, x - 1, nextHealth});
+        }
+
+        // Calculate the minimum initial health required at the start (top-left)
+        int initialHealth = healthRequirement[0][0] == 0 ? 1 : healthRequirement[0][0];
+        if (dungeon[0][0] < 0) {
+            initialHealth = Math.max(1, initialHealth - dungeon[0][0]);
+        } else {
+            initialHealth = Math.max(1, initialHealth - dungeon[0][0]);
+        }
+
+        return initialHealth;
+    }
+
     public static void main(String[] args) {
         int[] tasks = {10, 6, 6, 8, 3, 7};
         minSessions(tasks, 13);
@@ -1339,6 +1370,16 @@ public class Practice4 {
 
         String og = abbreviationOG("daBcD", "ABCD");
         String ab = abbreviation("daBcD", "ABCD");
+
+
+        int[][] game = {{100}};
+        int fc = calculateMinimumHP(game);
+
+
+
+
+
+
 
 
         for (int p = 0; p < 3; p++) {
