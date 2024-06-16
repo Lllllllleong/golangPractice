@@ -1521,8 +1521,37 @@ public class Practice4 {
         return output;
     }
 
-
-
+    public int minScore(int n, int[][] roads) {
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            graph.put(i, new ArrayList<>());
+        }
+        for (int[] road : roads) {
+            int a = road[0];
+            int b = road[1];
+            int distance = road[2];
+            graph.get(a).add(new int[]{b, distance});
+            graph.get(b).add(new int[]{a, distance});
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[n + 1];
+        queue.add(1);
+        visited[1] = true;
+        int minScore = Integer.MAX_VALUE;
+        while (!queue.isEmpty()) {
+            int currentNode = queue.poll();
+            for (int[] neighbor : graph.get(currentNode)) {
+                int nextNode = neighbor[0];
+                int distance = neighbor[1];
+                minScore = Math.min(minScore, distance);
+                if (!visited[nextNode]) {
+                    visited[nextNode] = true;
+                    queue.add(nextNode);
+                }
+            }
+        }
+        return minScore;
+    }
 
 
     public static void main(String[] args) {
