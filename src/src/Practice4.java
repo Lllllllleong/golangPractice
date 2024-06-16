@@ -1458,6 +1458,34 @@ public class Practice4 {
     }
 
 
+    public long repairCars(int[] ranks, int cars) {
+        long left = 1;
+        long right = (long) ranks[0] * (long) cars * (long) cars;
+        for (int rank : ranks) {
+            right = Math.max(right, (long) rank * (long) cars * (long) cars);
+        }
+        while (left < right) {
+            long mid = left + (right - left) / 2;
+            if (canRepairInTime(mid, ranks, cars)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+    boolean canRepairInTime(long time, int[] ranks, int cars) {
+        long totalCarsRepaired = 0;
+        for (int rank : ranks) {
+            long carsByMechanic = (long) Math.sqrt(time / rank);
+            totalCarsRepaired += carsByMechanic;
+            if (totalCarsRepaired >= cars) {
+                return true;
+            }
+        }
+        return totalCarsRepaired >= cars;
+    }
+
 
 
 
