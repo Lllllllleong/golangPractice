@@ -1407,6 +1407,37 @@ public class Practice4 {
     }
 
 
+    public boolean isItPossible(String word1, String word2) {
+        int[] aFrequency = new int[26];
+        int[] bFrequency = new int[26];
+        for (char c : word1.toCharArray()) aFrequency[c - 'a']++;
+        for (char c : word2.toCharArray()) bFrequency[c - 'a']++;
+        int aUniqueCount = 0;
+        int bUniqueCount = 0;
+        for (int i = 0; i < 26; i++) {
+            if (aFrequency[i] > 0) aUniqueCount++;
+            if (bFrequency[i] > 0) bUniqueCount++;
+        }
+        for (int i = 0; i < 26; i++) {
+            for (int j = 0; j < 26; j++) {
+                if (aFrequency[i] > 0 && bFrequency[j] > 0) {
+                    int newAUniqueCount = aUniqueCount;
+                    int newBUniqueCount = bUniqueCount;
+                    if (i != j) {
+                        if (aFrequency[i] == 1) newAUniqueCount--;
+                        if (aFrequency[j] == 0) newAUniqueCount++;
+                        if (bFrequency[j] == 1) newBUniqueCount--;
+                        if (bFrequency[i] == 0) newBUniqueCount++;
+                    }
+                    if (newAUniqueCount == newBUniqueCount) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
 
 
