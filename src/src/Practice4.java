@@ -1393,15 +1393,16 @@ public class Practice4 {
             q3.addLast(i);
             c += i;
         }
-        while (a != b && b != c && a != c) {
-            if (a > b && a > c) {
+        while (!(a == b && b == c)) {
+            if (a >= b && a >= c) {
                 a -= q1.pollFirst();
-            } else if (b > a && b > c) {
+            } else if (b >= a && b >= c) {
                 b -= q2.pollFirst();
             } else {
                 c -= q3.pollFirst();
             }
         }
+
         return (int) a;
     }
 
