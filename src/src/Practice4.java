@@ -1675,12 +1675,98 @@ public class Practice4 {
 //    }
 
 
+    public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        if (n == 1) return intervals;
+        Arrays.sort(intervals, Comparator.comparingInt((int[] a) -> a[0]));
+        List<int[]> list = new ArrayList<>();
+        int currentStart = intervals[0][0];
+        int currentEnd = intervals[0][1];
+        for (int i = 1; i <= n; i++) {
+            if (i == n) {
+                list.add(new int[]{currentStart, currentEnd});
+            } else {
+                int start = intervals[i][0];
+                int end = intervals[i][1];
+                if (currentEnd < start) {
+                    list.add(new int[]{currentStart, currentEnd});
+                    currentStart = start;
+                    currentEnd = end;
+                } else {
+                    currentEnd = Math.max(currentEnd, end);
+                }
+            }
+        }
+        int m = list.size();
+        int[][] output = new int[m][];
+        for (int i = 0; i < m; i++) {
+            output[i] = list.get(i);
+        }
+        return output;
+    }
+
+    int[] redundantConnection = new int[2];
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        boolean[][] graph = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            int[] edge = edges[i];
+            int from = edge[0] - 1;
+            int to = edge[1] - 1;
+            graph[from][to] = true;
+            graph[to][from] = true;
+        }
+        findRedundantConnection(new HashSet<>() , graph, 0, -1);
+        return redundantConnection;
+    }
+    public void findRedundantConnection(HashSet<Integer> visited, boolean[][] graph, int currentNode, int fromNode) {
+        visited.add(currentNode);
+        boolean[] to = graph[currentNode];
+        for (int i = 0; i < to.length; i++) {
+            if (i == currentNode || i == fromNode) continue;
+            if (to[i] && visited.contains(i)) {
+                if (i != fromNode) {
+                    redundantConnection = new int[]{i, currentNode};
+                } else {
+                    findRedundantConnection(visited, graph, i, currentNode);
+                }
+            }
+        }
+    }
+
+
+    public static String removeKdigits(String num, int k) {
+        Deque<Character> dq = new ArrayDeque<>();
+        for (Character c : num.toCharArray()) {
+            while (!dq.isEmpty() && dq.peekLast() > c && k > 0) {
+                k--;
+                dq.pollLast();
+            }
+            dq.addLast(c);
+        }
+        while (k > 0 && dq.size() > 0) {
+            dq.pollLast();
+            k--;
+        }
+        if (dq.size() == 0) return "0";
+        StringBuilder sb = new StringBuilder();
+        for (Character digit : dq) {
+            sb.append(digit);
+        }
+        while (sb.length() > 1 && sb.charAt(0) == '0') {
+            sb.deleteCharAt(0);
+        }
+        return sb.toString();
+    }
+
+
+
 
     public static void main(String[] args) {
 
         int[] nums = {3,5,0,3,4};
-        boolean b = find132pattern(nums);
-
+        String s = removeKdigits("1432219", 3);
+        System.out.println(s);
 
 
     }
