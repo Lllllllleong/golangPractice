@@ -1657,6 +1657,24 @@ public class Practice4 {
         return output;
     }
 
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        int n = scanner.nextInt();
+//        int[] values = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            values[i] = scanner.nextInt();
+//        }
+//        int min = scanner.nextInt();
+//        int max = scanner.nextInt();
+//        for (int value : values) {
+//            if ((min <= value && max >= value) || (min >= value && max <= value)) {
+//                System.out.println(value);
+//                break;
+//            }
+//        }
+//    }
+
+
 
     public static void main(String[] args) {
 
