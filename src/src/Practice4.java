@@ -1614,6 +1614,28 @@ public class Practice4 {
     }
 
 
+
+    public static int hackerlandRadioTransmitters(List<Integer> x, int k) {
+        Set<Integer> set = new HashSet<>(x);
+        x = new ArrayList<>(set);
+        Collections.sort(x);
+        int output = 0;
+        int currentRange = -1;
+        for (int i : x) {
+            if (currentRange < i) {
+                for (int j = i+k; j >= i; j--) {
+                     if (set.contains(j)) {
+                         currentRange = j+k;
+                         output++;
+                         break;
+                     }
+
+                }
+            }
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
 
         int[] nums = {3,5,0,3,4};
