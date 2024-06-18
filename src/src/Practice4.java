@@ -1636,6 +1636,28 @@ public class Practice4 {
         return output;
     }
 
+
+    public static long arrayManipulation(int n, List<List<Integer>> queries) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (var query : queries) {
+            int start = query.get(0);
+            int end = query.get(1);
+            int value = query.get(2);
+            hm.merge(start, value, Integer::sum);
+            hm.merge(end+1, -value, Integer::sum);
+        }
+        long sum = 0;
+        long output = Long.MIN_VALUE;
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        for (Integer key : keyList) {
+            sum += hm.get(key);
+            output = Math.max(output, sum);
+        }
+        return output;
+    }
+
+
     public static void main(String[] args) {
 
         int[] nums = {3,5,0,3,4};
