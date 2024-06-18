@@ -1597,9 +1597,27 @@ public class Practice4 {
     }
 
 
+    public static boolean find132pattern(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return false;
+        Deque<Integer> dq = new ArrayDeque<>();
+        int firstRequirement = Integer.MIN_VALUE;
+        for (int i = n - 1; i >= 0; i--) {
+            int num = nums[i];
+            if (num < firstRequirement) return true;
+            while (!dq.isEmpty() && dq.peek() < num) {
+                firstRequirement = dq.pollFirst();
+            }
+            dq.addFirst(num);
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
 
-
+        int[] nums = {3,5,0,3,4};
+        boolean b = find132pattern(nums);
 
 
 
