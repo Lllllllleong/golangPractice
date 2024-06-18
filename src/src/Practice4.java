@@ -1788,6 +1788,29 @@ public class Practice4 {
 
 
 
+    public static int minEatingSpeed(int[] piles, int h) {
+        long max = Arrays.stream(piles).max().getAsInt();
+        long low = 1;
+        long high = max;
+        long output = max;
+        while (low <= high) {
+            long mid = low + (high - low)/ 2;
+            long hours = 0;
+            for (int pile : piles) {
+                hours += (pile + mid - 1) / mid;
+            }
+            if (hours <= h) {
+                output = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return (int) output;
+    }
+
+
+
 
 
     public static void main(String[] args) {
@@ -1796,6 +1819,8 @@ public class Practice4 {
         String s = removeKdigits("1432219", 3);
         System.out.println(s);
 
+        int[] bananas = {805306368,805306368,805306368};
+        int fhuewif = minEatingSpeed(bananas, 1000000000);
 
     }
 
