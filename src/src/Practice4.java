@@ -1932,6 +1932,45 @@ public class Practice4 {
         return (a || b);
     }
 
+    class Logger {
+        Set<String> set;
+        Integer currentTime;
+        Deque<Message> messageQueue;
+        public Logger() {
+            set = new HashSet<>();
+            currentTime = 0;
+            messageQueue = new ArrayDeque<>();
+        }
+
+        public boolean shouldPrintMessage(int timestamp, String message) {
+            Boolean output;
+            Integer expiryTime = timestamp - 10;
+            while (!messageQueue.isEmpty() && messageQueue.peekFirst().timeStamp <= expiryTime) {
+                set.remove(messageQueue.pollFirst().message);
+            }
+            output = !set.contains(message);
+            if (output) {
+                messageQueue.addLast(new Message(message, timestamp));
+                set.add(message);
+            }
+            return output;
+        }
+
+        class Message{
+            public String message;
+            public Integer timeStamp;
+
+            public Message(String message, Integer timeStamp) {
+                this.message = message;
+                this.timeStamp = timeStamp;
+            }
+        }
+    }
+
+
+
+
+
 
     public static void main(String[] args) {
 
@@ -1943,6 +1982,8 @@ public class Practice4 {
         int fhuewif = minEatingSpeed(bananas, 1000000000);
 
     }
+
+
 
 
     class Interval {
