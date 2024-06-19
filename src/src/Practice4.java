@@ -2074,6 +2074,40 @@ public class Practice4 {
         return (minArea == Integer.MAX_VALUE) ? 0 : minArea;
     }
 
+    List<TreeNode> tnList = new ArrayList<>();
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        tnList = new ArrayList<>();
+        Set<Integer> set = new HashSet<>(Arrays.stream(to_delete).boxed().toList());
+
+        delNodesBFS(root, set);
+        return tnList;
+    }
+    public void delNodesBFS(TreeNode root, Set<Integer> set) {
+        if (root == null) return;
+        int val = root.val;
+        if (set.contains(val)) {
+            delNodesBFS(root.left, set);
+            delNodesBFS(root.right, set);
+        } else {
+            root.left = delNodesBFS2(root.left, set);
+            root.right = delNodesBFS2(root.right, set);
+            tnList.add(root);
+        }
+    }
+    public TreeNode delNodesBFS2(TreeNode root, Set<Integer> set) {
+        if (root == null) return null;
+        int val = root.val;
+        if (set.contains(val)) {
+            delNodesBFS(root.left, set);
+            delNodesBFS(root.right, set);
+            return null;
+        } else {
+            root.left = delNodesBFS2(root.left, set);
+            root.right = delNodesBFS2(root.right, set);
+            return root;
+        }
+    }
+
 
 
     public static void main(String[] args) {
