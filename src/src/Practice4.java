@@ -1967,15 +1967,6 @@ public class Practice4 {
         }
     }
 
-
-
-
-
-
-
-
-
-
     public static int[] computeZArray(String s) {
         int n = s.length();
         int[] Z = new int[n];
@@ -2006,6 +1997,24 @@ public class Practice4 {
     }
 
 
+    public List<String> findRepeatedDnaSequences(String s) {
+        int n = s.length();
+        List<String> output = new ArrayList<>();
+        if (n < 10) return output;
+        Set<String> set = new HashSet<>();
+        Set<String> repeatedSet = new HashSet<>();
+        for (int i = 0; i < n-9; i++) {
+            String sub = s.substring(i, i+10);
+            if (set.contains(sub)) repeatedSet.add(sub);
+            set.add(sub);
+        }
+        for (String ss : repeatedSet) {
+            output.add(ss);
+        }
+        return output;
+    }
+
+
 
 
 
@@ -2025,7 +2034,6 @@ public class Practice4 {
         String pattern = "abc";
 
         int[] z =  computeZArray("AABZAABZCAABZAABZA");
-
 
     }
 
