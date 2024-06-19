@@ -1972,6 +1972,46 @@ public class Practice4 {
 
 
 
+
+
+
+
+    public static int[] computeZArray(String s) {
+        int n = s.length();
+        int[] Z = new int[n];
+        int L = 0, R = 0, K;
+        for (int i = 1; i < n; ++i) {
+            if (i > R) { //If we are outside the Z box
+                L = R = i;
+                while (R < n && s.charAt(R) == s.charAt(R - L)) {
+                    R++;
+                }
+                Z[i] = R - L;
+                R--;
+            } else { //We are inside the Z box
+                K = i - L; //K is the index of the matched character, wrt the pattern character
+                if (Z[K] < R - i + 1) { //It is safe to copy the pre-computed Z value
+                    Z[i] = Z[K]; //Copy the pre-computed Z value from the respective K index in the pattern String
+                } else { //!! There is a match within the Z box (A match within a match)
+                    L = i;
+                    while (R < n && s.charAt(R) == s.charAt(R - L)) {
+                        R++;
+                    }
+                    Z[i] = R - L;
+                    R--;
+                }
+            }
+        }
+        return Z;
+    }
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
 
         int[] nums = {3, 5, 0, 3, 4};
@@ -1980,6 +2020,12 @@ public class Practice4 {
 
         int[] bananas = {805306368,805306368,805306368};
         int fhuewif = minEatingSpeed(bananas, 1000000000);
+
+        String text = "ababcababc";
+        String pattern = "abc";
+
+        int[] z =  computeZArray("AABZAABZCAABZAABZA");
+
 
     }
 
