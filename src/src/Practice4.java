@@ -2340,26 +2340,29 @@ public class Practice4 {
         return output;
     }
 
+    public static double probabilityOfHeads(double[] prob, int target) {
+        int n = prob.length;
+        double[][] dp = new double[n+1][target+1];
+        dp[n][0] = 1;
+        for (int y = n - 1; y >= 0; y--) {
+            double currentProb = prob[y];
+            for (int x = 0; x <= target; x++) {
+                if (x == 0) {
+                    dp[y][x] = (1 - currentProb) * dp[y+1][0];
+                } else {
+                    dp[y][x] = currentProb * dp[y+1][x-1] + (1-currentProb) * dp[y+1][x];
+                }
+            }
+        }
+        return dp[0][target];
+    }
+
+
 
 
 
     public static void main(String[] args) {
-
-        int[] nums = {3, 5, 0, 3, 4};
-        String s = removeKdigits("1432219", 3);
-        System.out.println(s);
-
-        int[] bananas = {805306368,805306368,805306368};
-        int fhuewif = minEatingSpeed(bananas, 1000000000);
-
-        String text = "ababcababc";
-        String pattern = "abc";
-
-        int[] z =  computeZArray("AABZAABZCAABZAABZA");
-
-        int i = minKnightMoves(-34,-156);
-        System.out.println(i);
-
+        double d = probabilityOfHeads(new double[]{0.4}, 1);
 
     }
 
