@@ -2441,12 +2441,53 @@ public class Practice4 {
         maximumRequests(requestList, requestIndex+1, currentCount, buildingBalance);
     }
 
+    public static Integer safeMax(Integer a, Integer b) {
+        if (a == null && b == null) {
+            return null;
+        } else if (a == null) {
+            return b;
+        } else if (b == null) {
+            return a;
+        } else {
+            return Math.max(a, b);
+        }
+    }
+    public static int tallestBillboard(int[] rods) {
+        int n = rods.length;
+        int maxOffset = 2500;
+        int[][] dp = new int[n + 1][2 * maxOffset + 1];
+        for (int[] d : dp) Arrays.fill(d, -1);
+        dp[n][maxOffset] = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            int rod = rods[i];
+            for (int diff = -maxOffset; diff <= maxOffset; diff++) {
+                if (dp[i + 1][diff + maxOffset] == -1) continue;
+                // Do not use the current rod
+                if (dp[i][diff + maxOffset] == -1) dp[i][diff + maxOffset] = 0;
+                dp[i][diff + maxOffset] = Math.max(dp[i][diff + maxOffset], dp[i + 1][diff + maxOffset]);
+                // Add the rod to the left side
+                if (diff + rod + maxOffset <= 2 * maxOffset) {
+                    if (dp[i][diff + rod + maxOffset] == -1) dp[i][diff + rod + maxOffset] = 0;
+                    dp[i][diff + rod + maxOffset] = Math.max(dp[i][diff + rod + maxOffset], dp[i + 1][diff + maxOffset]);
+                }
+                // Add the rod to the right side
+                if (diff - rod + maxOffset >= 0) {
+                    if (dp[i][diff - rod + maxOffset] == -1) dp[i][diff - rod + maxOffset] = 0;
+                    dp[i][diff - rod + maxOffset] = Math.max(dp[i][diff - rod + maxOffset], dp[i + 1][diff + maxOffset] + rod);
+                }
+            }
+        }
+        return dp[0][maxOffset] == -1 ? 0 : dp[0][maxOffset];
+    }
+
+
+
 
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
-
+        int r = tallestBillboard(new int[]{1,2,3,6});
 
     }
 
