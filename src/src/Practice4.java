@@ -2633,6 +2633,26 @@ public class Practice4 {
         return -1;
     }
 
+    public int minMeetingRooms(int[][] intervals) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        for (int[] interval : intervals) {
+            int start = interval[0];
+            int end = interval[1];
+            if (pq.isEmpty()) pq.offer(end);
+            else {
+                int peek = pq.peek();
+                if (peek <= start) {
+                    pq.poll();
+                    pq.offer(end);
+                } else {
+                    pq.offer(end);
+                }
+            }
+        }
+        return pq.size();
+    }
+
 
 
 
