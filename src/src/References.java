@@ -6,6 +6,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -133,17 +134,17 @@ public class References {
     // Section 3: HashMap Operations
     public static void hashMapOperations() {
         System.out.println("=== HashMap Operations ===");
+        int key = 3;
+        int value = 10;
 
         // Increment HashMap value by 1 if it exists, if not, set it to 1
         HashMap<Integer, Integer> map = new HashMap<>();
         map.merge(3, 1, Integer::sum);
 
         // HashMap with List values
+        // computeIfAbsent
         HashMap<Integer, List<Integer>> indexMap = new HashMap<>();
-        indexMap.merge(1, new ArrayList<>(List.of(1)), (a, b) -> {
-            a.addAll(b);
-            return a;
-        });
+        indexMap.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
 
         // Sort HashMap keys based on values
         List<Integer> keyList = new ArrayList<>(map.keySet());

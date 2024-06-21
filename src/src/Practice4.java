@@ -1,4 +1,5 @@
 import java.math.*;
+import java.sql.*;
 import java.util.*;
 public class Practice4 {
 
@@ -2595,6 +2596,42 @@ public class Practice4 {
         return dp[numPeople / 2];
     }
 
+
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        int n = routes.length;
+        boolean[] exploredRoutes = new boolean[n];
+        Set<Integer> set = new HashSet<>();
+        set.add(source);
+        boolean flag = true;
+        int counter = 0;
+        while (flag) {
+            counter++;
+            List<Integer> routeList = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                if (exploredRoutes[i]) continue;
+                int[] route = routes[i];
+                for (int r : route) {
+                    if (set.contains(r)) {
+                        routeList.add(i);
+                        exploredRoutes[i] = true;
+                        break;
+                    }
+                }
+            }
+            for (Integer I : routeList) {
+                int[] route = routes[I];
+                for (int r : route) {
+                    set.add(r);
+                    if (r == target) {
+                        return counter;
+                    }
+                }
+            }
+            if (routeList.isEmpty()) flag = false;
+            routeList.clear();
+        }
+        return -1;
+    }
 
 
 
