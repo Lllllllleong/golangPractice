@@ -2526,7 +2526,26 @@ public class Practice4 {
         return output;
     }
 
-
+    public int minCostII(int[][] costs) {
+        int n = costs.length;
+        int m = costs[0].length;
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j < m; j++) {
+                int currentCost = costs[i][j];
+                int minCost = Integer.MAX_VALUE;
+                for (int k = 0; k < n; k++) {
+                    if (j == k) continue;
+                    minCost = Math.min(minCost, currentCost + costs[i+1][k]);
+                }
+                costs[i][j] = minCost;
+            }
+        }
+        int output = Integer.MAX_VALUE;
+        for (int i : costs[0]) {
+            output = Math.min(output, i);
+        }
+        return output;
+    }
 
 
 
