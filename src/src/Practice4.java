@@ -2654,6 +2654,25 @@ public class Practice4 {
     }
 
 
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        HashMap<String, Integer> hm = new HashMap<>();
+        int maxLength = 1;
+        for (String word : words) {
+            int currentLength = 1;
+            for (int i = 0; i < word.length(); i++) {
+                String predecessor = word.substring(0, i) + word.substring(i + 1);
+                if (hm.containsKey(predecessor)) {
+                    currentLength = Math.max(currentLength, hm.get(predecessor) + 1);
+                }
+            }
+            hm.put(word, currentLength);
+            maxLength = Math.max(maxLength, currentLength);
+        }
+        return maxLength;
+    }
+
+
 
 
 
