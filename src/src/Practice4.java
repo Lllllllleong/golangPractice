@@ -1,3 +1,4 @@
+import java.math.*;
 import java.util.*;
 public class Practice4 {
 
@@ -2482,13 +2483,62 @@ public class Practice4 {
 
 
 
+    public static int minimumDifference(int[] nums) {
+        int n = nums.length;
+        int totalSum = 0;
+        for (int i : nums) totalSum += Math.abs(i);
+        int halfSum = totalSum / 2;
+
+        boolean[] dp = new boolean[halfSum + 1];
+        dp[0] = true;
+
+        for (int num : nums) {
+            for (int j = halfSum; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+
+        for (int i = halfSum; i >= 0; i--) {
+            if (dp[i]) {
+                int sum1 = i;
+                int sum2 = totalSum - i;
+                return Math.abs(sum2 - sum1);
+            }
+        }
+
+        return 0;
+    }
+
+
+
+    public int minCost(int[][] costs) {
+        int n = costs.length;
+        int[][] dp = new int[n][3];
+        dp[n-1][0] = costs[n-1][0];
+        dp[n-1][1] = costs[n-1][1];
+        dp[n-1][2] = costs[n-1][2];
+        for (int i = n - 2; i >= 0; i--) {
+            dp[i][0] = costs[i][0] + Math.min(dp[i+1][1], dp[i+1][2]);
+            dp[i][1] = costs[i][1] + Math.min(dp[i+1][0], dp[i+1][2]);
+            dp[i][2] = costs[i][2] + Math.min(dp[i+1][0], dp[i+1][1]);
+        }
+        int output = Math.min(dp[0][0], Math.min(dp[0][1], dp[0][2]));
+        return output;
+    }
+
+
+
+
+
+
+
 
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
-        int r = tallestBillboard(new int[]{1,2,3,6});
-
+        int i = minimumDifference(new int[]{-36,36});
+        System.out.println(i);
     }
 
 
