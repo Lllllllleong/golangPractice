@@ -2809,15 +2809,98 @@ public class Practice4 {
         return sb.toString();
     }
 
+    public static List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> output = new ArrayList<>();
+        if (root == null) return output;
+        HashMap<Integer, List<Integer>> hm = new HashMap<>();
+        verticalOrder(root, hm, 0);
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        for (Integer key : keyList) {
+            output.add(hm.get(key));
+        }
+        return output;
+    }
+    public static void verticalOrder(TreeNode root,  HashMap<Integer, List<Integer>> hm, int index) {
+        if (root == null) return;
+        int value = root.val;
+        System.out.println(value);
+        hm.computeIfAbsent(index, k -> new ArrayList<>()).add(value);
+        verticalOrder(root.left, hm, index-1);
+        verticalOrder(root.right, hm, index+1);
+
+    }
+
+    public static TreeNode buildTree(Integer[] array) {
+        if (array == null || array.length == 0 || array[0] == null) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(array[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+
+        while (i < array.length) {
+            TreeNode current = queue.poll();
+
+            if (array[i] != null) {
+                current.left = new TreeNode(array[i]);
+                queue.add(current.left);
+            }
+            i++;
+
+            if (i < array.length && array[i] != null) {
+                current.right = new TreeNode(array[i]);
+                queue.add(current.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
 
 
+    class SparseVector {
+        List<int[]> sv;
+        SparseVector(int[] nums) {
+            sv = new ArrayList<>();
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] != 0) {
+                    sv.add(new int[]{i, nums[i]});
+                }
+            }
+        }
+        // Return the dotProduct of two sparse vectors
+        public int dotProduct(SparseVector vec) {
+            int output = 0;
+            List<int[]> vecSV = vec.sv;
+            int a = 0;
+            int b = 0;
+            while (a < this.sv.size() && b < vecSV.size()) {
+                int aIndex = this.sv.get(a)[0];
+                int bIndex = vecSV.get(b)[0];
+                if (aIndex == bIndex) {
+                    output += this.sv.get(a)[1] * vecSV.get(b)[1];
+                    a++;
+                    b++;
+                } else if (aIndex < bIndex) {
+                    a++;
+                } else {
+                    b++;
+                }
+            }
+            return output;
+        }
+    }
 
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
 
-        long l = maximumBooks(new int[]{5,5,5});
+        TreeNode tn = buildTree(new Integer[]{3,9,8,4,0,1,7,null,null,null,2,5});
+        var v = verticalOrder(tn);
     }
 
 
@@ -2837,7 +2920,7 @@ public class Practice4 {
     }
 
 
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
