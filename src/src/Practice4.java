@@ -2736,6 +2736,24 @@ public class Practice4 {
         return true;
     }
 
+    public void wiggleSort(int[] nums) {
+        Arrays.sort(nums);
+        Deque<Integer> dq = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
+        boolean flag = true;
+        int index = 0;
+        while (!dq.isEmpty()) {
+            if (flag) {
+                nums[index] = dq.pollFirst();
+                flag = false;
+            } else {
+                nums[index] = dq.pollLast();
+                flag = true;
+            }
+            index++;
+        }
+        return;
+    }
+
 
 
 
