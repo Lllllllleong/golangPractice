@@ -2673,14 +2673,78 @@ public class Practice4 {
     }
 
 
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int[][] dp = new int[n+1][n+1];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (i == j) {
+                    dp[i][j] = 1;
+                } else {
+                    boolean match = sChar[i] == sChar[j];
+                    if (match) {
+                        dp[i][j] = dp[i+1][j-1] + 2;
+                    }
+                    dp[i][j] = Math.max(dp[i][j], Math.max(dp[i][j-1], dp[i+1][j]));
+                }
+            }
+        }
+        return dp[0][n-1];
+    }
+
+    public static long maximumBooks(int[] books) {
+        int n = books.length;
+        long output = 0;
+        if (n == 1) return books[0];
+        long[] dp = new long[n];
+        dp[0] = books[0];
+        Deque<Long> q = new ArrayDeque<>();
+        q.offer((long) books[0]);
+        for (int i = 1; i < n; i++) {
+            long book = books[i];
+            long priorBook = q.peekLast();
+            if (priorBook == book) continue;
+            if (priorBook < book) {
+                dp[i] = dp[i-1] + book;
+            } else {
+                dp[i] = book;
+                while (!q.isEmpty()) {
+                    book--;
+                    book = Math.max(book, 0);
+                    priorBook = q.poll();
+                    book = Math.min(book, priorBook);
+                    dp[i] += book;
+                    if (book == 0) q.clear();
+                }
+            }
+            q.offerLast((long) books[i]);
+            output = Math.max(output, dp[i]);
+        }
+        return output;
+    }
+
+    public boolean canAttendMeetings(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        int currentTime = 0;
+        for (int[] interval : intervals) {
+            int a = interval[0];
+            int b = interval[1];
+            if (currentTime > a) return false;
+            currentTime = b;
+        }
+        return true;
+    }
+
+
 
 
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
-        int i = minimumDifference(new int[]{-36,36});
-        System.out.println(i);
+
+        long l = maximumBooks(new int[]{5,5,5});
     }
 
 
