@@ -2945,6 +2945,46 @@ public class Practice4 {
 //        }
 //    }
 
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int n = startTime.length;
+        if (n == 1) return profit[0];
+        int[][] dp = new int[n+1][];
+        dp[n] = new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE, 0};
+        for (int i = 0; i < n; i++) {
+            dp[i] = new int[]{startTime[i], endTime[i], profit[i]};
+        }
+        Arrays.sort(dp, Comparator.comparingInt(a -> a[0]));
+        for (int i = n - 2; i >= 0; i--) {
+            int[] job = dp[i];
+            int end = job[1];
+            //Binary search
+            int maxProfit = -1;
+            int left = i+1;
+            int right = n;
+            while (left <= right) {
+                int middle = left + (right-left)/2;
+                int middleJobStart = dp[middle][0];
+                if (middleJobStart < end) {
+                    left = middle + 1;
+                } else {
+                    maxProfit = Math.max(maxProfit, dp[middle][2]);
+                    right = middle - 1;
+                }
+            }
+            job[2] += maxProfit;
+            job[2] = Math.max(job[2], dp[i+1][2]);
+        }
+        return dp[0][2];
+    }
+
+
+
+
+
+
+
+
+
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};

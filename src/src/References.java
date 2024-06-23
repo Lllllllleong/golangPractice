@@ -36,18 +36,71 @@ import java.io.IOException;
 
 public class References {
 
-        /*
-            Static: Used when you don't care about the instance
-            e.g. Seed class above
-            Then totalSeedCount will return total of all seeds created
-            Also e.g.
-            Seed s = new Seed(a, b);
-            Seed.toString() will not work because it is not calling toString on an instance,
-            it is calling on a class.
-            To make it work, add a static toString method in the class
+    //Binary search
+    public static int binarySearchExact(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid; //Target found
+            }
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return -1; //Target does not exist
+    }
 
+    // Ceiling search binary search
+    public static int binarySearchCeiling(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        int result = -1;
 
-         */
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid]; // target found
+            }
+
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                result = arr[mid];
+                right = mid - 1;
+            }
+        }
+
+        return result; // return ceiling or -1 if not found
+    }
+
+    // Floor search binary search
+    public static int binarySearchFloor(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid]; // target found
+            }
+
+            if (arr[mid] < target) {
+                result = arr[mid];
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return result; // return floor or -1 if not found
+    }
 
 
 
