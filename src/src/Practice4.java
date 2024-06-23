@@ -2991,7 +2991,22 @@ public class Practice4 {
     }
 
 
-
+    public int numberOfArithmeticSlices(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return 0;
+        int[] dp = new int[n];
+        int[] differences = new int[n];
+        for (int i = n - 3; i >= 0; i--) {
+            int a = nums[i];
+            int b = nums[i+1];
+            int difference = b - a;
+            differences[i] = difference;
+            if (differences[i+1] == difference) {
+                dp[i] = dp[i+1] + 1;
+            }
+        }
+        return Arrays.stream(dp).sum();
+    }
 
 
     public static void main(String[] args) {
