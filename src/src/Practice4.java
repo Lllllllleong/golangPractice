@@ -2894,6 +2894,51 @@ public class Practice4 {
         }
     }
 
+    public int numKLenSubstrNoRepeats(String s, int k) {
+        int n = s.length();
+        if (k == 1) return n;
+        int output = 0;
+        Deque<Character> dq = new ArrayDeque<>();
+        HashMap<Character, Integer> hm = new HashMap<>();
+        for (Character c : s.toCharArray()) {
+            if (dq.size() >= k) {
+                Character poll = dq.pollFirst();
+                if (hm.get(poll) == 1) hm.remove(poll);
+                else hm.merge(poll, -1, Integer::sum);
+            }
+            dq.addLast(c);
+            hm.merge(c, 1, Integer::sum);
+            if (hm.keySet().size() == k) output++;
+        }
+        return output;
+    }
+
+
+
+
+
+//    public class Solution extends Relation {
+//        public int findCelebrity(int n) {
+//            if (n == 1) return 0;
+//            int candidate = 0;
+//            for (int i = 1; i < n; i++) {
+//                if (knows(candidate, i)) {
+//                    candidate = i;
+//                }
+//            }
+//            for (int i = 0; i < n; i++) {
+//                if (i != candidate) {
+//                    if (knows(candidate, i) || !knows(i, candidate)) {
+//                        return -1;
+//                    }
+//                }
+//            }
+//            return candidate;
+//        }
+//    }
+
+
+
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
@@ -2902,28 +2947,6 @@ public class Practice4 {
         TreeNode tn = buildTree(new Integer[]{3,9,8,4,0,1,7,null,null,null,2,5});
         var v = verticalOrder(tn);
     }
-
-
-    public class Solution extends Relation {
-        public int findCelebrity(int n) {
-            if (n == 1) return 0;
-            int candidate = 0;
-            for (int i = 1; i < n; i++) {
-                if (knows(candidate, i)) {
-                    candidate = i;
-                }
-            }
-            for (int i = 0; i < n; i++) {
-                if (i != candidate) {
-                    if (knows(candidate, i) || !knows(i, candidate)) {
-                        return -1;
-                    }
-                }
-            }
-            return candidate;
-        }
-    }
-
 
 
 
