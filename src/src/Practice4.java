@@ -3144,7 +3144,24 @@ public class Practice4 {
         return true;
     }
 
-
+    public boolean canMeasureWater(int x, int y, int target) {
+        if (x + y < target) return false;
+        Boolean[][] dp = new Boolean[x+1][y+1];
+        return waterDFS(0,0, x, y, target, dp);
+    }
+    public boolean waterDFS(int x, int y, int xMax, int yMax, int target, Boolean[][] dp) {
+        if (x == target || y == target || (x+y) == target) return true;
+        if (x > xMax) return waterDFS(xMax, y, xMax, yMax, target, dp);
+        if (y > yMax) return waterDFS(x, yMax, xMax, yMax, target, dp);
+        if (dp[x][y] != null) return dp[x][y];
+        dp[x][y] = dp[x][y] || waterDFS(xMax, y, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterDFS(x, yMax, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterDFS(0, y, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterDFS(x, 0, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterDFS(x+y, Math.max(0, y - (xMax-x)), xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterDFS(Math.max(0, x-(yMax-y)), x+y, xMax, yMax, target, dp);
+        return dp[x][y];
+    }
 
 
 
