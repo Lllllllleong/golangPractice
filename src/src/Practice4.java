@@ -3093,30 +3093,20 @@ public class Practice4 {
             return 0;
         }
         int output = 0;
-        int min = Integer.MAX_VALUE;
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            hm.put(nums[i], i);
-            min = Math.min(min, nums[i]);
+        int[] minFromRight = new int[n];
+        minFromRight[n-1] = nums[n-1];
+        for (int i = n - 2; i >= 0; i--) {
+            minFromRight[i] = Math.min(minFromRight[i+1], nums[i]);
         }
-        List<Integer> keyList = new ArrayList<>(hm.keySet());
-        Collections.sort(keyList);
-        Integer prior = hm.get(keyList.get(0));
-        for (int i = 1; i < keyList.size(); i++) {
-            Integer currentKey = keyList.get(i);
-            prior = Math.max(prior, hm.get(currentKey));
-            hm.put(currentKey, prior);
-        }
-        for (int i = 0; i < n; i++) {
-            if ((n-i) <= output) break;
-            if (nums[i] == min) continue;
-            Integer value = --nums[i];
-            while (!hm.containsKey(value)) {
-                value--;
+        int j = 0;
+        for (int i = 0; i < n && j < n; i++) {
+            //If overlap
+            j = Math.max(j, i);
+            //Otherwise
+            while (j < n && nums[i] > minFromRight[j]) {
+                j++;
             }
-            if (hm.get(value) < i) continue;
-            int length = hm.get(value) - i + 1;
-            output = Math.max(output, length);
+            output = Math.max(output, j - i);
         }
         return output;
     }
@@ -3129,7 +3119,7 @@ public class Practice4 {
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
-        int i = maxSubarrayLength(new int[]{57,55,50,60,61,58,63,59,64,60,63});
+        int i = maxSubarrayLength(new int[]{7,6,5,4,3,2,1,6,10,11});
     }
 
 
