@@ -3112,6 +3112,39 @@ public class Practice4 {
     }
 
 
+    public int earliestAcq(int[][] logs, int n) {
+        int[] parentArray = new int[n];
+        for (int i = 0; i < n; i++) parentArray[i] = i;
+        Arrays.sort(logs, Comparator.comparingInt(a -> a[0]));
+        for (int[] log : logs) {
+            int time = log[0];
+            int a = log[1];
+            int b = log[2];
+            if (unionJoin(parentArray, a, b)) --n;
+            if (n == 1) return time;
+        }
+        return -1;
+    }
+
+    public int findParent(int[] parentArray, int currentNode) {
+        //Base case, if the current node's parent is itself
+        if (parentArray[currentNode] == currentNode) return parentArray[currentNode];
+        else {
+            //The parent array may not be updated. By recursively calling itself, we update the parent array
+            return parentArray[currentNode] = findParent(parentArray, parentArray[currentNode]);
+        }
+    }
+
+    public boolean unionJoin(int[] parentArray, int nodeA, int nodeB) {
+        int parentA = findParent(parentArray, nodeA);
+        int parentB = findParent(parentArray, nodeB);
+        if (parentA == parentB) return false;
+        if (parentA > parentB) parentArray[parentA] = parentB;
+        else parentArray[parentB] = parentA;
+        return true;
+    }
+
+
 
 
 
