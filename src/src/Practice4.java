@@ -1972,6 +1972,7 @@ public class Practice4 {
         int[] Z = new int[n];
         int L = 0, R = 0, K;
         for (int i = 1; i < n; ++i) {
+            System.out.println(s.charAt(i));
             if (i > R) { //If we are outside the Z box
                 L = R = i;
                 while (R < n && s.charAt(R) == s.charAt(R - L)) {
@@ -3266,6 +3267,47 @@ public class Practice4 {
         return (int) dp[(1 << n) - 1];
     }
 
+    public static int longestRepeatingSubstring(String s) {
+        int n = s.length();
+        int[][] dp = new int[n + 1][n + 1];
+        int maxLength = 0;
+
+        // Iterate over the DP table
+        for (int i = 1; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                if (s.charAt(i - 1) == s.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    maxLength = Math.max(maxLength, dp[i][j]);
+                }
+            }
+        }
+        return maxLength;
+    }
+
+
+
+    public boolean predictTheWinner(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return true;
+        int[][] dp = new int[n+1][n+1];
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (i == j) dp[i][j] = nums[i];
+                else {
+                    int a = nums[i];
+                    int b = nums[j];
+                    int res;
+                    if (i+1 == j) {
+                        res = Math.abs(a-b);
+                    } else {
+                        res = Math.max(a - dp[i+1][j], b - dp[i][j-1]);
+                    }
+                    dp[i][j] = res;
+                }
+            }
+        }
+        return (dp[0][n-1] >= 0);
+    }
 
 
 
@@ -3275,7 +3317,7 @@ public class Practice4 {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
         int i = maxSubarrayLength(new int[]{7,6,5,4,3,2,1,6,10,11});
-        int[] zArray = computeZArray("AABZAABZCAABZAABZA");
+        int[] zArray = computeZArray("aabqwertycqwertydaab");
         int[][] hats = stringToArray2D("[[3,4],[4,5],[5]]");
         List<List<Integer>> hatList = new ArrayList<>();
         for (int[] hat : hats) {
