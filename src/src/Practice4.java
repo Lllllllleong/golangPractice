@@ -3309,6 +3309,56 @@ public class Practice4 {
         return (dp[0][n-1] >= 0);
     }
 
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int[] interval : firstList) {
+            int a = interval[0];
+            int b = interval[1];
+            hm.merge(a, 1, Integer::sum);
+            hm.merge(b, -1, Integer::sum);
+        }
+        for (int[] interval : secondList) {
+            int a = interval[0];
+            int b = interval[1];
+            hm.merge(a, 1, Integer::sum);
+            hm.merge(b, -1, Integer::sum);
+        }
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        boolean activeInterval = false;
+        int priorSum = 0;
+        int start = 0;
+        int sum = 0;
+        List<int[]> outputList = new ArrayList<>();
+        for (Integer key : keyList) {
+            sum = priorSum + hm.get(key);
+            if (priorSum == 1) {
+                if (sum == 1) {
+                    outputList.add(new int[]{key, key});
+                } else if (sum == 2) {
+                    start = key;
+                }
+            }
+            if (priorSum == 2) {
+                if (sum < 2) {
+                    outputList.add(new int[]{start, key});
+                }
+            }
+            if (priorSum == 0) {
+                if (sum == 2) {
+                    start = key;
+                }
+            }
+            priorSum = sum;
+        }
+        int n = outputList.size();
+        int[][] output = new int[n][];
+        for (int i = 0; i < n; i++) {
+            output[i] = outputList.get(i);
+        }
+        return output;
+    }
+
 
 
 
