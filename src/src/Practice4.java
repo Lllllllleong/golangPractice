@@ -3359,6 +3359,41 @@ public class Practice4 {
         return output;
     }
 
+    int minPrice;
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        minPrice = Integer.MAX_VALUE;
+        shoppingOffers(price, special, needs, 0, 0);
+        return minPrice;
+    }
+    public void shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs, int specialIndex, int currentPrice) {
+        if (currentPrice >= minPrice) return;
+        int n = price.size();
+        if (specialIndex == special.size()) {
+            for (int i = 0; i < n; i++) {
+                currentPrice += needs.get(i) * price.get(i);
+            }
+            minPrice = Math.min(minPrice, currentPrice);
+            return;
+        }
+        shoppingOffers(price, special, needs, specialIndex + 1, currentPrice);
+        List<Integer> currentSpecial = special.get(specialIndex);
+        boolean valid = true;
+        for (int j = 0; j < n; j++) {
+            if (needs.get(j) < currentSpecial.get(j)) {
+                valid = false;
+                break;
+            }
+        }
+        if (valid) {
+            for (int j = 0; j < n; j++) {
+                needs.set(j, needs.get(j) - currentSpecial.get(j));
+            }
+            shoppingOffers(price, special, needs, specialIndex, currentPrice + currentSpecial.get(n));
+            for (int j = 0; j < n; j++) {
+                needs.set(j, needs.get(j) + currentSpecial.get(j));
+            }
+        }
+    }
 
 
 
