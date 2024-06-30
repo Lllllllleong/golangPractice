@@ -3485,6 +3485,47 @@ public class Practice4 {
     }
 
 
+
+    public double minimumAverage(int[] nums) {
+        Arrays.sort(nums);
+        PriorityQueue<Double> pq = new PriorityQueue<>();
+        int l = 0;
+        int r = nums.length-1;
+        while (l < r) {
+            pq.offer(((double) nums[l] + nums[r]));
+            l++;
+            r--;
+        }
+        return (pq.poll()/2d);
+    }
+
+
+    public int minimumArea(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int xMin = Integer.MAX_VALUE;
+        int xMax = Integer.MIN_VALUE;
+        int yMin = Integer.MAX_VALUE;
+        int yMax = Integer.MIN_VALUE;
+        boolean flag = false;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    xMin = Math.min(xMin, i);
+                    xMax = Math.max(xMax, i);
+                    yMin = Math.min(yMin, j);
+                    yMax = Math.max(yMax, j);
+                    flag = true;
+                }
+            }
+        }
+        if (!flag) {
+            return 0;
+        }
+        return (xMax - xMin + 1) * (yMax - yMin + 1);
+    }
+
+
     public static void main(String[] args) {
         int[][] workers = {{0, 0}, {2, 1}};
         int[][] bikes = {{1, 2}, {3, 3}};
