@@ -3651,6 +3651,77 @@ public class Practice4 {
 
 
 
+    public int minFlipsMonoIncr(String s) {
+        int n = s.length();
+        if (n == 1) return 0;
+        int[][] dp = new int[n+1][2];
+        char[] sChar = s.toCharArray();
+        for (int i = n - 1; i >= 0; i--) {
+            char c = sChar[i];
+            if (c == '1') {
+                dp[i][1] = dp[i+1][1];
+                dp[i][0] = Math.min(dp[i+1][0], dp[i+1][1]) + 1;
+            } else {
+                dp[i][1] = dp[i+1][1] + 1;
+                dp[i][0] = Math.min(dp[i+1][0], dp[i+1][1]);
+            }
+        }
+        return Math.min(dp[0][1], dp[0][0]);
+    }
+
+    public int minStickers(String[] stickers, String target) {
+        Arrays.sort(stickers, Comparator.comparingInt(a -> -a.length()));
+        List<int[]> stickerList = new ArrayList<>();
+        for (String sticker : stickers) {
+            int[] currentSticker = new int[26];
+            for (char c : sticker.toCharArray()) {
+                currentSticker[c-'a']++;
+            }
+            boolean dominated = false;
+            for (int[] existingSticker : stickerList) {
+                dominated = true;
+                for (int i = 0; i < 26; i++) {
+                    if (existingSticker[i] < currentSticker[i]) {
+                        dominated = false;
+                        break;
+                    }
+                }
+                if (dominated) break;
+            }
+            if (!dominated) stickerList.add(currentSticker);
+        }
+        int sLength = target.length();
+        char[] targetChar = target.toCharArray();
+        //DP prep
+        int dpMax = 1 << sLength;
+        int[] dp = new int[dpMax];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        //DP
+        for (int i = 0; i < dpMax; i++) {
+            int currentStickerCount = dp[i];
+            if (currentStickerCount == Integer.MAX_VALUE) continue;
+            for (int[] sticker : stickerList) {
+                int nextMask = i;
+                int[] stickerCopy = Arrays.copyOf(sticker, 26);
+                for (int j = 0; j < sLength; j++) {
+                    if ((nextMask & (1 << j)) == 1 && stickerCopy[targetChar[j]-'a'] > 0) {
+                        stickerCopy[targetChar[j]-'a']--;
+                        nextMask &= ~(1 << j);
+                    }
+                }
+                if (nextMask == i) continue;
+                dp[nextMask] = Math.min(dp[nextMask], currentStickerCount + 1);
+            }
+        }
+        return (dp[dpMax-1] == Integer.MAX_VALUE) ? -1 : dp[dpMax-1];
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int[][] workers = {{0, 0}, {2, 1}};
         int[][] bikes = {{1, 2}, {3, 3}};
@@ -3663,7 +3734,18 @@ public class Practice4 {
             for (int h : hat) l.add(h);
             hatList.add(l);
         }
-        i = minCostToMakeArrayNonDecreasing(new int[]{1,5,11,3,4,3,2});
+
+        String[] stickers = {"apple", "banana", "cherry", "date", "fig", "grape"};
+
+        // Sort the array by reverse length using lambda expression
+        Arrays.sort(stickers, Comparator.comparingInt((String a) -> -a.length()));
+
+        // Print the sorted array
+        System.out.println("Strings sorted by reverse length:");
+        for (String str : stickers) {
+            System.out.println(str);
+        }
+
 
     }
 

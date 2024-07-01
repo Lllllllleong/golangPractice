@@ -512,6 +512,7 @@ public class References {
         int pos = 3;
         //Set the bit at position 3
         int result = num | (1 << pos); // 1101 in binary (13 in decimal)
+        num |= (1 << pos); //Shorthand
 
 
         // Clearing a bit to 0
@@ -519,8 +520,7 @@ public class References {
         // Clear the bit at position 3
         pos = 3;
         result = num & ~(1 << pos); // 0101 in binary (5 in decimal)
-        //Shorthand form of reassigning num
-        num &= ~(1 << pos);
+        num &= ~(1 << pos); //Shorthand
 
 
         // Flipping a bit
@@ -529,12 +529,13 @@ public class References {
         result = num ^ (1 << 2); // 0001 in binary (1 in decimal)
         // Flip the bit at position 0
         result = num ^ (1 << 0); // 0100 in binary (4 in decimal)
+        num ^= (1 << pos);
 
 
         // Checking a bit
         num = 5; // 0101 in binary
-        // Check the bit at position 2
-        boolean isSet = (num & (1 << 2)) != 0; // true, because the bit at position 2 is 1
+        // Check the bit at position
+        boolean isSet = (num & (1 << pos)) != 0; // true, because the bit at position 2 is 1
         // Check the bit at position 1
         isSet = (num & (1 << 1)) != 0; // false, because the bit at position 1 is 0
 
