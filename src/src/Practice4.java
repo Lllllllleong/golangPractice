@@ -3675,7 +3675,7 @@ public class Practice4 {
         for (String sticker : stickers) {
             int[] currentSticker = new int[26];
             for (char c : sticker.toCharArray()) {
-                currentSticker[c-'a']++;
+                currentSticker[c - 'a']++;
             }
             boolean dominated = false;
             for (int[] existingSticker : stickerList) {
@@ -3690,31 +3690,39 @@ public class Practice4 {
             }
             if (!dominated) stickerList.add(currentSticker);
         }
+
         int sLength = target.length();
         char[] targetChar = target.toCharArray();
-        //DP prep
+
+        // DP preparation
+        HashMap<Integer, Integer> dp = new HashMap<>();
+        dp.put(0, 0);
         int dpMax = 1 << sLength;
-        int[] dp = new int[dpMax];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
-        //DP
-        for (int i = 0; i < dpMax; i++) {
-            int currentStickerCount = dp[i];
-            if (currentStickerCount == Integer.MAX_VALUE) continue;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.add(new int[]{0,0});
+        // DP
+        while (!pq.isEmpty()) {
+            int[] a = pq.poll();
+            int count = a[1];
+            int mask = a[0];
+            int currentStickerCount = dp.get(mask);
+            if (currentStickerCount < count) continue;
             for (int[] sticker : stickerList) {
-                int nextMask = i;
+                int nextMask = mask;
                 int[] stickerCopy = Arrays.copyOf(sticker, 26);
                 for (int j = 0; j < sLength; j++) {
-                    if ((nextMask & (1 << j)) == 1 && stickerCopy[targetChar[j]-'a'] > 0) {
-                        stickerCopy[targetChar[j]-'a']--;
-                        nextMask &= ~(1 << j);
+                    if ((nextMask & (1 << j)) == 0 && stickerCopy[targetChar[j] - 'a'] > 0) {
+                        stickerCopy[targetChar[j] - 'a']--;
+                        nextMask |= (1 << j);
                     }
                 }
-                if (nextMask == i) continue;
-                dp[nextMask] = Math.min(dp[nextMask], currentStickerCount + 1);
+                if (nextMask != mask && dp.getOrDefault(nextMask, Integer.MAX_VALUE) > currentStickerCount + 1) {
+                    dp.put(nextMask, Math.min(dp.getOrDefault(nextMask, Integer.MAX_VALUE), currentStickerCount + 1));
+                    pq.offer(new int[]{nextMask, currentStickerCount + 1});
+                }
             }
         }
-        return (dp[dpMax-1] == Integer.MAX_VALUE) ? -1 : dp[dpMax-1];
+        return dp.getOrDefault(dpMax - 1, -1);
     }
 
 
