@@ -3592,6 +3592,42 @@ public class Practice4 {
 
 
 
+    public static int maxElement(int n, int maxSum, int k) {
+        // Write your code here
+        int leftLength = k + 1;
+        int rightLength = n - k;
+
+        int left = 1;
+        int right = maxSum;
+        int mid = -1;
+        int output = 1;
+        while (left <= right) {
+            mid = left + ((right - left)/2);
+            long currentSum = checkSum(mid, leftLength) + checkSum(mid, rightLength) - mid;
+            if (currentSum > maxSum) {
+                right = mid - 1;
+            } else {
+                output = mid;
+                left = mid + 1;
+            }
+        }
+        return output;
+
+    }
+
+    public static long checkSum(long upperBound, int length) {
+        if (length == 1) return upperBound;
+        if (upperBound < length) {
+            return upperBound * (upperBound + 1) / 2 + (length - upperBound);
+        }
+
+        long lowerBound = upperBound - length + 1;
+        long sum = (upperBound * (upperBound + 1) / 2) - (lowerBound * (lowerBound - 1) / 2);
+        return sum;
+    }
+
+
+
 
 
 
