@@ -3627,10 +3627,27 @@ public class Practice4 {
     }
 
 
-
-
-
-
+    public int convertArray(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 0;
+        PriorityQueue<Integer> increasing = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> decreasing = new PriorityQueue<>();
+        int increasingCost = 0;
+        int decreasingCost = 0;
+        for (int i : nums) {
+            if (!increasing.isEmpty() && increasing.peek() > i) {
+                increasingCost += increasing.poll()-i;
+                increasing.offer(i);
+            }
+            if (!decreasing.isEmpty() && decreasing.peek() < i) {
+                decreasingCost += i - decreasing.poll();
+                decreasing.offer(i);
+            }
+            increasing.offer(i);
+            decreasing.offer(i);
+        }
+        return Math.min(increasingCost, decreasingCost);
+    }
 
 
 
@@ -3646,7 +3663,7 @@ public class Practice4 {
             for (int h : hat) l.add(h);
             hatList.add(l);
         }
-
+        i = minCostToMakeArrayNonDecreasing(new int[]{1,5,11,3,4,3,2});
 
     }
 
