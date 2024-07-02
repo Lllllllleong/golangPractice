@@ -3851,6 +3851,36 @@ public class Practice4 {
     }
 
 
+    public int numPairsDivisibleBy60(int[] time) {
+        int[] frequency = new int[61];
+        int output = 0;
+        for (int i : time) {
+            int mod = i % 60;
+            int halfRequirement = (60 - mod) % 60;
+            output += frequency[halfRequirement];
+            frequency[mod]++;
+        }
+        return output;
+    }
+    public static long nCr(int n, int r) {
+        if (r > n) {
+            return 0;
+        }
+        if (r == 0 || r == n) {
+            return 1;
+        }
+        if (r > n - r) {
+            r = n - r; // Because C(n, r) == C(n, n - r)
+        }
+        long result = 1;
+        for (int i = 0; i < r; i++) {
+            result *= (n - i);
+            result /= (i + 1);
+        }
+        return result;
+    }
+
+
 
 
 
