@@ -34,6 +34,40 @@ public class Practice5 {
     }
 
 
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+        List<Integer> outputList = new ArrayList<>();
+        List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        int[] childCount = new int[numCourses];
+        for (int[] prereq : prerequisites) {
+            int a = prereq[0];
+            int b = prereq[1];
+            graph[b].add(a);
+            childCount[a]++;
+        }
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (childCount[i] == 0) dq.addLast(i);
+        }
+        while (!dq.isEmpty()) {
+            int currentCourse = dq.pollFirst();
+            outputList.add(currentCourse);
+            for (Integer nextCourse : graph[currentCourse]) {
+                if (--childCount[nextCourse] == 0) dq.addLast(nextCourse);
+            }
+        }
+        if (outputList.size() != n) return (new int[0]);
+        int[] output = new int[n];
+        for (int i = 0; i < n; i++) {
+            output[i] = outputList.get(i);
+        }
+        return output;
+    }
+
+
 
 
     /**
