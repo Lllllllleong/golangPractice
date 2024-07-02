@@ -3783,6 +3783,7 @@ public class Practice4 {
         return output;
     }
 
+    /**
     long pCount = 0;
     char[] treeChars = null;
     List<Integer> maskList = null;
@@ -3817,6 +3818,11 @@ public class Practice4 {
         }
         return localMaskList;
     }
+
+    **/
+
+
+
 
 
 
@@ -3862,53 +3868,85 @@ public class Practice4 {
         }
         return output;
     }
-    public static long nCr(int n, int r) {
-        if (r > n) {
-            return 0;
+    static long pCount = 0L;
+    public static long countPalindromePaths(List<Integer> parent, String s) {
+        HashMap<Integer, List<Integer>> graph = new HashMap<>();
+        int n = parent.size();
+        for (int i = 1; i < n; i++) {
+            int node = parent.get(i);
+            graph.computeIfAbsent(i, k -> new ArrayList<>()).add(node);
+            graph.computeIfAbsent(node, k -> new ArrayList<>()).add(i);
         }
-        if (r == 0 || r == n) {
-            return 1;
+        char[] sChar = s.toCharArray();
+        pCount = 0L;
+        for (int i = 0; i < n; i++) {
+            palindromeTreeDFS(graph, i, i, new HashSet<>(), sChar, 0);
         }
-        if (r > n - r) {
-            r = n - r; // Because C(n, r) == C(n, n - r)
+        return pCount;
+    }
+    public static void palindromeTreeDFS(HashMap<Integer, List<Integer>> graph,
+                                  int parentNode,
+                                  int currentNode,
+                                  Set<Integer> visited,
+                                  char[] sChar,
+                                  Integer mask) {
+        if (visited.contains(currentNode)) return;
+        visited.add(currentNode);
+        if (currentNode > parentNode && Integer.bitCount(mask) <= 1) pCount++;
+        List<Integer> nextNodes = graph.get(currentNode);
+        for (Integer nextNode : nextNodes) {
+            int charValue = sChar[nextNode] - 'a';
+            Integer nextMask = mask ^ (1 << charValue);
+            palindromeTreeDFS(graph, parentNode, nextNode, visited, sChar, nextMask);
         }
-        long result = 1;
-        for (int i = 0; i < r; i++) {
-            result *= (n - i);
-            result /= (i + 1);
+    }
+
+
+    public int longestSubstring(String s, int k) {
+        int n= s.length();
+        int[][] dp = new int[n+1][26];
+        int output = 0;
+        char[] sChar = s.toCharArray();
+        for (int i = n - 1; i >= 0; i--) {
+            char c = sChar[i];
+            for (int j = i; j < n; j++) {
+                int charInt = c -'a';
+                dp[j][charInt]++;
+                int currentLength = j - i + 1;
+                if (currentLength >= k && currentLength > output) {
+                    boolean flag = true;
+                    for (int frequency : dp[j]) {
+                        if (frequency != 0 && frequency < k) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) output = Math.max(output, j - i + 1);
+                }
+            }
         }
-        return result;
+        System.out.println();
+        return output;
     }
 
 
 
 
 
+    /**
+     * Main Method
+     *
+     *
+     *
+     *
+     *
+     *
+     */
     public static void main(String[] args) {
-        int[][] workers = {{0, 0}, {2, 1}};
-        int[][] bikes = {{1, 2}, {3, 3}};
-        int i = maxSubarrayLength(new int[]{7, 6, 5, 4, 3, 2, 1, 6, 10, 11});
-        int[] zArray = computeZArray("aabqwertycqwertydaab");
-        int[][] hats = stringToArray2D("[[3,4],[4,5],[5]]");
-        List<List<Integer>> hatList = new ArrayList<>();
-        for (int[] hat : hats) {
-            List<Integer> l = new ArrayList<>();
-            for (int h : hat) l.add(h);
-            hatList.add(l);
-        }
-
-        String[] stickers = {"apple", "banana", "cherry", "date", "fig", "grape"};
-
-        // Sort the array by reverse length using lambda expression
-        Arrays.sort(stickers, Comparator.comparingInt((String a) -> -a.length()));
-
-        // Print the sorted array
-        System.out.println("Strings sorted by reverse length:");
-        for (String str : stickers) {
-            System.out.println(str);
-        }
-
-
+        int[] parent = {-1,0,0,1,1,2};
+        String s = "acaabc";
+        long l = countPalindromePaths(Arrays.asList(-1,0,0,1,1,2), s);
+        System.out.println(l);
     }
 
 
