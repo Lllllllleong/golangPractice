@@ -301,6 +301,51 @@ public class Practice5 {
     }
 
 
+
+    public int longestIncreasingPath(int[][] matrix) {
+        int yMax = matrix.length;
+        int xMax = matrix[0].length;
+        int[][] dp = new int[yMax][xMax];
+        int[][] parentCount = new int[yMax][xMax];
+        int[][] directions = {{-1,0},{0,1},{1,0},{0,-1}};
+        Deque<int[]> dq = new ArrayDeque<>();
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                for (int[] direction : directions) {
+                    int nextY = y + direction[0];
+                    int nextX = x + direction[1];
+                    if (0 <= nextY && nextY < yMax && 0 <= nextX && nextX < xMax && matrix[y][x] < matrix[nextY][nextX]) {
+                        parentCount[y][x]++;
+                    }
+                }
+                if (parentCount[y][x] == 0) {
+                    dq.addLast(new int[]{y,x});
+                    dp[y][x] = 1;
+                }
+            }
+        }
+        int output = 0;
+        while (!dq.isEmpty()) {
+            int[] position = dq.pollFirst();
+            int y = position[0];
+            int x = position[1];
+            for (int[] direction : directions) {
+                int nextY = y + direction[0];
+                int nextX = x + direction[1];
+                if (0 <= nextY && nextY < yMax && 0 <= nextX && nextX < xMax && matrix[y][x] > matrix[nextY][nextX]) {
+                    if (--parentCount[nextY][nextX] == 0) {
+                        dq.addLast(new int[]{nextY, nextX});
+                        dp[nextY][nextX] = Math.max(dp[nextY][nextX], dp[y][x] + 1);
+                    }
+                }
+            }
+            output = Math.max(output, dp[y][x]);
+        }
+        return output;
+    }
+
+
+
     class Node {
         public int val;
         public List<Node> neighbors;

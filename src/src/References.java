@@ -514,6 +514,9 @@ public class References {
         int result = num | (1 << pos); // 1101 in binary (13 in decimal)
         num |= (1 << pos); //Shorthand
 
+        //If you are starting with mask = 0, and you want to set the bit at pos to 1:
+        int nextMask = 1 << pos;
+
 
         // Clearing a bit to 0
         num = 13; // 1101 in binary
