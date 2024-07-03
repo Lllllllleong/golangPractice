@@ -346,6 +346,32 @@ public class Practice5 {
 
 
 
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        int[] balloons = new int[n + 2];
+        for(int i = 0; i < n; i++){
+            balloons[i+1] = nums[i];
+        }
+        balloons[0] = 1;
+        balloons[n+1] =1;
+        n = n+2;
+        long[][] dp = new long[n][n];
+        for (int i = n - 3; i >= 0; i--) {
+            for (int j = i+2; j < n; j++) {
+                long currentBase = balloons[i] * balloons[j];
+                long currentMax = 0;
+                for (int k = i+1; k < j; k++) {
+                    long currentScore = currentBase * balloons[k] + dp[i][k] + dp[k][j];
+                    currentMax = Math.max(currentMax, currentScore);
+                }
+                dp[i][j] = currentMax;
+            }
+        }
+        return (int) dp[0][n-1];
+    }
+
+
+
     class Node {
         public int val;
         public List<Node> neighbors;
