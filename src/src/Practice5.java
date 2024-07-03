@@ -199,6 +199,42 @@ public class Practice5 {
 
 
 
+    public int minimumSemesters(int n, int[][] relations) {
+        List<Integer>[] graph = new List[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        int[] childCount = new int[n];
+        for (int[] relation : relations) {
+            int a = --relation[0];
+            int b = --relation[1];
+            childCount[b]++;
+            graph[a].add(b);
+        }
+        int counter = 0;
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) if (childCount[i] == 0) dq.addLast(i);
+        while (!dq.isEmpty()) {
+            counter++;
+            int size = dq.size();
+            for (int i = 0; i < size; i++) {
+                int currentCourse = dq.pollFirst();
+                List<Integer> nextCourses = graph[currentCourse];
+                for (Integer nextCourse : nextCourses) {
+                    if (--childCount[nextCourse] == 0) dq.addLast(nextCourse);
+                }
+            }
+        }
+        for (int i : childCount) if (i != 0) return -1;
+        return counter;
+    }
+
+
+
+
+
+
+
     class Interval {
         public int start;
         public int end;
