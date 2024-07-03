@@ -198,7 +198,6 @@ public class Practice5 {
     }
 
 
-
     public int minimumSemesters(int n, int[][] relations) {
         List<Integer>[] graph = new List[n];
         for (int i = 0; i < n; i++) {
@@ -230,9 +229,74 @@ public class Practice5 {
     }
 
 
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+        int root = node.val;
+        HashMap<Integer, Node> nodeGraph = new HashMap<>();
+        cloneGraph(nodeGraph, node);
+        return nodeGraph.get(root);
+    }
+
+    public void cloneGraph(HashMap<Integer, Node> nodeGraph, Node node) {
+        if (node == null) return;
+        int value = node.val;
+        if (nodeGraph.containsKey(value)) return;
+        nodeGraph.put(value, new Node(value));
+        List<Node> neighbours = node.neighbors;
+        for (Node neighbour : neighbours) {
+            cloneGraph(nodeGraph, neighbour);
+            nodeGraph.get(value).neighbors.add(nodeGraph.get(neighbour.val));
+        }
+    }
+
+    public int countComponents(int n, int[][] edges) {
+        if (n == 1) return 1;
+        int[] parent = new int[n];
+        int[] rank = new int[n];
+        //Start off assuming all components are independent singleton
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+        //Every time we connect a component to another, we minus 1 from our assumption
+        //If they have the same parent -> they are already connected -> don't need to decrement;
+        int output = n;
+        for (int[] edge : edges) {
+            int parentA = findParent(parent, edge[0]);
+            int parentB = findParent(parent, edge[1]);
+            if (parentA != parentB) {
+                parent[parentB] = parentA;
+            }
+            output--;
+        }
+        return output;
+    }
+
+    public int findParent(int[] parent, int node) {
+        int currentParent = parent[node];
+        if (currentParent != node) return parent[node] = findParent(parent, currentParent);
+        return currentParent;
+    }
 
 
+    class Node {
+        public int val;
+        public List<Node> neighbors;
 
+        public Node() {
+            val = 0;
+            neighbors = new ArrayList<Node>();
+        }
+
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
 
 
     class Interval {
