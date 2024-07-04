@@ -451,17 +451,141 @@ public class Practice5 {
         return output;
     }
 
+    public String pushDominoes(String dominoes) {
+        int n = dominoes.length();
+        if (n == 1) return dominoes;
+        char[] dominoChars = dominoes.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        char firstChar = 'a';
+        int currentLength = 0;
+        for (int i = 0; i <= n; i++) {
+            if (i == n) {
+                for (int j = 0; j < currentLength; j++) sb.append(firstChar);
+            } else {
+                char dominoChar = dominoChars[i];
+                switch (dominoChar) {
+                    case '.' -> {
+                        if (currentLength == 0) {
+                            firstChar = dominoChar;
+                        }
+                        currentLength++;
+                    }
+                    case 'L' -> {
+                        if (currentLength == 0) {
+                            sb.append(dominoChar);
+                        } else {
+                            currentLength++;
+                            if (firstChar == '.') {
+                                for (int j = 0; j < currentLength; j++) sb.append(dominoChar);
+                            } else {
+                                int count = currentLength / 2;
+                                boolean odd = (currentLength % 2 != 0);
+                                for (int j = 0; j < count; j++) sb.append('R');
+                                if (odd) sb.append('.');
+                                for (int j = 0; j < count; j++) sb.append('L');
+                            }
+                            currentLength = 0;
+                        }
+                    }
+                    case 'R' -> {
+                        if (currentLength == 0) {
+                            firstChar = dominoChar;
+                            currentLength++;
+                        } else {
+                            if (firstChar == 'R') {
+                                for (int j = 0; j < currentLength; j++) sb.append(dominoChar);
+                                currentLength = 1;
+                            } else {
+                                for (int j = 0; j < currentLength; j++) sb.append('.');
+                                currentLength = 1;
+                                firstChar = dominoChar;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
 
 
 
 
 
+//    public static int numberOfWays(String s, String t, long k) {
+//        String zString = t + '$' + s.substring(1) + s.substring(0, s.length()-1);
+//        int[] zArray = computeZArray(zString);
+//        int moves = 0;
+//        for (int i = s.length() + 1; i < s.length() * 2; i++) {
+//            if (zArray[i] >= s.length()) {
+//                moves++;
+//            }
+//        }
+//
+//        if (moves == 0 && zArray[s.length()] < s.length()) {
+//            return 0;
+//        }
+//
+//        BigInteger mod = BigInteger.valueOf((long) (1e9 + 7));
+//        BigInteger a = BigInteger.valueOf(s.length() - 1)
+//                .modPow(BigInteger.valueOf(k), mod)
+//                .add(BigInteger.valueOf(k % 2 == 0 ? s.length() - 1 : 1 - s.length()))
+//                .multiply(BigInteger.valueOf(s.length()).modInverse(mod))
+//                .mod(mod);
+//
+//        BigInteger b = a.add(BigInteger.valueOf(k % 2 == 0 ? -1 : 1));
+//
+//        BigInteger total = zArray[s.length()] >= s.length() ? a : BigInteger.ZERO;
+//        total = total.add(b.multiply(BigInteger.valueOf(moves)));
+//
+//        return total.mod(mod).intValue();
+//    }
 
+
+    public static int[] computeZArray(String s) {
+        int n = s.length();
+        int[] Z = new int[n];
+        int L = 0, R = 0, K;
+        for (int i = 1; i < n; ++i) {
+            System.out.println(s.charAt(i));
+            if (i > R) { //If we are outside the Z box
+                L = R = i;
+                while (R < n && s.charAt(R) == s.charAt(R - L)) {
+                    R++;
+                }
+                Z[i] = R - L;
+                R--;
+            } else { //We are inside the Z box
+                K = i - L; //K is the index of the matched character, wrt the pattern character
+                if (Z[K] < R - i + 1) { //It is safe to copy the pre-computed Z value
+                    Z[i] = Z[K]; //Copy the pre-computed Z value from the respective K index in the pattern String
+                } else { //!! There is a match within the Z box (A match within a match)
+                    L = i;
+                    while (R < n && s.charAt(R) == s.charAt(R - L)) {
+                        R++;
+                    }
+                    Z[i] = R - L;
+                    R--;
+                }
+            }
+        }
+        return Z;
+    }
 
     /**
      * Main Method
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      */
     public static void main(String[] args) {
+
         String[][] flights = {{"JFK", "KUL"}, {"JFK", "NRT"}, {"NRT", "JFK"}};
         var flightList = convertToListOfLists(flights);
         long startTime, endTime;
@@ -487,6 +611,8 @@ public class Practice5 {
         System.out.println("Time using + operator: " + durationPlus + " ns");
         System.out.println("Time using StringBuilder.append: " + durationStringBuilder + " ns");
 
+
+        int e;
     }
 
     public static List<List<String>> convertToListOfLists(String[][] array) {
