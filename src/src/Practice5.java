@@ -711,6 +711,35 @@ public class Practice5 {
     }
 
 
+    public int longestCycle(int[] edges) {
+        int n = edges.length;
+        int[] degree = new int[n];
+        BitSet mask = new BitSet();
+        for (int edge : edges) if (edge != -1) degree[edge]++;
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) if (degree[i] == 0) dq.addLast(i);
+        while (!dq.isEmpty()) {
+            int currentNode = dq.pollFirst();
+            mask.set(currentNode);
+            if (edges[currentNode] == -1) continue;
+            if (--degree[edges[currentNode]] == 0) dq.addLast(edges[currentNode]);
+        }
+        int output = -1;
+        for (int i = 0; i < n; i++) {
+            if (!mask.get(i)) {
+                mask.set(i);
+                int nextNode = edges[i];
+                int count = 1;
+                while (nextNode != i) {
+                    mask.set(nextNode);
+                    count++;
+                    nextNode = edges[nextNode];
+                }
+                output = Math.max(output, count);
+            }
+        }
+        return output;
+    }
 
 
 
