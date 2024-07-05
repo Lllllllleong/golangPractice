@@ -626,6 +626,49 @@ public class Practice5 {
     }
 
 
+    public int minCameraCover(TreeNode root) {
+        int[] result = treeCameraDFS(root);
+        return Math.min(result[1], result[2]);
+    }
+    public int[] treeCameraDFS(TreeNode node) {
+        if (node == null) {
+            return new int[]{0, 0, 10000};
+        }
+        int[] left = treeCameraDFS(node.left);
+        int[] right = treeCameraDFS(node.right);
+        int notCovered = left[1] + right[1];
+        int coveredByChild = Math.min(left[2] + Math.min(right[1], right[2]), right[2] + Math.min(left[1], left[2]));
+        int cameraHere = 1 + Math.min(left[0], Math.min(left[1], left[2])) + Math.min(right[0], Math.min(right[1], right[2]));
+        return new int[]{notCovered, coveredByChild, cameraHere};
+    }
+
+
+
+
+
+    public int maxRotateFunction(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 0;
+        long sum = 0l;
+        long rotateSum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+            rotateSum += i * nums[i];
+        }
+        int k = 0;
+        long output = rotateSum;
+        while (k < n) {
+            k++;
+            rotateSum = rotateSum + sum - (n * (nums[n-k]));
+            output = Math.max(output, rotateSum);
+        }
+        return (int) output;
+    }
+
+
+
+
+
     /**
      * Main Method
      *
@@ -772,8 +815,8 @@ public class Practice5 {
 
     public static class TreeNode {
         int val;
-        Practice4.TreeNode left;
-        Practice4.TreeNode right;
+        TreeNode left;
+        TreeNode right;
 
         TreeNode() {
         }
@@ -782,7 +825,7 @@ public class Practice5 {
             this.val = val;
         }
 
-        TreeNode(int val, Practice4.TreeNode left, Practice4.TreeNode right) {
+        TreeNode(int val, TreeNode left, TreeNode right) {
             this.val = val;
             this.left = left;
             this.right = right;
