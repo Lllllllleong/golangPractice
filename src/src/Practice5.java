@@ -741,6 +741,52 @@ public class Practice5 {
         return output;
     }
 
+    public int minimumTimeRequired(int[] jobs, int k) {
+        int left = 0;
+        int right = 0;
+        for (int job : jobs) {
+            left = Math.max(left, job);
+            right += job;
+        }
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (canFinish(jobs, k, mid)) {
+                right = mid; // Try for a smaller maximum time
+            } else {
+                left = mid + 1; // Try for a larger maximum time
+            }
+        }
+        return left;
+    }
+
+    private boolean canFinish(int[] jobs, int k, int maxWork) {
+        int[] bins = new int[k];
+        return backtrack(jobs, 0, bins, maxWork);
+    }
+
+    private boolean backtrack(int[] jobs, int jobIndex, int[] bins, int maxWork) {
+        if (jobIndex == jobs.length) {
+            return true;
+        }
+        int currentJob = jobs[jobIndex];
+        for (int i = 0; i < bins.length; i++) {
+            if (bins[i] + currentJob <= maxWork) {
+                bins[i] += currentJob;
+                if (backtrack(jobs, jobIndex + 1, bins, maxWork)) {
+                    return true;
+                }
+                bins[i] -= currentJob;
+            }
+            if (bins[i] == 0) {
+                break;
+            }
+        }
+        return false;
+    }
+
+
+
+
 
 
     /**
