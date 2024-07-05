@@ -678,6 +678,39 @@ public class Practice5 {
 
 
 
+    public int maxStarSum(int[] vals, int[][] edges, int k) {
+        int n = vals.length;
+        List<Integer>[] graph = new List[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+        int maxSum = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+            for (int neighbor : graph[i]) {
+                pq.offer(vals[neighbor]);
+            }
+            int currentSum = vals[i];
+            for (int j = 0; j < k && !pq.isEmpty(); j++) {
+                int topValue = pq.poll();
+                if (topValue > 0) {
+                    currentSum += topValue;
+                } else {
+                    break;
+                }
+            }
+            maxSum = Math.max(maxSum, currentSum);
+        }
+        return maxSum;
+    }
+
+
 
 
 
