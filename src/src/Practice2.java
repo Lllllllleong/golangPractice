@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Leetcode2 {
+public class Practice2 {
     public class TreeNode {
         int val;
         TreeNode left;
@@ -3502,14 +3502,14 @@ public class Leetcode2 {
         public int updateCell(int y, int x) {
             int neighbourSum = 0;
             // Correcting the order of x and y in get() calls
-            neighbourSum += get(y-1, x-1);
-            neighbourSum += get(y-1, x);
-            neighbourSum += get(y-1, x+1);
-            neighbourSum += get(y, x-1);
-            neighbourSum += get(y, x+1);
-            neighbourSum += get(y+1, x-1);
-            neighbourSum += get(y+1, x);
-            neighbourSum += get(y+1, x+1);
+            neighbourSum += get(y - 1, x - 1);
+            neighbourSum += get(y - 1, x);
+            neighbourSum += get(y - 1, x + 1);
+            neighbourSum += get(y, x - 1);
+            neighbourSum += get(y, x + 1);
+            neighbourSum += get(y + 1, x - 1);
+            neighbourSum += get(y + 1, x);
+            neighbourSum += get(y + 1, x + 1);
 
             boolean alive = (gameState[y][x] == 1);
             if (alive) {
@@ -3560,7 +3560,7 @@ public class Leetcode2 {
 
 
     public int uniquePaths(int m, int n) {
-        return (int) nCr(m+n-2, m-1);
+        return (int) nCr(m + n - 2, m - 1);
     }
 
 
@@ -3571,7 +3571,7 @@ public class Leetcode2 {
             return output;
         }
         Set<String> set = new HashSet<>();
-        List<String> prevList = generateParenthesis(n-1);
+        List<String> prevList = generateParenthesis(n - 1);
         for (String s : prevList) {
             set.add("(" + s + ")");
             set.add("()" + s);
@@ -3581,11 +3581,6 @@ public class Leetcode2 {
         Collections.sort(output);
         return output;
     }
-
-
-
-
-
 
 
     public static void main(String[] args) {
@@ -3632,68 +3627,65 @@ public class Leetcode2 {
     }
 
 
-}
+    /**
+     * Your Trie object will be instantiated and called as such:
+     * Trie obj = new Trie();
+     * obj.insert(word);
+     * boolean param_2 = obj.search(word);
+     * boolean param_3 = obj.startsWith(prefix);
+     */
 
+    class Trie {
+        Node root;
 
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie obj = new Trie();
- * obj.insert(word);
- * boolean param_2 = obj.search(word);
- * boolean param_3 = obj.startsWith(prefix);
- */
-
-class Trie {
-    Node root;
-
-    public Trie() {
-        root = new Node();
-    }
-
-    public void insert(String word) {
-        root.insert(word, 0);
-    }
-
-    public boolean search(String word) {
-        return root.search(word, 0);
-    }
-
-    class Node {
-        Node[] children;
-        boolean eow;
-
-        public Node() {
-            children = new Node[26];
+        public Trie() {
+            root = new Node();
         }
 
-        public void insert(String s, int index) {
-            if (index == s.length()) {
-                return;
-            } else {
+        public void insert(String word) {
+            root.insert(word, 0);
+        }
+
+        public boolean search(String word) {
+            return root.search(word, 0);
+        }
+
+        class Node {
+            Node[] children;
+            boolean eow;
+
+            public Node() {
+                children = new Node[26];
+            }
+
+            public void insert(String s, int index) {
+                if (index == s.length()) {
+                    return;
+                } else {
+                    char c = s.charAt(index);
+                    int cIndex = c - 'a';
+                    if (children[cIndex] == null) {
+                        children[cIndex] = new Node();
+                    }
+                    children[cIndex].insert(s, index + 1);
+                    if (index == s.length() - 1) children[cIndex].eow = true;
+                }
+            }
+
+            public boolean search(String s, int index) {
+                if (index == s.length()) return false;
                 char c = s.charAt(index);
                 int cIndex = c - 'a';
-                if (children[cIndex] == null) {
-                    children[cIndex] = new Node();
-                }
-                children[cIndex].insert(s, index + 1);
-                if (index == s.length() - 1) children[cIndex].eow = true;
+                Node n = children[cIndex];
+                if (n == null) return false;
+                if (index == s.length() - 1) return n.eow;
+                return n.search(s, index + 1);
             }
         }
-
-        public boolean search(String s, int index) {
-            if (index == s.length()) return false;
-            char c = s.charAt(index);
-            int cIndex = c - 'a';
-            Node n = children[cIndex];
-            if (n == null) return false;
-            if (index == s.length() - 1) return n.eow;
-            return n.search(s, index + 1);
-        }
     }
+
+
 }
-
-
-
 
 
 

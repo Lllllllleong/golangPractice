@@ -1,11 +1,6 @@
-import com.sun.security.jgss.GSSUtil;
-import com.sun.source.tree.Tree;
-
-import java.sql.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Leetcode3 extends Leetcode2 {
+public class Practice3 {
 
     public List<Integer> diffWaysToCompute(String expression) {
         int n = expression.length();
@@ -3759,6 +3754,24 @@ public class Leetcode3 extends Leetcode2 {
             }
         }
     }
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+
 }
 
 

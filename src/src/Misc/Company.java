@@ -1,4 +1,7 @@
-import java.io.*;
+package Misc;
+
+import Misc.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

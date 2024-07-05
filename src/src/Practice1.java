@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Leetcode {
+public class Practice1 {
     public class ListNode {
         int val;
         ListNode next;
