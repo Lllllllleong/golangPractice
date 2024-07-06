@@ -975,6 +975,27 @@ public class Practice5 {
     }
 
 
+    public List<Integer> partitionLabels(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int[] charIndex = new int[26];
+        for (int i = 0; i < n; i++) charIndex[sChar[i] - 'a'] = i;
+        List<Integer> output = new ArrayList<>();
+        int start = 0;
+        while (start < n) {
+            int left = start;
+            int right = charIndex[sChar[start] - 'a'];
+            while (left < right) {
+                left++;
+                right = Math.max(right, charIndex[sChar[left] - 'a']);
+            }
+            output.add(right - start + 1);
+            start = right + 1;
+        }
+        return output;
+    }
+
+
 
     /**
      * Main Method
