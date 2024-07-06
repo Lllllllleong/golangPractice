@@ -996,6 +996,57 @@ public class Practice5 {
     }
 
 
+    int timeCounter= 0;
+    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+        List<List<Integer>> graph = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (List<Integer> connection : connections) {
+            graph.get(connection.get(0)).add(connection.get(1));
+            graph.get(connection.get(1)).add(connection.get(0));
+        }
+        int[] rank = new int[n];
+        int[] low = new int[n];
+        Arrays.fill(rank, -1);
+        List<List<Integer>> output = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            // Node i is not visited yet
+            if (rank[i] == -1) {
+                tarjanDFS(i, -1, graph, rank, low, output);
+            }
+        }
+        return output;
+    }
+
+    private void tarjanDFS(int currentNode,
+                           int parent,
+                           List<List<Integer>> graph,
+                           int[] rank,
+                           int[] low,
+                           List<List<Integer>> output) {
+        ++timeCounter;
+        rank[currentNode] = timeCounter;
+        low[currentNode] = timeCounter;
+        for (int nextNode : graph.get(currentNode)) {
+            if (nextNode == parent) continue;
+            // If next node is not visited yet
+            if (rank[nextNode] == -1) {
+                tarjanDFS(nextNode, currentNode, graph, rank, low, output);
+                // Update low[u] considering the subtree rooted with v
+                low[currentNode] = Math.min(low[currentNode], low[nextNode]);
+                // If the lowest vertex reachable from subtree under the next node is
+                // below the currentNode in DFS tree, then this is a critical connection
+                if (low[nextNode] > rank[currentNode]) {
+                    output.add(Arrays.asList(currentNode, nextNode));
+                }
+            } else {
+                // Update low[currentNode] considering the back edge
+                low[currentNode] = Math.min(low[currentNode], rank[nextNode]);
+            }
+        }
+    }
+
 
     /**
      * Main Method
