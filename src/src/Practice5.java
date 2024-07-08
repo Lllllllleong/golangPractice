@@ -92,7 +92,6 @@ public class Practice5 {
     }
 
 
-
     public int fib(int n) {
         if (n == 0) return 0;
         if (n == 1) return 1;
@@ -480,9 +479,6 @@ public class Practice5 {
     }
 
 
-
-
-
 //    public static int numberOfWays(String s, String t, long k) {
 //        String zString = t + '$' + s.substring(1) + s.substring(0, s.length()-1);
 //        int[] zArray = computeZArray(zString);
@@ -544,6 +540,7 @@ public class Practice5 {
     }
 
     int MOD = 1_000_000_007;
+
     public int checkRecord(int n) {
         long[] piMatrix = new long[]{1, 1, 0, 1, 0, 0};
         long[][] transitionMatrix = new long[][]{
@@ -566,41 +563,12 @@ public class Practice5 {
         return (int) (output % MOD);
     }
 
-    public long[][] multiply(long[][] a, long[][] b) {
-        int n = a.length;
-        long[][] result = new long[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    result[i][j] = (result[i][j] + a[i][k] * b[k][j]) % MOD;
-                }
-            }
-        }
-        return result;
-    }
-
-    public long[][] matrixPower(long[][] a, int n) {
-        int size = a.length;
-        long[][] result = new long[size][size];
-        for (int i = 0; i < size; i++) {
-            result[i][i] = 1;
-        }
-        long[][] base = a;
-        while (n > 0) {
-            if ((n & 1) == 1) {
-                result = multiply(result, base);
-            }
-            base = multiply(base, base);
-            n >>= 1;
-        }
-        return result;
-    }
-
 
     public int minCameraCover(TreeNode root) {
         int[] result = treeCameraDFS(root);
         return Math.min(result[1], result[2]);
     }
+
     public int[] treeCameraDFS(TreeNode node) {
         if (node == null) {
             return new int[]{0, 0, 10000};
@@ -612,9 +580,6 @@ public class Practice5 {
         int cameraHere = 1 + Math.min(left[0], Math.min(left[1], left[2])) + Math.min(right[0], Math.min(right[1], right[2]));
         return new int[]{notCovered, coveredByChild, cameraHere};
     }
-
-
-
 
 
     public int maxRotateFunction(int[] nums) {
@@ -630,7 +595,7 @@ public class Practice5 {
         long output = rotateSum;
         while (k < n) {
             k++;
-            rotateSum = rotateSum + sum - (n * (nums[n-k]));
+            rotateSum = rotateSum + sum - (n * (nums[n - k]));
             output = Math.max(output, rotateSum);
         }
         return (int) output;
@@ -675,7 +640,6 @@ public class Practice5 {
 
         return output;
     }
-
 
 
     public int maxStarSum(int[] vals, int[][] edges, int k) {
@@ -785,16 +749,17 @@ public class Practice5 {
     }
 
     int maxCardinality = 0;
+
     public int minKBitFlips(int[] nums, int k) {
         int n = nums.length;
-        BitSet mask = new BitSet(n+k+1);
+        BitSet mask = new BitSet(n + k + 1);
         int count = 0;
         for (int i = 0; i < n; i++) {
             if (nums[i] == 1) mask.set(i);
         }
         for (int i = 0; i < n; i++) {
             if (!mask.get(i)) {
-                mask.flip(i, i+k);
+                mask.flip(i, i + k);
                 count++;
             }
         }
@@ -882,6 +847,7 @@ public class Practice5 {
         if (node == parent[node]) return node;
         return parent[node] = findMeeting(parent, parent[node]);
     }
+
     public void unionMeeting(int[] parent, int a, int b) {
         int parentA = findMeeting(parent, a);
         int parentB = findMeeting(parent, b);
@@ -928,7 +894,7 @@ public class Practice5 {
         }
         Arrays.sort(degree);
         long output = 0;
-        for (int i = 0; i < n; i++) output += (i+1) * degree[i];
+        for (int i = 0; i < n; i++) output += (i + 1) * degree[i];
         return output;
     }
 
@@ -996,7 +962,8 @@ public class Practice5 {
     }
 
 
-    int timeCounter= 0;
+    int timeCounter = 0;
+
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         List<List<Integer>> graph = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
@@ -1046,7 +1013,6 @@ public class Practice5 {
             }
         }
     }
-
 
 
     int[][] gameGrid;
@@ -1100,40 +1066,79 @@ public class Practice5 {
     }
 
 
+    public long[][] multiply(long[][] a, long[][] b) {
+        int n = a.length;
+        long[][] result = new long[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] = (result[i][j] + a[i][k] * b[k][j]) % MOD;
+                }
+            }
+        }
+        return result;
+    }
+
+    public long[][] matrixPower(long[][] a, int n) {
+        int size = a.length;
+        long[][] result = new long[size][size];
+        for (int i = 0; i < size; i++) {
+            result[i][i] = 1;
+        }
+        long[][] base = a;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                result = multiply(result, base);
+            }
+            base = multiply(base, base);
+            n >>= 1;
+        }
+        return result;
+    }
+
 
     public int numberOfWays(int startPos, int endPos, int k) {
         int MOD = 1_000_000_007;
         int distanceDifference = Math.abs(endPos - startPos);
         int maxDistanceDifference = k;
         if (distanceDifference > maxDistanceDifference) return 0;
-        long[][] dp = new long[k+1][maxDistanceDifference + 1];
+        long[][] dp = new long[k + 1][maxDistanceDifference + 1];
         dp[0][0] = 1;
         for (int i = 1; i <= k; i++) {
             for (int j = 0; j <= maxDistanceDifference; j++) {
                 if (j == 0) {
-                    dp[i][j] = (dp[i-1][j+1] * 2) % MOD;
+                    dp[i][j] = (dp[i - 1][j + 1] * 2) % MOD;
                 } else if (j == maxDistanceDifference) {
-                    dp[i][j] = dp[i-1][j-1];
+                    dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    dp[i][j] = (dp[i-1][j-1] + dp[i-1][j+1]) % MOD;
+                    dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j + 1]) % MOD;
                 }
             }
         }
         return (int) dp[k][distanceDifference];
     }
 
+    public int[] findBuildings(int[] heights) {
+        int n = heights.length;
+        int minHeight = Integer.MIN_VALUE;
+        int index = n - 1;
+        for (int i = n - 1; i >= 0; i--) {
+            int height = heights[i];
+            if (height > minHeight) {
+                minHeight = height;
+                heights[index--] = i;
+            }
+        }
+        return Arrays.copyOfRange(heights, index + 1, heights.length);
+    }
+
+
+
+
+
 
     /**
      * Main Method
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
      */
     public static void main(String[] args) {
 
@@ -1208,9 +1213,6 @@ public class Practice5 {
         }
         return result;
     }
-
-
-
 
 
     public class Node {
