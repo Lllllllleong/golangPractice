@@ -1300,6 +1300,14 @@ public class Practice5 {
         return output;
     }
 
+    HashMap<Integer,Integer> minDayMap = new HashMap<>();
+    public int minDays(int n) {
+        if(n <= 2) return n;
+        if(minDayMap.containsKey(n)) return minDayMap.get(n);
+        minDayMap.put(n, 1 + Math.min(n % 2 + minDays(n/2), n % 3 + minDays(n/3)));
+        return minDayMap.get(n);
+    }
+
     /**
      * Main Method
      */
