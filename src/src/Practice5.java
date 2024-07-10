@@ -1286,6 +1286,20 @@ public class Practice5 {
         return wSubstrings;
     }
 
+    public int longestNiceSubarray(int[] nums) {
+        int n = nums.length;
+        int left = 0;
+        int mask = 0;
+        int output = 0;
+        for (int right = 0; right < n; right++) {
+            int num = nums[right];
+            while ((mask & num) != 0) mask ^= nums[left++];
+            mask |= num;
+            output = Math.max(output, right - left + 1);
+        }
+        return output;
+    }
+
     /**
      * Main Method
      */
