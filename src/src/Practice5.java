@@ -1340,6 +1340,25 @@ public class Practice5 {
     }
 
 
+    public int numOfSubarrays(int[] arr) {
+        int MOD = 1_000_000_007;
+        int oddSumCount = 0;
+        int evenSumCount = 1;
+        int currentPrefixSum = 0;
+        int result = 0;
+        for (int num : arr) {
+            currentPrefixSum += num;
+            if ((currentPrefixSum & 1) == 0) {
+                evenSumCount++;
+                result = (result + oddSumCount) % MOD;
+            } else {
+                oddSumCount++;
+                result = (result + evenSumCount) % MOD;
+            }
+        }
+        return result;
+    }
+
     /**
      * Main Method
      */
