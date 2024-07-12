@@ -1448,6 +1448,24 @@ public class Practice5 {
         return output;
     }
 
+    public int numberOfArrays(String s, int k) {
+        int n = s.length();
+        int MOD = 1_000_000_007;
+        char[] sChar = s.toCharArray();
+        long[] dp = new long[n + 1];
+        dp[n] = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            if (sChar[i] == '0') continue;
+            long number = 0;
+            for (int j = i; j < n; j++) {
+                number = number * 10 + (sChar[j] - '0');
+                if (number > k) break;
+                dp[i] = (dp[i] + dp[j + 1]) % MOD;
+            }
+        }
+
+        return (int) dp[0];
+    }
     /**
      * Main Method
      */
