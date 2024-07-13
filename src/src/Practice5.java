@@ -1510,8 +1510,28 @@ public class Practice5 {
         }
         return dp[n-1];
     }
-    
-    
+
+
+
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+        int[][] dp = new int[d+1][n+1];
+        for (int[] p : dp) Arrays.fill(p, Integer.MAX_VALUE);
+        dp[0][n] = 0;
+        for (int day = 1; day <= d; day++) {
+            for (int i = 0; i < n; i++) {
+                int currentDifficulty = jobDifficulty[i];
+                for (int j = i; j < n; j++) {
+                    currentDifficulty = Math.max(currentDifficulty, jobDifficulty[j]);
+                    if (dp[day-1][j+1] != Integer.MAX_VALUE) {
+                        dp[day][i] = Math.min(dp[day][i], currentDifficulty + dp[day-1][j+1]);
+                    }
+                }
+            }
+        }
+        int output = dp[d][0];
+        return (output == Integer.MAX_VALUE) ? -1 : output;
+    }
     
     
     
