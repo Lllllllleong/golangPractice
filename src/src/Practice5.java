@@ -1471,7 +1471,7 @@ public class Practice5 {
         // dp[i] == Can a player win, starting at position i
         // DP: From position i, can I force a player into a position where they cannot win?
         boolean[] dp = new boolean[n+1];
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             boolean flag = false;
             int k = 1;
             int position = i - (k * k);
@@ -1486,6 +1486,29 @@ public class Practice5 {
             dp[i] = flag;
         }
         return dp[n];
+    }
+
+    public long minCost(int[] nums, int[] costs) {
+        int n = nums.length;
+        long[] dp = new long[n];
+        Arrays.fill(dp, Long.MAX_VALUE);
+        dp[0] = 0;
+        Deque<Integer> downStack = new ArrayDeque<>();
+        Deque<Integer> upStack = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            long l = nums[i];
+            while (!downStack.isEmpty() && l >= nums[downStack.peekLast()]) {
+                int downIndex = downStack.pollLast();
+                dp[i] = Math.min(dp[i], dp[downIndex] + costs[i]);
+            }
+            while (!upStack.isEmpty() && l < nums[upStack.peekLast()]) {
+                int upIndex = upStack.pollLast();
+                dp[i] = Math.min(dp[i], dp[upIndex] + costs[i]);
+            }
+            downStack.addLast(i);
+            upStack.addLast(i);
+        }
+        return dp[n-1];
     }
     
     
