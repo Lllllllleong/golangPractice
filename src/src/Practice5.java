@@ -1532,7 +1532,28 @@ public class Practice5 {
         int output = dp[d][0];
         return (output == Integer.MAX_VALUE) ? -1 : output;
     }
-    
+
+    public int numWays(String[] words, String target) {
+        int MOD = 1_000_000_007;
+        int t = target.length();
+        int n = words[0].length();
+        int[][] charFrequency = new int[n][26];
+        for (String word : words) {
+            char[] wordChar = word.toCharArray();
+            for (int i = 0; i < wordChar.length; i++) charFrequency[i][wordChar[i]-'a']++;
+        }
+        long[] dp = new long[t + 1];
+        dp[t] = 1;
+        char[] targetChar = target.toCharArray();
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j < t; j++) {
+                dp[j] = (dp[j] + charFrequency[i][targetChar[j] - 'a'] * dp[j + 1]) % MOD;
+            }
+        }
+        return (int) dp[0];
+    }
+
+
     
     
     /**
