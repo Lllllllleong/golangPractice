@@ -1624,8 +1624,24 @@ public class Practice5 {
         return output;
     }
 
+    public int maxDistance(List<List<Integer>> arrays) {
+        int output = 0;
+        List<Integer> first = arrays.get(0);
+        int min = first.get(0);
+        int max = first.get(first.size()-1);
+        int n = arrays.size();
+        for (int i = 1; i < n; i++) {
+            var v = arrays.get(i);
+            int currentMin = v.get(0);
+            int currentMax = v.get(v.size()-1);
+            output = Math.max(output, currentMax - min);
+            output = Math.max(output, max - currentMin);
+            max = Math.max(max, currentMax);
+            min = Math.min(min, currentMin);
+        }
+        return output;
+    }
 
-    
     
     /**
      * Main Method
