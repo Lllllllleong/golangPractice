@@ -1470,7 +1470,7 @@ public class Practice5 {
     public boolean winnerSquareGame(int n) {
         // dp[i] == Can a player win, starting at position i
         // DP: From position i, can I force a player into a position where they cannot win?
-        boolean[] dp = new boolean[n+1];
+        boolean[] dp = new boolean[n + 1];
         for (int i = 1; i <= n; i++) {
             boolean flag = false;
             int k = 1;
@@ -1508,14 +1508,13 @@ public class Practice5 {
             downStack.addLast(i);
             upStack.addLast(i);
         }
-        return dp[n-1];
+        return dp[n - 1];
     }
-
 
 
     public int minDifficulty(int[] jobDifficulty, int d) {
         int n = jobDifficulty.length;
-        int[][] dp = new int[d+1][n+1];
+        int[][] dp = new int[d + 1][n + 1];
         for (int[] p : dp) Arrays.fill(p, Integer.MAX_VALUE);
         dp[0][n] = 0;
         for (int day = 1; day <= d; day++) {
@@ -1523,8 +1522,8 @@ public class Practice5 {
                 int currentDifficulty = jobDifficulty[i];
                 for (int j = i; j < n; j++) {
                     currentDifficulty = Math.max(currentDifficulty, jobDifficulty[j]);
-                    if (dp[day-1][j+1] != Integer.MAX_VALUE) {
-                        dp[day][i] = Math.min(dp[day][i], currentDifficulty + dp[day-1][j+1]);
+                    if (dp[day - 1][j + 1] != Integer.MAX_VALUE) {
+                        dp[day][i] = Math.min(dp[day][i], currentDifficulty + dp[day - 1][j + 1]);
                     }
                 }
             }
@@ -1540,7 +1539,7 @@ public class Practice5 {
         int[][] charFrequency = new int[n][26];
         for (String word : words) {
             char[] wordChar = word.toCharArray();
-            for (int i = 0; i < wordChar.length; i++) charFrequency[i][wordChar[i]-'a']++;
+            for (int i = 0; i < wordChar.length; i++) charFrequency[i][wordChar[i] - 'a']++;
         }
         long[] dp = new long[t + 1];
         dp[t] = 1;
@@ -1570,6 +1569,7 @@ public class Practice5 {
         }
         return true;
     }
+
     public boolean checkRecord2(String s) {
         int aCount = 0;
         int lCount = 0;
@@ -1599,7 +1599,7 @@ public class Practice5 {
             graph[a][b] = c;
         }
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-        pq.offer(new int[]{k-1, 0});
+        pq.offer(new int[]{k - 1, 0});
         int[] minTime = new int[n];
         Arrays.fill(minTime, Integer.MAX_VALUE);
         while (!pq.isEmpty()) {
@@ -1628,12 +1628,12 @@ public class Practice5 {
         int output = 0;
         List<Integer> first = arrays.get(0);
         int min = first.get(0);
-        int max = first.get(first.size()-1);
+        int max = first.get(first.size() - 1);
         int n = arrays.size();
         for (int i = 1; i < n; i++) {
             var v = arrays.get(i);
             int currentMin = v.get(0);
-            int currentMax = v.get(v.size()-1);
+            int currentMax = v.get(v.size() - 1);
             output = Math.max(output, currentMax - min);
             output = Math.max(output, max - currentMin);
             max = Math.max(max, currentMax);
@@ -1642,28 +1642,50 @@ public class Practice5 {
         return output;
     }
 
-    
+
+    private static final Character[][] STROBOS = new Character[][]{
+            {'0', '0'},
+            {'1', '1'},
+            {'6', '9'},
+            {'8', '8'},
+            {'9', '6'}
+    };
+    private static final Character[] STROBO_SINGLETON = new Character[]{'0', '1', '8'};
+
+    public List<String> findStrobogrammatic(int n) {
+        return findStrobogrammatic(n, n);
+    }
+
+    private List<String> findStrobogrammatic(int currentLength, int targetLength) {
+        if (currentLength == 0) {
+            return new ArrayList<>(Arrays.asList(""));
+        }
+        if (currentLength == 1) {
+            return new ArrayList<>(Arrays.asList("0", "1", "8"));
+        }
+
+        List<String> prev = findStrobogrammatic(currentLength - 2, targetLength);
+        List<String> result = new ArrayList<>();
+
+        for (String s : prev) {
+            for (Character[] pair : STROBOS) {
+                if (currentLength == targetLength && pair[0] == '0') {
+                    continue; // Skip leading zeros
+                }
+                result.add(pair[0] + s + pair[1]);
+            }
+        }
+
+        return result;
+    }
+
+
     /**
      * Main Method
      */
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
-        int[] present = {5, 4, 6, 2, 3};
-        int[] future = {8, 5, 4, 3, 5};
-        int i = practice5.maximumProfit(present, future, 10);
-        String printString = "ccdaccacbbdbacdccdbadacbbcbbaadacbadadbbcbdbaacdb";
-        System.out.println("strangeprinter");
-        i = practice5.strangePrinter(printString);
-        System.out.println("strnage printer" + i);
-        long l = practice5.wonderfulSubstrings("aba");
-
-
-        int bit = 0b1000;
-        String bitString = Integer.toBinaryString(bit);
-        System.out.println(bitString);
-        System.out.println(Integer.parseInt(bitString, 2));
-        System.out.println(Integer.numberOfTrailingZeros((Integer.highestOneBit(bit))));
-        int e;
+        var v = practice5.findStrobogrammatic(2);
     }
 
     public static List<List<String>> convertToListOfLists(String[][] array) {
