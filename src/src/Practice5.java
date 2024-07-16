@@ -1766,6 +1766,32 @@ public class Practice5 {
         return splitCounter;
     }
 
+    public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
+        int[] indexMap = new int[50001];
+        int n = pid.size();
+        for (int i = 0; i < n; i++) {
+            indexMap[pid.get(i)] = i;
+        }
+        List<Integer> output = new ArrayList<>();
+        for (int i : pid) {
+            if (findParentProcess(indexMap, ppid, i, kill) == kill) output.add(i);
+        }
+        return output;
+    }
+
+    public int findParentProcess(int[] indexMap, List<Integer> parentList, int currentNode, int killNode) {
+        int currentIndex = indexMap[currentNode];
+        if (currentNode == killNode) {
+            parentList.set(currentIndex, killNode);
+            return killNode;
+        }
+        int currentParent = parentList.get(currentIndex);
+        if (currentParent == 0) return 0;
+        int parent = findParentProcess(indexMap, parentList, currentParent, killNode);
+        parentList.set(currentIndex, parent);
+        return parent;
+    }
+
 
 
 
