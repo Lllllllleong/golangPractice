@@ -1849,6 +1849,23 @@ public class Practice5 {
         return sum;
     }
 
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] output = new int[n];
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            int num = nums[i % n];
+            while (!dq.isEmpty() && dq.peekFirst() <= num) {
+                dq.pollFirst();
+            }
+            if (i < n) {
+                output[i] = dq.isEmpty() ? -1 : dq.peekFirst();
+            }
+            dq.addFirst(num);
+        }
+        return output;
+    }
+
 
 
 
