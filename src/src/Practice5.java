@@ -1867,6 +1867,44 @@ public class Practice5 {
     }
 
 
+    public int numSplits(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int[] charFrequency = new int[26];
+        int[] leftToRight = new int[n];
+        int[] rightToLeft = new int[n];
+        leftToRight[0] = 1;
+        rightToLeft[n-1] = 1;
+        charFrequency[sChar[0] - 'a'] = 1;
+        for (int i = 1; i < n; i++) {
+            char c = sChar[i];
+            if (charFrequency[c - 'a'] == 0) {
+                leftToRight[i] = leftToRight[i-1] + 1;
+            } else {
+                leftToRight[i] = leftToRight[i-1];
+            }
+            charFrequency[c - 'a'] = 1;
+        }
+        Arrays.fill(charFrequency, 0);
+        charFrequency[sChar[n-1] - 'a'] = 1;
+        for (int i = n-2; i >= 0; i--) {
+            char c = sChar[i];
+            if (charFrequency[c - 'a'] == 0) {
+                rightToLeft[i] = rightToLeft[i+1] + 1;
+            } else {
+                rightToLeft[i] = rightToLeft[i+1];
+            }
+            charFrequency[c - 'a'] = 1;
+        }
+        int output = 0;
+        for (int i = 1; i < n; i++) {
+            if (leftToRight[i-1] == rightToLeft[i]) {
+                output++;
+            }
+        }
+        return output;
+    }
+
 
 
 
