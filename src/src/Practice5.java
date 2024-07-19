@@ -1994,6 +1994,29 @@ public class Practice5 {
         return output;
     }
 
+    public long minimumCost(int m, int n, int[] horizontalCut, int[] verticalCut) {
+        int h = m-2;
+        int v = n-2;
+        Arrays.sort(horizontalCut);
+        Arrays.sort(verticalCut);
+        long horizontalMultiplier = 1;
+        long verticalMultiplier = 1;
+        long output = 0;
+        while (h >= 0 && v >= 0) {
+            if (verticalCut[v] > horizontalCut[h]) {
+                output += verticalCut[v--] * horizontalMultiplier;
+                verticalMultiplier++;
+            }
+            else {
+                output += horizontalCut[h--] * verticalMultiplier;
+                horizontalMultiplier++;
+            }
+        }
+        while (h >= 0) output += horizontalCut[h--] * verticalMultiplier;
+        while (v >= 0) output += verticalCut[v--] * horizontalMultiplier;
+        return output;
+    }
+
     /**
      * Main Method
      */
