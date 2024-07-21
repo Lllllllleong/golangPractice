@@ -2181,6 +2181,37 @@ public class Practice5 {
         return dp[n-1];
     }
 
+
+    public int minimumSubstringsInPartition(String s) {
+        char[] sChar = s.toCharArray();
+        int n = sChar.length;
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n] = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            int[] charFrequency = new int[26];
+            for (int j = i; j < n; j++) {
+                char c = sChar[j];
+                charFrequency[c-'a']++;
+                if (dp[j+1] == Integer.MAX_VALUE) continue;
+                int index = 0;
+                while (charFrequency[index] == 0) index++;
+                int frequencyCount = charFrequency[index];
+                boolean flag = true;
+                while (++index < 26) {
+                    if (charFrequency[index] != 0 && charFrequency[index] != frequencyCount) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    dp[i] = Math.min(dp[i], dp[j+1] + 1);
+                }
+            }
+        }
+        return dp[0];
+    }
+
     /**
      * Main Method
      */
