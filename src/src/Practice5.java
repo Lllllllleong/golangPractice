@@ -2212,6 +2212,31 @@ public class Practice5 {
         return dp[0];
     }
 
+
+    public int carFleet(int target, int[] position, int[] speed) {
+        int n = position.length;
+        if (n == 1) return 1;
+        double targetD = target;
+        List<double[]> cars = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            cars.add(new double[]{position[i], speed[i]});
+        }
+        int output = 0;
+        Collections.sort(cars, Comparator.comparingDouble(a -> -a[0]));
+        double minTime = Double.MIN_VALUE;
+        for (double[] car : cars) {
+            double currentPosition = car[0];
+            double currentSpeed = car[1];
+            double remainingDistance = targetD - currentPosition;
+            double remainingTime = remainingDistance / currentSpeed;
+            if (remainingTime > minTime) {
+                output++;
+                minTime = remainingTime;
+            }
+        }
+        return output;
+    }
+
     /**
      * Main Method
      */
