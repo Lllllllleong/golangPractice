@@ -2342,6 +2342,25 @@ public class Practice5 {
         }
         return dp[0][k];
     }
+
+
+
+    public long[] minimumCosts(int[] regular, int[] express, int expressCost) {
+        int n = regular.length;
+        long[] output = new long[n];
+        long r = 0;
+        long e = expressCost;
+        for (int i = 0; i < n; i++) {
+            r += regular[i];
+            r = Math.min(r,e + express[i]);
+            e = Math.min(e + express[i], r + expressCost);
+            output[i] = Math.min(r, e);
+        }
+        return output;
+    }
+
+
+
     /**
      * Main Method
      */
