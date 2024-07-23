@@ -1995,8 +1995,8 @@ public class Practice5 {
     }
 
     public long minimumCost(int m, int n, int[] horizontalCut, int[] verticalCut) {
-        int h = m-2;
-        int v = n-2;
+        int h = m - 2;
+        int v = n - 2;
         Arrays.sort(horizontalCut);
         Arrays.sort(verticalCut);
         long horizontalMultiplier = 1;
@@ -2006,8 +2006,7 @@ public class Practice5 {
             if (verticalCut[v] > horizontalCut[h]) {
                 output += verticalCut[v--] * horizontalMultiplier;
                 verticalMultiplier++;
-            }
-            else {
+            } else {
                 output += horizontalCut[h--] * verticalMultiplier;
                 horizontalMultiplier++;
             }
@@ -2029,7 +2028,7 @@ public class Practice5 {
             Integer key = keyList.get(i);
             dp[i] = hm.get(key);
             int j = i;
-            while (j >= 0 && keyList.get(j) >= key-2) {
+            while (j >= 0 && keyList.get(j) >= key - 2) {
                 j--;
             }
             if (j != -1) dp[i] += dp[j];
@@ -2049,7 +2048,7 @@ public class Practice5 {
         }
         boolean[] dp = new boolean[n];
         dp[n - 1] = true;
-        int checked = n-1;
+        int checked = n - 1;
         for (int i = n - 1; i >= 0; i--) {
             if (dp[i]) {
                 for (int j = Math.min(checked, i - minJump); j >= Math.max(i - maxJump, 0); j--) {
@@ -2083,22 +2082,22 @@ public class Practice5 {
 
     public int minSumOfLengths(int[] arr, int target) {
         int n = arr.length;
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         Arrays.fill(dp, n);
         int output = Integer.MAX_VALUE;
         int left = n;
-        int right = n-1;
+        int right = n - 1;
         int windowSum = 0;
         while (--left >= 0) {
             windowSum += arr[left];
             while (right > left && windowSum > target) {
                 windowSum -= arr[right];
-                dp[right] = Math.min(dp[right], dp[right+1]);
+                dp[right] = Math.min(dp[right], dp[right + 1]);
                 right--;
             }
             if (windowSum == target) {
                 int currentLength = right - left + 1;
-                output = Math.min(output, currentLength + dp[right+1]);
+                output = Math.min(output, currentLength + dp[right + 1]);
                 dp[left] = currentLength;
             }
         }
@@ -2110,13 +2109,13 @@ public class Practice5 {
         int[] dp = new int[n];
         for (int i = n - 1; i >= 0; i--) {
             int sum = stones[i];
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 int right = stones[j];
                 sum += right;
-                dp[j] = Math.max(sum - stones[i] - dp[j], sum - stones[j] - dp[j-1]);
+                dp[j] = Math.max(sum - stones[i] - dp[j], sum - stones[j] - dp[j - 1]);
             }
         }
-        return dp[n-1];
+        return dp[n - 1];
     }
 
     public int buildWall(int height, int width, int[] bricks) {
@@ -2174,26 +2173,26 @@ public class Practice5 {
         dp[0] = 0;
         for (int i = 0; i < n; i++) {
             if (dp[i] == -1) continue;
-            for (int j = i+1; j < n; j++) {
-                if (Math.abs(nums[j]-nums[i]) <= target) dp[j] = Math.max(dp[j], dp[i] + 1);
+            for (int j = i + 1; j < n; j++) {
+                if (Math.abs(nums[j] - nums[i]) <= target) dp[j] = Math.max(dp[j], dp[i] + 1);
             }
         }
-        return dp[n-1];
+        return dp[n - 1];
     }
 
 
     public int minimumSubstringsInPartition(String s) {
         char[] sChar = s.toCharArray();
         int n = sChar.length;
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[n] = 0;
         for (int i = n - 1; i >= 0; i--) {
             int[] charFrequency = new int[26];
             for (int j = i; j < n; j++) {
                 char c = sChar[j];
-                charFrequency[c-'a']++;
-                if (dp[j+1] == Integer.MAX_VALUE) continue;
+                charFrequency[c - 'a']++;
+                if (dp[j + 1] == Integer.MAX_VALUE) continue;
                 int index = 0;
                 while (charFrequency[index] == 0) index++;
                 int frequencyCount = charFrequency[index];
@@ -2205,7 +2204,7 @@ public class Practice5 {
                     }
                 }
                 if (flag) {
-                    dp[i] = Math.min(dp[i], dp[j+1] + 1);
+                    dp[i] = Math.min(dp[i], dp[j + 1] + 1);
                 }
             }
         }
@@ -2237,6 +2236,44 @@ public class Practice5 {
         return output;
     }
 
+
+    public int maxOperations(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 0;
+        if (n <= 3) return 1;
+        int[] sums = new int[3];
+        sums[0] = nums[0] + nums[1];
+        sums[1] = nums[0] + nums[n - 1];
+        sums[2] = nums[n - 2] + nums[n - 1];
+        int[][][] dp = new int[n][n][3];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                int left = nums[i];
+                int right = nums[j];
+                if (i + 1 == j) {
+                    for (int k = 0; k < 3; k++) {
+                        if (left + right == sums[k]) dp[i][j][k]++;
+                    }
+                } else {
+                    for (int k = 0; k < 3; k++) {
+                        if (left + nums[i + 1] == sums[k]) {
+                            dp[i][j][k] = Math.max(dp[i][j][k], dp[i + 2][j][k] + 1);
+                        }
+                        if (left + right == sums[k]) {
+                            dp[i][j][k] = Math.max(dp[i][j][k], dp[i + 1][j - 1][k] + 1);
+                        }
+                        if (nums[j - 1] + right == sums[k]) {
+                            dp[i][j][k] = Math.max(dp[i][j][k], dp[i][j - 2][k] + 1);
+                        }
+                    }
+                }
+            }
+        }
+        int output = 0;
+        for (int i : dp[0][n - 1]) output = Math.max(output, i);
+        return output;
+    }
+
     /**
      * Main Method
      */
@@ -2248,7 +2285,7 @@ public class Practice5 {
         int[] houses = {0, 2, 1, 2, 0};
         int[][] cost = stringToArray2D("[[1,10],[10,1],[10,1],[1,10],[5,1]]");
         int i = practice5.minCost(houses, cost, 5, 2, 3);
-        int[] arr = {1,6,1};
+        int[] arr = {1, 6, 1};
         i = practice5.minSumOfLengths(arr, 7);
     }
 
