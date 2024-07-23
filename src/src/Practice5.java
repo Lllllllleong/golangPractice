@@ -2310,6 +2310,45 @@ public class Practice5 {
         return dp[0];
     }
 
+    public int maxValue(int[][] events, int k) {
+        int n = events.length;
+        int[][] dp = new int[n + 1][k + 1];
+
+        // Sort events based on their start time
+        Arrays.sort(events, Comparator.comparingInt(a -> a[0]));
+
+        for (int i = n - 1; i >= 0; i--) {
+            int start = events[i][0];
+            int end = events[i][1];
+            int value = events[i][2];
+            int nextEventIndex = -1;
+            int left = i + 1;
+            int right = n - 1;
+
+            // Binary search for the next non-overlapping event
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (events[mid][0] > end) {
+                    nextEventIndex = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            for (int j = 1; j <= k; j++) {
+                // Exclude current event
+                dp[i][j] = dp[i + 1][j];
+                // Include current event
+                if (nextEventIndex != -1) {
+                    dp[i][j] = Math.max(dp[i][j], dp[nextEventIndex][j - 1] + value);
+                } else {
+                    dp[i][j] = Math.max(dp[i][j], value);
+                }
+            }
+        }
+        return dp[0][k];
+    }
     /**
      * Main Method
      */
