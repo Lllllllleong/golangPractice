@@ -2275,19 +2275,20 @@ public class Practice5 {
     }
 
     public int maximizeTheProfit(int n, List<List<Integer>> offers) {
-        int[] dp = new int[n + 1];
         Collections.sort(offers, Comparator.comparingInt(a -> a.get(0)));
-        int index = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        int currentMax = 0;
         for (var offer : offers) {
             int from = offer.get(0);
             int to = offer.get(1);
             int price = offer.get(2);
-            while (index < from) dp[++index] = Math.max(dp[index], dp[index - 1]);
-            int prior = (from == 0) ? 0 : dp[from - 1];
-            dp[to] = Math.max(dp[to], prior + price);
+            while (!pq.isEmpty() && pq.peek()[0] < from) {
+                currentMax = Math.max(currentMax, pq.poll()[1]);
+            }
+            pq.offer(new int[]{to, price + currentMax});
         }
-        while (index < n) dp[++index] = Math.max(dp[index], dp[index - 1]);
-        return dp[n];
+        while (!pq.isEmpty()) currentMax = Math.max(currentMax, pq.poll()[1]);
+        return currentMax;
     }
 
     public int numDecodings(String s) {
@@ -2313,10 +2314,7 @@ public class Practice5 {
     public int maxValue(int[][] events, int k) {
         int n = events.length;
         int[][] dp = new int[n + 1][k + 1];
-
-        // Sort events based on their start time
         Arrays.sort(events, Comparator.comparingInt(a -> a[0]));
-
         for (int i = n - 1; i >= 0; i--) {
             int start = events[i][0];
             int end = events[i][1];
@@ -2324,8 +2322,6 @@ public class Practice5 {
             int nextEventIndex = -1;
             int left = i + 1;
             int right = n - 1;
-
-            // Binary search for the next non-overlapping event
             while (left <= right) {
                 int mid = left + (right - left) / 2;
                 if (events[mid][0] > end) {
@@ -2335,11 +2331,8 @@ public class Practice5 {
                     left = mid + 1;
                 }
             }
-
             for (int j = 1; j <= k; j++) {
-                // Exclude current event
                 dp[i][j] = dp[i + 1][j];
-                // Include current event
                 if (nextEventIndex != -1) {
                     dp[i][j] = Math.max(dp[i][j], dp[nextEventIndex][j - 1] + value);
                 } else {
