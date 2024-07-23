@@ -2359,6 +2359,27 @@ public class Practice5 {
         return output;
     }
 
+    public int countOrders(int n) {
+        if (n == 1) return 1;
+        int MOD = 1_000_000_007;
+        long[][] dp = new long[n+1][n+1];
+        dp[0][0] = 1;
+        for (int i = 0; i <= n; i++) {
+            for (int j = Math.max(i, 1); j <= n; j++) {
+                if (i == 0) {
+                    dp[i][j] = (j * dp[i][j-1]) % MOD;;
+                } else {
+                    if (i == j) {
+                        dp[i][j] = (i * dp[i-1][j])  % MOD ;
+                    } else {
+                        dp[i][j] = (i * dp[i-1][j] + (j-i) * dp[i][j-1]) % MOD;
+                    }
+                }
+            }
+        }
+        for (var v : dp) System.out.println(Arrays.toString(v));
+        return (int) dp[n][n];
+    }
 
 
     /**
