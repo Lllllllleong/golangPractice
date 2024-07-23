@@ -2290,6 +2290,26 @@ public class Practice5 {
         return dp[n];
     }
 
+    public int numDecodings(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        if (n == 1) {
+            if (sChar[0] == '0') return 0;
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[n] = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            int cInt = sChar[i] - '0';
+            if (cInt == 0) continue;
+            dp[i] = dp[i+1];
+            if (cInt == 1 && i+2 <= n) dp[i] += dp[i+2];
+            if (cInt == 2 && i+1 < n && sChar[i+1] - '0' <= 6) dp[i] += dp[i+2];
+        }
+
+        return dp[0];
+    }
+
     /**
      * Main Method
      */
