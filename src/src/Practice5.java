@@ -2407,6 +2407,21 @@ public class Practice5 {
         return (dp[0] == Integer.MAX_VALUE) ? -1 : dp[0];
     }
 
+    public int minimumLevels(int[] possible) {
+        int n = possible.length;
+        int a = 0;
+        int[] bPrefixSum = new int[n];
+        bPrefixSum[n-1] = (possible[n-1] == 1) ? 1 : -1;
+        for (int i = n - 2; i > 0; i--) {
+            bPrefixSum[i] = bPrefixSum[i+1] + ((possible[i] == 1) ? 1 : -1);
+        }
+        for (int i = 0; i < n-1; i++) {
+            a += (possible[i] == 1) ? 1 : -1;
+            if (a > bPrefixSum[i+1]) return i+1;
+        }
+        return -1;
+    }
+
 
     /**
      * Main Method
