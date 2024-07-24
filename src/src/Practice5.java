@@ -2422,6 +2422,68 @@ public class Practice5 {
         return -1;
     }
 
+    public int minOperations(String s1, String s2, int x) {
+        int n = s1.length();
+        char[] aChar = s1.toCharArray();
+        char[] bChar = s2.toCharArray();
+        int[][] dp = new int[n+1][2];
+        dp[n][0] = 0;
+        dp[n][1] = -1;
+        if (aChar[n-1] == bChar[n-1]) {
+            dp[n-1][0] = 0;
+            dp[n-1][1] = -1;
+        } else {
+            dp[n-1][0] = -1;
+            dp[n-1][1] = x;
+        }
+        for (int i = n - 2; i >= 0; i--) {
+            boolean match = (aChar[i] == bChar[i]);
+            if (match) {
+                dp[i][0] = dp[i+1][0];
+                dp[i][1] = dp[i+1][1];
+            } else {
+                boolean previousMatch = (aChar[i+1] == bChar[i+1]);
+                int zeroFree = Integer.MAX_VALUE;
+                int oneFree = Integer.MAX_VALUE;
+                if (dp[i+1][1] != -1) zeroFree = dp[i+1][1];
+                if (dp[i+1][0] != -1) oneFree = dp[i+1][0] + x;
+                if (previousMatch && dp[i+2][0] != -1) zeroFree = Math.min(zeroFree, dp[i+1][0] + 1);
+                if (previousMatch && dp[i+2][1] != -1) oneFree = Math.min(oneFree, dp[i+1][1] + 1);
+                dp[i][0] = (zeroFree == Integer.MAX_VALUE) ? -1 : zeroFree;
+                dp[i][1] = (oneFree == Integer.MAX_VALUE) ? -1 : oneFree;
+            }
+        }
+        return dp[0][0];
+    }
+
+
+    public int findTheWinner(int n, int k) {
+        if (n == 1) return 1;
+        ListNode head = new ListNode(1);
+        ListNode current = head;
+        for (int i = 2; i <= n; i++) {
+            ListNode next = new ListNode(i);
+            current.next = next;
+            current = current.next;
+        }
+        current.next = head;
+        ListNode previous = current;
+        current = head;
+        while (n > 1) {
+            int kk = k % n;
+            if (kk == 0) kk = n;
+            while (kk > 1) {
+                previous = current;
+                current = current.next;
+                kk--;
+            }
+            previous.next = current.next;
+            current = previous.next;
+            n--;
+        }
+        return current.val;
+    }
+
 
     /**
      * Main Method
