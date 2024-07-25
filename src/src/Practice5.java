@@ -2540,6 +2540,25 @@ public class Practice5 {
         return output;
     }
 
+    public int findWinningPlayer(int[] skills, int k) {
+        int n = skills.length;
+        int currentMax = skills[0];
+        int currentK = 0;
+        int currentIndex = 0;
+        for (int i = 1; i < n; i++) {
+            int skill = skills[i];
+            if (currentK >= k) return currentIndex;
+            if (currentMax > skill) {
+                currentK++;
+                if (currentK >= k) return currentIndex;
+            } else {
+                currentIndex = i;
+                currentK = 1;
+                currentMax = skill;
+            }
+        }
+        return currentIndex;
+    }
     /**
      * Main Method
      */
