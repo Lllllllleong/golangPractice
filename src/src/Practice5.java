@@ -2559,6 +2559,48 @@ public class Practice5 {
         }
         return currentIndex;
     }
+
+    public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+        int n = nums.length;
+        long[] windowSums = new long[n];
+        int left = 0;
+        int right = k;
+        long windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+        windowSums[left] = windowSum;
+        while (right < n) {
+            windowSum -= nums[left++];
+            windowSum += nums[right++];
+            windowSums[left] = windowSum;
+        }
+        int[][] indexOfMax = new int[4][n+1];
+        long[][] sumOfMax = new long[4][n+1];
+        for (int i = 1; i <= 3; i++) {
+            int jStart = n - (i * k);
+            for (int j = jStart; j >= 0; j--) {
+                long sum = windowSums[j] + sumOfMax[i-1][j+k];
+                if (sum >= sumOfMax[i][j+1]) {
+                    indexOfMax[i][j] = j;
+                    sumOfMax[i][j] = sum;
+                } else {
+                    indexOfMax[i][j] = indexOfMax[i][j+1];
+                    sumOfMax[i][j] = sumOfMax[i][j+1];
+                }
+            }
+        }
+        int[] output = new int[3];
+        int index = indexOfMax[3][0];
+        output[0] = index;
+        index += k;
+        output[1] = indexOfMax[2][index];
+        index = output[1];
+        index += k;
+        output[2] = indexOfMax[1][index];
+        return output;
+    }
+
     /**
      * Main Method
      */
