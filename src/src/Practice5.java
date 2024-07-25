@@ -2601,6 +2601,35 @@ public class Practice5 {
         return output;
     }
 
+    int consecMax = 1;
+    public int longestConsecutive(TreeNode root) {
+        if (root == null) return 0;
+        consecMax = 0;
+        findConsec(root, 1);
+        return consecMax;
+    }
+    public void findConsec(TreeNode root, int i) {
+        if (root == null) return;
+        consecMax = Math.max(consecMax, i);
+        int val = root.val;
+        if (root.left != null) {
+            int lVal= root.left.val;
+            if (val + 1 == lVal) {
+                findConsec(root.left, i+1);
+            } else {
+                findConsec(root.left, 1);
+            }
+        }
+        if (root.right != null) {
+            int rVal= root.right.val;
+            if (val + 1 == rVal) {
+                findConsec(root.right, i+1);
+            } else {
+                findConsec(root.right, 1);
+            }
+        }
+    }
+
     /**
      * Main Method
      */
