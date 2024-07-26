@@ -2675,6 +2675,25 @@ public class Practice5 {
         }
         return Math.abs(sLength - tLength) == 1;
     }
+    public int smallestCommonElement(int[][] mat) {
+        int n = mat.length;
+        int m = mat[0].length;
+        int[] frequency = new int[100002];
+        for (int i = 0; i < m; i++) {
+            int currentMax = 0;
+            int currentMin = Integer.MAX_VALUE;
+            for (int j = 0; j < n; j++) {
+                int currentNumber = mat[j][i];
+                frequency[currentNumber]++;
+                currentMax = Math.max(currentMax, currentNumber);
+                currentMin = Math.min(currentMin, currentNumber);
+            }
+            for (int k = currentMax; k >= currentMin; k--) {
+                if (frequency[k] == n) return k;
+            }
+        }
+        return -1;
+    }
 
     /**
      * Main Method
