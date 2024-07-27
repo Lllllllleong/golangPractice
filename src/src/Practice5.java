@@ -2695,6 +2695,20 @@ public class Practice5 {
         return -1;
     }
 
+
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int n = arr.length;
+        int[] dp = new int[n + 1];
+        for (int i = n - 1; i >= 0; i--) {
+            int max = 0;
+            for (int j = 0; j < Math.min(k, n - i); j++) {
+                max = Math.max(max, arr[i + j]);
+                int sum = max * (j + 1); // Corrected calculation
+                dp[i] = Math.max(dp[i], sum + dp[i + j + 1]);
+            }
+        }
+        return dp[0];
+    }
     /**
      * Main Method
      */
