@@ -2731,6 +2731,28 @@ public class Practice5 {
     }
 
 
+    public int maxEvents(int[][] events) {
+        Arrays.sort(events, Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int eventIndex = 0;
+        int maxEvents = 0;
+        int n = events.length;
+        for (int day = 1; day <= 100000; day++) {
+            while (eventIndex < n && events[eventIndex][0] == day) {
+                pq.offer(events[eventIndex][1]);
+                eventIndex++;
+            }
+            while (!pq.isEmpty() && pq.peek() < day) {
+                pq.poll();
+            }
+            if (!pq.isEmpty()) {
+                pq.poll();
+                maxEvents++;
+            }
+        }
+        return maxEvents;
+    }
+
     /**
      * Main Method
      */
