@@ -23,11 +23,18 @@ from
 order by
     employee_id;
 
+
 select distinct author_id as id
 from Views
 where author_id = viewer_id
 order by id;
 
+
 select tweet_id
 from Tweets
 where char_length(content) > 15;
+
+
+select unique_id, name
+from Employees left join EmployeeUNI on Employees.id = EmployeeUNI.id;
+
