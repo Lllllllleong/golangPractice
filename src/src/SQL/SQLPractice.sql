@@ -15,5 +15,13 @@ select name from customer
 where referee_id is null or referee_id != 2;
 
 
+select
+    employee_id,
+    IF (employee_id % 2 == 1 && name not regexp '^M', salary, 0) as bonus
+from
+    employees
+order by
+    employee_id;
+
 
 
