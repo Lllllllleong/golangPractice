@@ -5,6 +5,10 @@ I make a new practice class when my IDE starts to lag, which is usually at
 around 4000 lines.
 
 
+07/24 Progress:
+<br>
+<img src="src/src/res/07-24.png" width="400" height="180">
+
 06/24 Progress:
 <br>
 <img src="src/src/res/06-24.png" width="400" height="180">
