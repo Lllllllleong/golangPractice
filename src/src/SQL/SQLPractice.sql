@@ -46,3 +46,12 @@ select customer_id, count(*) as count_no_trans
 from Visits left join Transactions on Visits.visit_id = Transactions.visit_id
 where Transactions.visit_id is null
 GROUP BY customer_id
+
+SELECT
+    w1.id
+FROM
+    Weather w1
+JOIN
+    Weather w2
+ON
+    DATEDIFF(w1.recordDate, w2.recordDate) = 1 && w1.temperature > w2.temperature;
