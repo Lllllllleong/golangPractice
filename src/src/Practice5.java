@@ -2769,8 +2769,35 @@ public class Practice5 {
         return tasks.length + idleSlots;
     }
 
+
+    public int numberOfArrays(int[] differences, int lower, int upper) {
+        long min = 0;
+        long max = 0;
+        long sum = 0;
+        for (int diff : differences) {
+            sum += diff;
+            min = Math.min(min, sum);
+            max = Math.max(max, sum);
+        }
+        long maxDifference = max - min;
+        long validRange = (upper - lower) - maxDifference + 1;
+        return (validRange <= 0) ? 0 : (int) validRange;
+    }
+
+
+
+
+
+
     /**
      * Main Method
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      */
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
