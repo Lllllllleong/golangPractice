@@ -2753,6 +2753,22 @@ public class Practice5 {
         return maxEvents;
     }
 
+    public int leastInterval(char[] tasks, int n) {
+        int[] jobMap = new int[26];
+        for (char c : tasks) {
+            jobMap[c - 'A']++;
+        }
+        Arrays.sort(jobMap);
+        int maxFreq = jobMap[25];
+        int minimumDuration = (maxFreq - 1) * (n + 1) + 1;
+        int idleSlots = (maxFreq - 1) * n;
+        for (int i = 24; i >= 0; i--) {
+            idleSlots -= Math.min(maxFreq - 1, jobMap[i]);
+        }
+        idleSlots = Math.max(0, idleSlots);
+        return tasks.length + idleSlots;
+    }
+
     /**
      * Main Method
      */
