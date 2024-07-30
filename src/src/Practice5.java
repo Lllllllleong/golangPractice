@@ -2783,6 +2783,39 @@ public class Practice5 {
         long validRange = (upper - lower) - maxDifference + 1;
         return (validRange <= 0) ? 0 : (int) validRange;
     }
+    public List<List<String>> mostPopularCreator(String[] creators, String[] ids, int[] views) {
+        HashMap<String, Long> totalViews = new HashMap<>();
+        HashMap<String, Integer> maxVideo = new HashMap<>();
+        int n = creators.length;
+        for (int i = 0; i < n; i++) {
+            String creator = creators[i];
+            int view = views[i];
+            totalViews.merge(creator,(long) view, Long::sum);
+            if (!maxVideo.containsKey(creator)) {
+                maxVideo.put(creator, i);
+            } else {
+                if (views[maxVideo.get(creator)] < view) maxVideo.put(creator, i);
+                else if (views[maxVideo.get(creator)] == view && ids[i].compareTo(ids[maxVideo.get(creator)]) < 0) {
+                    maxVideo.put(creator, i);
+                }
+
+            }
+        }
+        List<List<String>> output = new ArrayList<>();
+        long max = 0;
+        for (long i  : totalViews.values()) max = Math.max(max, i);
+        for (var entry : totalViews.entrySet()) {
+            String key = entry.getKey();
+            Long value = entry.getValue();
+            if (value == max) {
+                List<String> list = new ArrayList<>();
+                list.add(key);
+                list.add(ids[maxVideo.get(key)]);
+                output.add(list);
+            }
+        }
+        return output;
+    }
 
 
 
