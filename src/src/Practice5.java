@@ -2929,6 +2929,31 @@ public class Practice5 {
         return output;
     }
 
+    public boolean doesAliceWin(String s) {
+        char[] sChar = s.toCharArray();
+        for (char c : sChar) {
+            if ((c == 'a')
+                || (c == 'e')
+                || (c == 'i')
+                || (c == 'o')
+                || (c == 'u')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public long maxScore2(int[] nums) {
+        int n = nums.length;
+        long sum = 0;
+        int max = Integer.MIN_VALUE;
+        for (int i = n - 1; i > 0; i--) {
+            max = Math.max(max, nums[i]);
+            sum += (long) max;
+        }
+        return sum;
+    }
+
 
 
     /**
