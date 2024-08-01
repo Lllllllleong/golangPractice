@@ -2912,6 +2912,23 @@ public class Practice5 {
         return output;
     }
 
+    public int maxOperations(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int counter = 0;
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            char c = sChar[i];
+            if (c == '1') counter++;
+            else {
+                while (i + 1 < n && sChar[i+1] == '0') i++;
+                output += counter;
+            }
+
+        }
+        return output;
+    }
+
 
 
     /**
