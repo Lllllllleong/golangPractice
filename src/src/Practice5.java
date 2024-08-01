@@ -2887,6 +2887,30 @@ public class Practice5 {
         return output;
     }
 
+    public int[] simulationResult(int[] windows, int[] queries) {
+        int n = windows.length;
+        int m = queries.length;
+        int[] output = new int[n];
+        boolean[] flags = new boolean[n];
+        int index = 0;
+        for (int i = m - 1; i >= 0; i--) {
+            int q = queries[i];
+            if (!flags[q-1]) {
+                flags[q-1] = true;
+                output[index] = q;
+                index++;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            int w = windows[i];
+            if (!flags[w-1]) {
+                flags[w-1] = true;
+                output[index] = w;
+                index++;
+            }
+        }
+        return output;
+    }
 
 
 
