@@ -2954,6 +2954,85 @@ public class Practice5 {
         return sum;
     }
 
+    public List<Integer> countOfPeaks(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int[] peakPrefix = new int[n+1];
+        updatePeaks(nums, peakPrefix, 0);
+        List<Integer> output = new ArrayList<>();
+        for (int[] query : queries) {
+            int type = query[0];
+            int a = query[1];
+            int b = query[2];
+            if (type == 1) {
+                if (a == b) output.add(0);
+                else output.add(peakPrefix[b] - peakPrefix[a + 1]);
+            } else {
+                int newValue = b;
+                nums[a] = newValue;
+                if (a == 0 || a == n-1) {
+                    updatePeaks(nums, peakPrefix, 0);
+                } else {
+                    boolean wasPeak = (peakPrefix[a] != peakPrefix[a+1]);
+                    boolean isPeak = (nums[a-1] < nums[a] && nums[a] > nums[a+1]);
+                    if (wasPeak != isPeak) {
+                        updatePeaks(nums, peakPrefix, a-2);
+                    } else if (!wasPeak && isPeak) {
+                        boolean leftWasPeak = (peakPrefix[a-1] == peakPrefix[a]);
+                        boolean rightWasPeak = (peakPrefix[a+1] == peakPrefix[a+2]);
+                        if (leftWasPeak && !rightWasPeak) {
+                            peakPrefix[a]--;
+                        } else if (!leftWasPeak && rightWasPeak) {
+                            peakPrefix[a+1]++;
+                        } else {
+                            updatePeaks(nums, peakPrefix, a-2);
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+    public void updatePeaks(int[] nums, int[] peakPrefix, int startIndex) {
+        int n = nums.length;
+        startIndex = Math.min(startIndex, n-3);
+        startIndex = Math.max(startIndex, 0);
+        for (int i = (startIndex + 2); i < n; i++) {
+            int a = nums[i-2];
+            int b = nums[i-1];
+            int c = nums[i];
+            if (a < b && b > c) {
+                peakPrefix[i] = peakPrefix[i-1] + 1;
+            } else {
+                peakPrefix[i] = peakPrefix[i-1];
+            }
+        }
+        peakPrefix[n] = peakPrefix[n-1];
+    }
+
+
+    public int longestWPI(int[] hours) {
+        int n = hours.length;
+        int maxLen = 0;
+        int prefixSum = 0;
+        Map<Integer, Integer> prefixMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            prefixSum += (hours[i] > 8) ? 1 : -1;
+            if (prefixSum > 0) {
+                maxLen = i + 1;
+            } else {
+                if (!prefixMap.containsKey(prefixSum)) {
+                    prefixMap.put(prefixSum, i);
+                }
+                if (prefixMap.containsKey(prefixSum - 1)) {
+                    maxLen = Math.max(maxLen, i - prefixMap.get(prefixSum - 1));
+                }
+            }
+        }
+        return maxLen;
+    }
+
+
 
 
     /**
