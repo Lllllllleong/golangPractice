@@ -3085,6 +3085,19 @@ public class Practice5 {
     }
 
 
+    public long maximumPoints(int[] enemyEnergies, int currentEnergy) {
+        long sum = currentEnergy;
+        int min = Integer.MAX_VALUE;
+        for (int i : enemyEnergies) {
+            min = Math.min(min, i);
+            sum += i;
+        }
+        sum -= min;
+        if (currentEnergy < min) return 0;
+        return (sum / min);
+    }
+
+
     /**
      * Main Method
      *
