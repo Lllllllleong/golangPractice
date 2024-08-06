@@ -136,6 +136,27 @@ public class Practice5 {
 
     }
 
+    public int minExtraChar(String s, String[] dictionary) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        Set<String> set = new HashSet<>();
+        Collections.addAll(set, dictionary);
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n] = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = i; j < n; j++) {
+                sb.append(sChar[j]);
+                if (set.contains(sb.toString())) {
+                    dp[i] = Math.min(dp[i], dp[j + 1]);
+                }
+            }
+            dp[i] = Math.min(dp[i], dp[i+1] + 1);
+        }
+        return dp[0];
+    }
+
 
 
     public int maximumCostSubstring(String s, String chars, int[] vals) {
