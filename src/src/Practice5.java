@@ -143,6 +143,40 @@ public class Practice5 {
 
     }
 
+    public int maximumLength(int[] nums, int k) {
+        int n = nums.length;
+        if (n == 1) return 1;
+        int[][] dp = new int[n+1][k+1];
+        List<Integer> flagIndexes = new ArrayList<>();
+        int prior = nums[n-1];
+        for (int i = n - 1; i >= 0; i--) {
+            int num = nums[i];
+            if (num == prior) {
+                for (int j = 0; j <= k; j++) dp[i][j] = dp[i+1][j] + 1;
+            } else {
+                flagIndexes.add(0, i + 1);
+                for (int index : flagIndexes) {
+                    int flagNum = nums[index];
+                    if (num != flagNum) {
+                        dp[i][0] = 1;
+                        for (int j = 1; j <= k; j++) dp[i][j] = Math.max(dp[i][j], dp[index][j-1] + 1);
+                    } else {
+                        for (int j = 0; j <= k; j++) dp[i][j] = Math.max(dp[i][j], dp[index][j] + 1);
+                        break;
+                    }
+                }
+            }
+            prior= num;
+        }
+        int output = 0;
+        for (int[] i : dp) {
+            for (int ii : i) {
+                output = Math.max(output, ii);
+            }
+        }
+        return output;
+    }
+
 
 
 
