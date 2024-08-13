@@ -140,6 +140,31 @@ public class Practice6 {
 
     }
 
+    public int maxPalindromes(String s, int k) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        boolean[] palindromeDP = new boolean[n];
+        int[] dp = new int[n+1];
+        for (int i = n - 1; i >= 0; i--) {
+            char c = sChar[i];
+            for (int j = n - 1; j >= i; j--) {
+                char d = sChar[j];
+                boolean flag = (j - i <= 2) ? true : palindromeDP[j-1];
+                if (c == d && flag) {
+                    palindromeDP[j] = true;
+                    if (j - i + 1 >= k) dp[i] = Math.max(dp[i], dp [j+1] + 1);
+                } else {
+                    palindromeDP[j] = false;
+                }
+            }
+            dp[i] = Math.max(dp[i], dp[i+1]);
+        }
+        return dp[0];
+    }
+
+
+
+
     public int countGoodStrings(int low, int high, int zero, int one) {
         int mod = 1000000007;
         int[] dp = new int[high + 2];
