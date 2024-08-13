@@ -140,6 +140,28 @@ public class Practice6 {
 
     }
 
+    public int countGoodStrings(int low, int high, int zero, int one) {
+        int mod = 1000000007;
+        int[] dp = new int[high + 2];
+        dp[zero]++;
+        dp[one]++;
+        int output = 0;
+        for (int i = 0; i <= high; i++) {
+            int l = dp[i];
+            if (l == 0) continue;
+            if (i + zero <= high) {
+                dp[i + zero] += l;
+                dp[i+zero] %= mod;
+            }
+            if (i + one <= high) {
+                dp[i + one] += l;
+                dp[i+one] %= mod;
+            }
+            if (i >= low) output = (output + dp[i]) % mod;
+        }
+        return output;
+    }
+
     public List<Integer> goodIndices(int[] nums, int k) {
         int n = nums.length;
         List<Integer> output = new ArrayList<>();
