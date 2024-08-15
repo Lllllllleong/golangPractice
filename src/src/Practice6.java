@@ -140,6 +140,51 @@ public class Practice6 {
 
     }
 
+
+    public int minCost(int maxTime, int[][] edges, int[] passingFees) {
+        int n = passingFees.length;
+        List<int[]>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            int time = edge[2];
+            graph[a].add(new int[]{b, time});
+            graph[b].add(new int[]{a, time});
+        }
+        int[][] minCost = new int[n][maxTime + 1];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(minCost[i], Integer.MAX_VALUE);
+        }
+        minCost[0][0] = passingFees[0];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        pq.add(new int[]{0, 0, passingFees[0]});
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int node = current[0];
+            int timeSpent = current[1];
+            int cost = current[2];
+            if (node == n - 1) {
+                return cost;
+            }
+            for (int[] neighbor : graph[node]) {
+                int nextNode = neighbor[0];
+                int travelTime = neighbor[1];
+                int nextTimeSpent = timeSpent + travelTime;
+                int nextCost = cost + passingFees[nextNode];
+
+                if (nextTimeSpent <= maxTime && nextCost < minCost[nextNode][nextTimeSpent]) {
+                    minCost[nextNode][nextTimeSpent] = nextCost;
+                    pq.offer(new int[]{nextNode, nextTimeSpent, nextCost});
+                }
+            }
+        }
+        return -1;
+    }
+
+
     public int maxTotalReward(int[] rewardValues) {
         int n = rewardValues.length;
         if (n == 1) return rewardValues[0];
