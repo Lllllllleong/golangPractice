@@ -140,6 +140,44 @@ public class Practice6 {
 
     }
 
+    public List<Integer> shortestDistanceColor(int[] colors, int[][] queries) {
+        List<Integer> output = new ArrayList<>();
+        int n = colors.length;
+        int[][] dp = new int[n][3];
+        int[] countDP = new int[3];
+        Arrays.fill(countDP, -1);
+        for (int i = 0; i < n; i++) {
+            int color = colors[i] - 1;
+            countDP[color] = 0;
+            for (int j = 0; j < 3; j++) {
+                dp[i][j] = countDP[j];
+                if (countDP[j] >= 0) {
+                    countDP[j]++;
+                }
+            }
+        }
+        Arrays.fill(countDP, -1);
+        for (int i = n - 1; i >= 0; i--) {
+            int color = colors[i] - 1;
+            countDP[color] = 0;
+            for (int j = 0; j < 3; j++) {
+                if (countDP[j] >= 0) {
+                    if (dp[i][j] == -1) dp[i][j] = countDP[j];
+                    else dp[i][j] = Math.min(dp[i][j], countDP[j]);
+                    countDP[j]++;
+                }
+            }
+        }
+        for (int[] query : queries) {
+            int index = query[0];
+            int c = query[1] - 1;
+            output.add(dp[index][c]);
+        }
+        return output;
+    }
+
+
+
 
     public int minCost(int maxTime, int[][] edges, int[] passingFees) {
         int n = passingFees.length;
