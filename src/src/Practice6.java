@@ -140,6 +140,38 @@ public class Practice6 {
 
     }
 
+    public int palindromePartition(String s, int k) {
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int[][] dp = new int[n][n];
+        int[] cache = new int[n+1];
+        for (int i = n - 1; i >= 0; i--) {
+            char a = chars[i];
+            for (int j = i+1; j < n; j++) {
+                char b = chars[j];
+                if (a != b) {
+                    if (j == (i + 1)) dp[i][j] = 1;
+                    else dp[i][j] = dp[i+1][j-1] + 1;
+                } else {
+                    dp[i][j] = dp[i + 1][j - 1];
+                }
+            }
+            cache[i] = dp[i][n-1];
+        }
+        for (int i = 1; i < k; i++) {
+            int upperBound = n - 1 - i;
+            int[] currentCache = new int[n];
+            for (int j = upperBound; j >= 0; j--) {
+                 currentCache[j] = Integer.MAX_VALUE;
+                for (int l = j; l <= upperBound; l++) {
+                    currentCache[j] = Math.min(currentCache[j], dp[j][l] + cache[l+1]);
+                }
+                currentCache[j] = currentMin;
+            }
+            cache = currentCache;
+        }
+        return cache[0];
+    }
     public int maximumSum(int[] arr) {
         int n = arr.length;
         if (n == 1) return arr[0];
