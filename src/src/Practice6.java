@@ -140,6 +140,31 @@ public class Practice6 {
 
     }
 
+    public long zeroFilledSubarray(int[] nums) {
+        long output = 0;
+        long counter = 0;
+        for (int i : nums) {
+            if (i != 0) {
+                counter = 0;
+                continue;
+            }
+            counter++;
+            output += counter;
+        }
+        return output;
+    }
+    public long countSubarrays(int[] nums) {
+        int prior = Integer.MIN_VALUE;
+        long output = 0;
+        long counter = 0;
+        for (int i : nums) {
+            if (i <= prior) counter = 0;
+            counter++;
+            output += counter;
+            prior = i;
+        }
+        return output;
+    }
 
     public long maximumValueSum(int[] nums, int k, int[][] edges) {
         int n = nums.length;
