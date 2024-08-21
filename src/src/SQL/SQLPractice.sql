@@ -2,6 +2,30 @@
 -- SQL Practice
 --
 SELECT
+    a.student_id,
+    a.student_name,
+    b.subject_name,
+    IFNULL(c.attended_exams, 0) as attended_exams
+FROM
+    Students a CROSS JOIN Subjects b
+LEFT JOIN (
+    SELECT
+        student_id,
+        subject_name,
+        COUNT(*) AS attended_exams
+    FROM
+        Examinations
+    GROUP BY
+        student_id,
+        subject_name)
+AS c ON a.student_id = c.student_id AND b.subject_name = c.subject_name
+ORDER BY
+    a.student_id,
+    b.subject_name;
+
+
+
+SELECT
     a.employee_id
 FROM
     Employees a LEFT JOIN Employees b ON a.manager_id = b.employee_id
