@@ -2,6 +2,18 @@
 -- SQL Practice
 --
 SELECT
+    MAX(num) as num
+FROM
+(SELECT
+    num
+FROM
+    MyNumbers
+GROUP BY
+    num
+HAVING
+    COUNT(num) = 1) as t;
+
+SELECT
     user_id,
     COUNT(follower_id) as followers_count
 FROM
