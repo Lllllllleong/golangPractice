@@ -141,6 +141,17 @@ public class Practice6 {
     }
 
 
+    public int returnToBoundaryCount(int[] nums) {
+        int output = 0;
+        int pos = 0;
+        for (int i : nums) {
+            pos += i;
+            if (pos == 0) output++;
+        }
+        return output;
+    }
+
+
     public int longestString(int x, int y, int z) {
         int mn = Math.min(x, y);
         if (x == y) {
