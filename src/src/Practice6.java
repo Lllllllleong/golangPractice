@@ -140,7 +140,32 @@ public class Practice6 {
 
     }
 
+    public static int getMaxLen(int[] nums) {
+        int maxLen = 0;
+        int firstNegative = -1, zeroPosition = -1;
+        int negativeCount = 0;
 
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] < 0) {
+                negativeCount++;
+                if (firstNegative == -1) firstNegative = i;
+            }
+
+            if (nums[i] == 0) {
+                zeroPosition = i;
+                firstNegative = -1;
+                negativeCount = 0;
+            } else {
+                if (negativeCount % 2 == 0) {
+                    maxLen = Math.max(maxLen, i - zeroPosition);
+                } else {
+                    maxLen = Math.max(maxLen, i - firstNegative);
+                }
+            }
+        }
+
+        return maxLen;
+    }
     public int returnToBoundaryCount(int[] nums) {
         int output = 0;
         int pos = 0;
