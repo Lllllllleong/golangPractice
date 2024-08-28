@@ -139,6 +139,21 @@ public class Practice6 {
         Practice5 practice5 = new Practice5();
 
     }
+    public int rob(TreeNode root) {
+        int[] result = robTree(root);
+        return Math.max(result[0], result[1]);
+    }
+
+    private int[] robTree(TreeNode root) {
+        if (root == null) {
+            return new int[]{0, 0};
+        }
+        int[] left = robTree(root.left);
+        int[] right = robTree(root.right);
+        int maxWithoutRobbingCurrent = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        int maxWithRobbingCurrent = root.val + left[0] + right[0];
+        return new int[]{maxWithoutRobbingCurrent, maxWithRobbingCurrent};
+    }
 
     public static int getMaxLen(int[] nums) {
         int maxLen = 0;
