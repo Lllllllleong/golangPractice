@@ -140,36 +140,55 @@ public class Practice6 {
 
     }
 
-    class Solution {
-        int[] original;
-        int[] current;
-        int n = 0;
-        Random r;
-        public Solution(int[] nums) {
-            n = nums.length;
-            original = nums.clone();
-            current = nums;
-            r = new Random();
-        }
 
-        public int[] reset() {
-            current = original.clone();
-            return current;
-        }
 
-        public int getRandomFromRange(int start, int end) {
-            return r.nextInt((end - start)) + start;
-        }
-        public int[] shuffle() {
-            for (int i = 0; i < n; i++) {
-                int randomIndex = getRandomFromRange(i, n);
-                int temp = current[i];
-                current[i] = current[randomIndex];
-                current[randomIndex] = temp;
+
+    public int minimumOperations(List<Integer> nums) {
+        int n = nums.size();
+        int[] dp = new int[4];
+        for (int num : nums) {
+            if (num == 1) {
+                dp[1]++;
+            } else if (num == 2) {
+                dp[2] = Math.max(dp[2], dp[1]) + 1;
+            } else if (num == 3) {
+                dp[3] = Math.max(dp[3], Math.max(dp[1], dp[2])) + 1;
             }
-            return current;
         }
+        int maxLength = Math.max(dp[1], Math.max(dp[2], dp[3]));
+        return n - maxLength;
     }
+
+//    class Solution {
+//        int[] original;
+//        int[] current;
+//        int n = 0;
+//        Random r;
+//        public Solution(int[] nums) {
+//            n = nums.length;
+//            original = nums.clone();
+//            current = nums;
+//            r = new Random();
+//        }
+//
+//        public int[] reset() {
+//            current = original.clone();
+//            return current;
+//        }
+//
+//        public int getRandomFromRange(int start, int end) {
+//            return r.nextInt((end - start)) + start;
+//        }
+//        public int[] shuffle() {
+//            for (int i = 0; i < n; i++) {
+//                int randomIndex = getRandomFromRange(i, n);
+//                int temp = current[i];
+//                current[i] = current[randomIndex];
+//                current[randomIndex] = temp;
+//            }
+//            return current;
+//        }
+//    }
 
 //    class Solution {
 //
