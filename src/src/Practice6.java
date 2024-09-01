@@ -140,6 +140,38 @@ public class Practice6 {
 
     }
 
+    public int minCut(String s) {
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        boolean[][] isPalindrome = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            int left = i;
+            int right = i;
+            while (left >= 0 && right < n && chars[left] == chars[right]) {
+                isPalindrome[left][right] = true;
+                left--;
+                right++;
+            }
+            left = i - 1;
+            right = i;
+            while (left >= 0 && right < n && chars[left] == chars[right]) {
+                isPalindrome[left][right] = true;
+                left--;
+                right++;
+            }
+        }
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n] = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (isPalindrome[i][j]) {
+                    dp[i] = Math.min(dp[i], dp[j + 1] + 1);
+                }
+            }
+        }
+        return dp[0] - 1;
+    }
 
     public int longestIdealString(String s, int k) {
         int[] dp = new int[26];
