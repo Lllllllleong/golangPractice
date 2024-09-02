@@ -137,8 +137,30 @@ public class Practice6 {
 
     public static void main(String[] args) {
         Practice6 practice6 = new Practice6();
-        int[] nums = new int[]{110, 100, 0};
-        System.out.println(Arrays.toString(practice6.sortArray(nums)));
+        int[] nums = new int[]{1,3,5,3,3,7,1,7,3};
+
+    }
+
+    TreeNode tnOutput = null;
+    int pVal = 0;
+    int qVal = 0;
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        pVal = p.val;
+        qVal = q.val;
+        lca(root);
+        return tnOutput;
+    }
+
+    public boolean lca(TreeNode root) {
+        if (root == null) return false;
+        boolean left = lca(root.left);
+        boolean right = lca(root.right);
+        boolean mid = (root.val == pVal || root.val == qVal);
+        if ((left && right) || (mid && left) || (mid && right)) {
+            tnOutput = root;
+        }
+        return (left || right || mid);
     }
 
     public int hIndex(int[] citations) {
