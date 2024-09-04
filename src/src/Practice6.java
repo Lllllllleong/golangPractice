@@ -153,10 +153,10 @@ public class Practice6 {
             int bucketKey = (num - offset) / bucketSize;
             if (bucketMap.containsKey(bucketKey)) return true;
             if (bucketMap.containsKey(bucketKey - 1)
-                    && Math.abs(nums[i] - nums[bucketMap.get(bucketKey - 1)]) <= valueDiff) return true;
+                    && Math.abs(nums[i] - bucketMap.get(bucketKey - 1)) <= valueDiff) return true;
             if (bucketMap.containsKey(bucketKey + 1)
-                    && Math.abs(nums[i] - nums[bucketMap.get(bucketKey + 1)]) <= valueDiff) return true;
-            bucketMap.put(bucketKey, i);
+                    && Math.abs(nums[i] - bucketMap.get(bucketKey + 1)) <= valueDiff) return true;
+            bucketMap.put(bucketKey, nums[i]);
             if (i >= indexDiff) {
                 bucketMap.remove(((nums[i - indexDiff]) - offset) / bucketSize);
             }
