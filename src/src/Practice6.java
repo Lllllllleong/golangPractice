@@ -142,6 +142,29 @@ public class Practice6 {
 
     }
 
+    public int bagOfTokensScore(int[] tokens, int power) {
+        int n = tokens.length;
+        Arrays.sort(tokens);
+        int maxScore = 0;
+        int currentScore = 0;
+        int left = 0;
+        int right = n-1;
+        while (left <= right) {
+            if (power >= tokens[left]) {
+                power -= tokens[left];
+                currentScore++;
+                maxScore = Math.max(maxScore, currentScore);
+                left++;
+            } else {
+                if (currentScore == 0) break;
+                power += tokens[right];
+                currentScore--;
+                right--;
+            }
+        }
+        return maxScore;
+    }
+
 
     public int minSteps(int n) {
         int output = 0;
