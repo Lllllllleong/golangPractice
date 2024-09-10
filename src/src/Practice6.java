@@ -143,6 +143,42 @@ public class Practice6 {
     }
 
     class Solution {
+
+
+
+        public List<Integer> majorityElement(int[] nums) {
+            List<Integer> output = new ArrayList<>();
+            int a = Integer.MAX_VALUE;
+            int b = Integer.MAX_VALUE;
+            int aFrequency = 0;
+            int bFrequency = 0;
+            for (int i : nums) {
+                if (i == a) {
+                    aFrequency++;
+                } else if (i == b) {
+                    bFrequency++;
+                } else if (aFrequency == 0) {
+                    aFrequency++;
+                    a = i;
+                } else if (bFrequency == 0) {
+                    bFrequency++;
+                    b = i;
+                } else {
+                    aFrequency--;
+                    bFrequency--;
+                }
+            }
+            aFrequency = 0;
+            bFrequency = 0;
+            for (int i : nums) {
+                if (i == a) aFrequency++;
+                if (i == b) bFrequency++;
+            }
+            if (aFrequency > nums.length/3) output.add(a);
+            if (bFrequency > nums.length/3) output.add(b);
+            return output;
+        }
+
         public int minimumDeletions(int[] nums) {
             int n = nums.length;
             if (n <= 3) {
