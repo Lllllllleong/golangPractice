@@ -144,6 +144,20 @@ public class Practice6 {
 
     class Solution {
 
+        public boolean isAnagram(String s, String t) {
+            int[] sCharFrequency = new int[26];
+            int[] tCharFrequency = new int[26];
+            for (char c : s.toCharArray()) {
+                sCharFrequency[c-'a']++;
+            }
+            for (char c : t.toCharArray()) {
+                tCharFrequency[c-'a']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                if (sCharFrequency[i] != tCharFrequency[i]) return false;
+            }
+            return true;
+        }
 
 
         public List<Integer> majorityElement(int[] nums) {
