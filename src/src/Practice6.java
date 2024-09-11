@@ -144,6 +144,29 @@ public class Practice6 {
 
     class Solution {
 
+
+        public int peopleAwareOfSecret(int n, int delay, int forget) {
+            int MOD = 1_000_000_007;
+            long[] dp = new long[n + 1];
+            dp[1] = 1;
+            long currentSharers = 0;
+            for (int i = 1; i <= n; i++) {
+                currentSharers = (currentSharers + dp[i]) % MOD;
+                if (i + delay <= n) {
+                    dp[i + delay] = (dp[i + delay] + currentSharers) % MOD;
+                }
+                if (i + forget <= n) {
+                    dp[i + forget] = (dp[i + forget] - currentSharers + MOD) % MOD;
+                }
+            }
+            long result = 0;
+            for (int i = n - forget + 1; i <= n; i++) {
+                result = (result + dp[i]) % MOD;
+            }
+            return (int) result;
+        }
+
+
         public List<List<String>> groupAnagrams(String[] strs) {
             HashMap<List<Integer>, List<String>> hm = new HashMap<>();
             for (String s : strs) {
