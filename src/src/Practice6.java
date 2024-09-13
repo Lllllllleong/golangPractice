@@ -144,6 +144,39 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public int countPairs(int[] nums) {
+        int[] frequency = new int[1000001];
+        int output = 0;
+        for (int i : nums) {
+            output += frequency[i];
+            String numberStr = String.format("%07d", i);
+            char[] digits = numberStr.toCharArray();
+            for (int j = 0; j < digits.length; j++) {
+                for (int k = j + 1; k < digits.length; k++) {
+                    swap(digits, j, k);
+                    String swappedString = new String(digits);
+
+                    int swappedNumber = Integer.parseInt(swappedString);
+
+                    if (swappedNumber != i && swappedNumber < frequency.length) {
+                        output += frequency[swappedNumber];
+                    }
+                    swap(digits, j, k);
+                }
+            }
+            frequency[i]++;
+        }
+        return output;
+    }
+
+    private void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+
+
     public int maximumLength(int[] nums, int k) {
         int n = nums.length;
         int[][] dp = new int[n][k];
