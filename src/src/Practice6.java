@@ -144,6 +144,30 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public int[] findDiagonalOrder(int[][] mat) {
+        if (mat == null || mat.length == 0) return new int[0];
+        int yMax = mat.length;
+        int xMax = mat[0].length;
+        int[] output = new int[yMax * xMax];
+        int index = 0;
+        for (int d = 0; d < yMax + xMax - 1; d++) {
+            if (d % 2 == 0) {
+                int y = Math.min(d, yMax - 1);
+                int x = d - y;
+                while (y >= 0 && x < xMax) {
+                    output[index++] = mat[y--][x++];
+                }
+            } else {
+                int x = Math.min(d, xMax - 1);
+                int y = d - x;
+                while (x >= 0 && y < yMax) {
+                    output[index++] = mat[y++][x--];
+                }
+            }
+        }
+        return output;
+    }
+
     public int countPairs(int[] nums) {
         int[] frequency = new int[1000001];
         int output = 0;
