@@ -144,6 +144,23 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public long findMaximumScore(List<Integer> nums) {
+        long output = 0;
+        long max = nums.get(0);
+        long priorIndex = 0;
+        int n = nums.size();
+        for (int i = 1; i < n; i++) {
+            long current = nums.get(i);
+            if (current > max || i == n - 1) {
+                output += (i - priorIndex) * max;
+                max = current;
+                priorIndex = i;
+            }
+        }
+
+        return output;
+    }
+
     public int[] findDiagonalOrder(int[][] mat) {
         if (mat == null || mat.length == 0) return new int[0];
         int yMax = mat.length;
