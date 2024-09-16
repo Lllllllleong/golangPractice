@@ -144,6 +144,25 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+
+    public long maxScore(int[] a, int[] b) {
+        int n = a.length;
+        int m = b.length;
+        long[] dp = new long[m + 1];
+        for (int i = n - 1; i >= 0; i--) {
+            long currentMultiplier = a[i];
+            int mStart = (m-1) - ((n-1) - i);
+            long[] dpNext = new long[m + 1];
+            dpNext[mStart + 1] = Long.MIN_VALUE;
+            for (int j = mStart; j >= 0; j--) {
+                dpNext[j] = Math.max(dpNext[j + 1], currentMultiplier * b[j] + dp[j + 1]);
+            }
+            dp = dpNext;
+        }
+        return dp[0];
+    }
+
+
     public long findMaximumScore(List<Integer> nums) {
         long output = 0;
         long max = nums.get(0);
