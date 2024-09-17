@@ -144,6 +144,26 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public int winningPlayerCount(int n, int[][] pick) {
+        int[][] cache = new int[n][11];
+        for (int[] currentPick : pick) {
+            int player = currentPick[0];
+            int colour = currentPick[1];
+            cache[player][colour]++;
+        }
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int[] currentPlayerPicks = cache[i];
+            for (int currentPick : currentPlayerPicks) {
+                if (currentPick > i) {
+                    output++;
+                    break;
+                }
+            }
+        }
+        return output;
+    }
+
 
     public long maxScore(int[] a, int[] b) {
         int n = a.length;
