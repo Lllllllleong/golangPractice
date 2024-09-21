@@ -46,24 +46,9 @@ public class Practice6 {
     }
 
     public class Node {
-        int val;
-        Node left;
-        Node right;
-        Node random;
-
-        Node() {
-        }
-
-        Node(int val) {
-            this.val = val;
-        }
-
-        Node(int val, Node left, Node right, Node random) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-            this.random = random;
-        }
+        public int val;
+        public Node prev;
+        public Node next;
     }
 
     public class NodeCopy {
@@ -142,6 +127,19 @@ public class Practice6 {
 
         String a = "catg";
         String b = "atgcatc";
+    }
+
+
+
+    public int[] toArray(Node node) {
+        List<Integer> list = new ArrayList<>();
+        while (node.prev != null) node = node.prev;
+        list.add(node.val);
+        while (node.next != null) {
+            node = node.next;
+            list.add(node.val);
+        }
+        return list.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public int winningPlayerCount(int n, int[][] pick) {
