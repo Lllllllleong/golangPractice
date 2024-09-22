@@ -129,6 +129,40 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public long validSubstringCount(String word1, String word2) {
+        int n = word1.length();
+        long output = 0;
+        int[] charFrequency = new int[26];
+        for (char c : word2.toCharArray()) {
+            charFrequency[c - 'a']++;
+        }
+        int left = 0, right = 0;
+        int[] windowCount = new int[26];
+        char[] chars1 = word1.toCharArray();
+        int required = word2.length();
+        while (right < n) {
+            char rightChar = chars1[right];
+            if (charFrequency[rightChar - 'a'] > 0) {
+                windowCount[rightChar - 'a']++;
+                if (windowCount[rightChar - 'a'] <= charFrequency[rightChar - 'a']) {
+                    required--;
+                }
+            }
+            while (required == 0) {
+                output += n - right;
+                char leftChar = chars1[left];
+                if (charFrequency[leftChar - 'a'] > 0) {
+                    windowCount[leftChar - 'a']--;
+                    if (windowCount[leftChar - 'a'] < charFrequency[leftChar - 'a']) {
+                        required++;
+                    }
+                }
+                left++;
+            }
+            right++;
+        }
+        return output;
+    }
 
 
     public int[] toArray(Node node) {
