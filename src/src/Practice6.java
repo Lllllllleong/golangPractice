@@ -129,6 +129,77 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+
+    public long maximumSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+        long output = Long.MIN_VALUE;
+        long prefixSum = 0;
+        HashMap<Integer, Long> hm = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int currentNumber = nums[i];
+            hm.put(currentNumber, Math.min(hm.getOrDefault(currentNumber, Long.MAX_VALUE), prefixSum));
+            prefixSum += currentNumber;
+            if (hm.containsKey(currentNumber - k)) {
+                output = Math.max(output, prefixSum - hm.get(currentNumber - k));
+            }
+            if (hm.containsKey(currentNumber + k)) {
+                output = Math.max(output, prefixSum - hm.get(currentNumber + k));
+            }
+        }
+        return (output == Long.MIN_VALUE) ? 0 : output;
+    }
+
+
+
+    int maxSubtree = 0;
+    public int maximumSubtreeSize(int[][] edges, int[] colors) {
+        int n = colors.length;
+        maxSubtree = 0;
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+        maxSubtreeDFS(graph, -1, 0, colors, new int[n]);
+        return maxSubtree;
+
+    }
+
+    public void maxSubtreeDFS(List<Integer>[] graph,
+                              int parent,
+                              int currentNode,
+                              int[] colours,
+                              int[] subtreeSize) {
+        List<Integer> adjList = graph[currentNode];
+        for (int i : adjList) {
+            if (i != parent) maxSubtreeDFS(graph, currentNode, i, colours, subtreeSize);
+        }
+        boolean flag = true;
+        int currentColour = colours[currentNode];
+        int currentSubtreeSize = 0;
+        for (int i : adjList) {
+            if (i == parent) continue;
+            int childColour = colours[i];
+            if (currentColour != childColour) {
+                flag = false;
+                break;
+            } else {
+                currentSubtreeSize += subtreeSize[i];
+            }
+        }
+        if (!flag) {
+            colours[currentNode] = -1;
+        } else {
+            maxSubtree = Math.max(maxSubtree, currentSubtreeSize + 1);
+        }
+    }
+
+
+
+
     public int[] pourWater(int[] heights, int volume, int k) {
         int n = heights.length;
         while (volume > 0) {
