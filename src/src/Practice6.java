@@ -137,6 +137,21 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public int[] arrayRankTransform(int[] arr) {
+        int[] arrClone = arr.clone();
+        Arrays.sort(arrClone);
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : arrClone) {
+            if (!hm.containsKey(i)) {
+                hm.put(i, hm.size()+1);
+            }
+        }
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = hm.get(arr[i]);
+        }
+        return arr;
+    }
+
     public boolean threeConsecutiveOdds(int[] arr) {
         int counter = 0;
         for (int i : arr) {
