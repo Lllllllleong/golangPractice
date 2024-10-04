@@ -137,7 +137,26 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
-
+    public String[] findRelativeRanks(int[] score) {
+        int n = score.length;
+        List<Integer> list = new ArrayList<>(Arrays.stream(score).boxed().toList());
+        Collections.sort(list, Collections.reverseOrder());
+        HashMap<Integer, String> hm = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            Integer key = list.get(i);
+            String value = "";
+            if (i == 0) value = "Gold Medal";
+            else if (i == 1) value = "Silver Medal";
+            else if (i == 2) value = "Bronze Medal";
+            else value = Integer.toString(i + 1);
+            hm.put(key, value);
+        }
+        String[] output = new String[n];
+        for (int i = 0; i < n; i++) {
+            output[i] = hm.get(score[i]);
+        }
+        return output;
+    }
     public int[] frequencySort(int[] nums) {
         int n = nums.length;
         HashMap<Integer, Integer> hm = new HashMap<>();
