@@ -137,6 +137,13 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public boolean evaluateTree(TreeNode root) {
+        boolean leafNode = (root.left == null && root.right == null);
+        if (leafNode) return (root.val == 1) ? true : false;
+        if (root.val == 2) return (evaluateTree(root.left) || evaluateTree(root.right));
+        else return (evaluateTree(root.left) && evaluateTree(root.right));
+    }
+
     public String[] findRelativeRanks(int[] score) {
         int n = score.length;
         List<Integer> list = new ArrayList<>(Arrays.stream(score).boxed().toList());
