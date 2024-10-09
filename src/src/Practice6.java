@@ -137,6 +137,17 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public int[] toArray(Node node) {
+        List<Integer> list = new ArrayList<>();
+        while (node.prev != null) node = node.prev;
+        list.add(node.val);
+        while (node.next != null) {
+            node = node.next;
+            list.add(node.val);
+        }
+        return list.stream().mapToInt(Integer::intValue).toArray();
+    }
+
     public ListNode removeElements(ListNode head, int val) {
         ListNode start = new ListNode();
         start.next = head;
@@ -461,16 +472,7 @@ public class Practice6 {
     }
 
 
-    public int[] toArray(Node node) {
-        List<Integer> list = new ArrayList<>();
-        while (node.prev != null) node = node.prev;
-        list.add(node.val);
-        while (node.next != null) {
-            node = node.next;
-            list.add(node.val);
-        }
-        return list.stream().mapToInt(Integer::intValue).toArray();
-    }
+
 
     public int winningPlayerCount(int n, int[][] pick) {
         int[][] cache = new int[n][11];
