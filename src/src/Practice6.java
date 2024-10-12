@@ -137,6 +137,29 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public int maxGoodNumber(int[] nums) {
+        List<String> binaryStringList = new ArrayList<>();
+        for (int i : nums) {
+            binaryStringList.add(Integer.toBinaryString(i));
+        }
+        Collections.sort(binaryStringList, new Comparator<String>() {
+            public int compare(String a, String b) {
+                String ab = a + b;
+                String ba = b + a;
+                return ba.compareTo(ab);
+            }
+
+        });
+        StringBuilder sb = new StringBuilder();
+        for (String s : binaryStringList)
+            sb.append(s);
+        return (Integer.parseInt(sb.toString(), 2));
+    }
+
+
+
+
+
 
     public int minAddToMakeValid(String s) {
         int count = 0;
