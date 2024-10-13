@@ -135,7 +135,219 @@ public class Practice6 {
         StringBuilder sb = new StringBuilder();
         for (int i : nums) sb.append(i);
         System.out.println(sb.toString());
+
+        practice6.partition("aab");
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+    public int countWinningSequences(String s) {
+        int n = s.length();
+        int[] aSequence = new int[n];
+        char[] sChar = s.toCharArray();
+        for (int i = 0; i < n; i++) {
+            char c = sChar[i];
+            if (c == 'E') aSequence[i] = 0;
+            else if (c =='F') aSequence[i] = 1;
+            else aSequence[i] = 2;
+        }
+        int aFirstPlay = aSequence[0];
+        HashMap<Integer, Long>[] dp = new HashMap[3];
+        for (int i = 0; i < 3; i++) {
+            dp[i] = new HashMap<>();
+            int score = bobWinScore(aFirstPlay, i);
+            dp[i].put(score, 1l);
+        }
+        for (int i = 1; i < n; i++) {
+            int currentA = aSequence[i];
+            HashMap<Integer, Long>[] currentDP = new HashMap[3];
+            for (int b = 0; b < 3; b++) {
+                currentDP[b] = new HashMap<>();
+                int score = bobWinScore(currentA, b);
+                for (int bb = 0; bb < 3; bb++) {
+                    if (bb == b) continue;
+                    for (var entry : dp[bb].entrySet()) {
+                        currentDP[b].merge(entry.getKey() + score, entry.getValue(), Long::sum);
+                    }
+                }
+            }
+            dp = currentDP;
+        }
+        int output = 0;
+        for (var hm : dp) {
+            for (var entry : hm.entrySet()) {
+                if (entry.getKey() > 0) {
+                    output += entry.getValue();
+                    output %= 1_000_000_007;
+                }
+            }
+        }
+        return output;
+    }
+
+    public int bobWinScore(int a, int b) {
+        if (a == b) return 0;
+        if (b == 0) return (a == 1 ? -1 : 1);
+        if (b == 1) return (a == 2 ? -1 : 1);
+        if (b == 2) return (a == 0 ? -1 : 1);
+        return Integer.MIN_VALUE;
+    }
+
+
+
+    List<Integer> treeSizeList;
+    public int kthLargestPerfectSubtree(TreeNode root, int k) {
+        treeSizeList = new ArrayList<>();
+        treeDFS(root);
+        Collections.sort(treeSizeList, Collections.reverseOrder());
+        if (k <= treeSizeList.size()) {
+            return treeSizeList.get(k - 1);
+        } else {
+            return -1;
+        }
+    }
+
+    public int treeDFS(TreeNode node) {
+        if (node == null) return 0;
+        int left = treeDFS(node.left);
+        int right = treeDFS(node.right);
+        if (node.left == null && node.right == null) {
+            treeSizeList.add(1);
+            return 1;
+        } else if (left > 0 && right > 0 && left == right) {
+            int size = left + right + 1;
+            treeSizeList.add(size);
+            return size;
+        } else {
+            return 0;
+        }
+    }
+
+    public long[] findXSum(int[] nums, int k, int x) {
+        int n = nums.length;
+        System.out.println(n);
+        long[] output = new long[n - k + 1];
+        HashMap<Long, Long> hm = new HashMap<>();
+        for (int i = 0; i < k - 1; i++) {
+            hm.merge((long) nums[i], 1l, Long::sum);
+        }
+        int K = k - 1;
+        int index = 0;
+        while (K < n) {
+            hm.merge((long) nums[K], 1l, Long::sum);
+            long sum = 0;
+            List<Long> keyList = new ArrayList<>(hm.keySet());
+            Collections.sort(keyList, (a, b) -> {
+                int valueCompare = Long.compare(hm.get(b), hm.get(a));
+                if (valueCompare != 0) {
+                    return valueCompare;
+                } else {
+                    return Long.compare(b, a);
+                }
+            });
+            for (int i = 0; i < Math.min(keyList.size(), x); i++) {
+                sum += keyList.get(i) * hm.get(keyList.get(i));
+            }
+            output[index] = sum;
+            hm.merge((long) nums[index], -1l, Long::sum);
+            if (hm.get((long) nums[index]) == 0) hm.remove(nums[index]);
+            K++;
+            index++;
+        }
+        return output;
+    }
+
+    public int[] findXSum1(int[] nums, int k, int x) {
+        int n = nums.length;
+        int[] output = new int[n - k + 1];
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < k - 1; i++) {
+            hm.merge(nums[i], 1, Integer::sum);
+        }
+        int K = k - 1;
+        int index = 0;
+        while (K < n) {
+            hm.merge(nums[K], 1, Integer::sum);
+            int sum = 0;
+            List<Integer> keyList = new ArrayList<>(hm.keySet());
+            Collections.sort(keyList, (a, b) -> {
+                int valueCompare = Integer.compare(hm.get(b), hm.get(a));
+                if (valueCompare != 0) {
+                    return valueCompare;
+                } else {
+                    return Integer.compare(b, a);
+                }
+            });
+            for (int i = 0; i < Math.min(keyList.size(), x); i++) {
+                sum += keyList.get(i) * hm.get(keyList.get(i));
+            }
+            output[index] = sum;
+            hm.merge(nums[index], -1, Integer::sum);
+            K++;
+            index++;
+        }
+        return output;
+    }
+
+
+
+
+    public List<List<String>> partition(String s) {
+        char[] sChar = s.toCharArray();
+        int n = s.length();
+        boolean[][] flagDP = new boolean[n][n];
+        for (int i = n - 1; i >= 0; i--) {
+            flagDP[i][i] = true;
+            int left = i;
+            int right = i+1;
+            while (left >= 0 && right < n && sChar[left] == sChar[right]) {
+                flagDP[left][right] = true;
+                left--;
+                right++;
+            }
+            left = i-1;
+            right = i+1;
+            while (left >= 0 && right < n && sChar[left] == sChar[right]) {
+                flagDP[left][right] = true;
+                left--;
+                right++;
+            }
+        }
+        List<List<String>>[] listDP = new List[n+1];
+        for (int i = 0; i < n+1; i++) {
+            List<List<String>> doubleList = new ArrayList<>();
+            listDP[i] = doubleList;
+        }
+        List<String> a = new ArrayList<>();
+        List<List<String>> b = new ArrayList<>();
+        b.add(a);
+        listDP[n] = b;
+        for (int i = n - 1; i >= 0; i--) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = i; j < n; j++) {
+                sb.append(sChar[j]);
+                if (flagDP[i][j]) {
+                    String currentPString = sb.toString();
+                    List<List<String>> doubleList = listDP[j+1];
+                    for (List<String> stringList : doubleList) {
+                        stringList.add(0, currentPString);
+                        listDP[i].add(stringList);
+                    }
+                }
+            }
+        }
+        return listDP[0];
+    }
+
+
+
+
+
 
     public int maxGoodNumber(int[] nums) {
         List<String> binaryStringList = new ArrayList<>();
