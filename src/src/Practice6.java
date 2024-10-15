@@ -144,6 +144,15 @@ public class Practice6 {
     ///////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+
+
+
     public List<Integer> stableMountains(int[] height, int threshold) {
         int n = height.length;
         List<Integer> output = new ArrayList<>();

@@ -536,7 +536,7 @@ public class References {
         // Checking a bit
         num = 5; // 0101 in binary
         // Check the bit at position
-        boolean isSet = (num & (1 << pos)) != 0; // true, because the bit at position 2 is 1
+        boolean isSet = (num & (1 << 2)) != 0; // true, because the bit at position 2 is 1
         // Check the bit at position 1
         isSet = (num & (1 << 1)) != 0; // false, because the bit at position 1 is 0
 
