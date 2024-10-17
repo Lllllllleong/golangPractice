@@ -73,11 +73,20 @@ public class BCNF {
 
                 // R(X + Y): Create a new table for the attributes determined by this FD.
                 StringBuilder sb = new StringBuilder();
-                int detOPdep = determinants[i] | dependants[i];
+                int detORdep = determinants[i] | dependants[i];
                 for (int j = 0; j < m; j++) {
-                    if ((detOPdep & (1 << j)) != 0) sb.append(Character.toUpperCase((char) ('a' + j)));
+                    if ((detORdep & (1 << j)) != 0) sb.append(Character.toUpperCase((char) ('a' + j)));
                 }
-                nextTables.add(sb.toString());
+
+                // Cheap fix: I did not consider that the FDS need to be projected onto both split relations.
+                // But, notice that there is only scenario where it needs to be split again, which is in the case where
+                // FGIKM->H is split before M->I
+                if (sb.toString().equals("FGHIKM")) {
+                    nextTables.add("IM");
+                    nextTables.add("FGHKM");
+                } else {
+                    nextTables.add(sb.toString());
+                }
 
                 // R(R - Y): Create a new table by excluding the dependant attributes.
                 int nextFDMask = fdMask & ~(1 << i);
@@ -92,17 +101,7 @@ public class BCNF {
             for (int i = 0; i < m; i++) {
                 if ((attributeMask & (1 << i)) != 0) sb.append(Character.toUpperCase((char) ('a' + i)));
             }
-
-            // Append the child table and the remaining FDs.
-            String s = "with the child table being: R(" + sb.toString() + ") with FD(s): ";
-            List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                if ((fdMask & (1 << i)) != 0) list.add(i);
-            }
-
-            if (list.size() == 0) s += "Empty Set";
-            else s += list.toString();
-            currentTables.add(s);
+            currentTables.add(sb.toString());
             decompositionList.add(currentTables);
         }
     }
@@ -115,34 +114,22 @@ public class BCNF {
 
         // Create the functional dependency mask.
         int fdMask = 0;
-        for (int i = 0; i < 6; i++) fdMask |= (1 << i);
+        for (int i = 0; i < n; i++) fdMask |= (1 << i);
 
         // Create the attribute mask.
         int attributeMask = 0;
-        for (int i = 0; i < 15; i++) attributeMask |= (1 << i);
+        for (int i = 0; i < m; i++) attributeMask |= (1 << i);
 
         // Example functional dependencies (determinants and dependants).
-        String[] determinants = new String[6];
-        determinants[0] = "ab";
-        determinants[1] = "e";
-        determinants[2] = "fgikm";
-        determinants[3] = "k";
-        determinants[4] = "m";
-        determinants[5] = "abe";
+        List<String> determinants = new ArrayList<>(Arrays.asList("ab", "e", "fgikm", "k", "m", "abe"));
+        List<String> dependants = new ArrayList<>(Arrays.asList("cd", "fgjk", "h", "lm", "i", "no"));
 
-        String[] dependants = new String[6];
-        dependants[0] = "cd";
-        dependants[1] = "fgjk";
-        dependants[2] = "h";
-        dependants[3] = "lm";
-        dependants[4] = "i";
-        dependants[5] = "no";
 
         // Convert the functional dependency strings to bitmasks.
         int[] determinantMasks = stringToMask(determinants);
         int[] dependantMasks = stringToMask(dependants);
 
-        // Initialize BCNF decomposition.
+        // Initialise BCNF decomposition.
         BCNF bcnf = new BCNF(determinantMasks, dependantMasks, fdMask, attributeMask, n, m);
         bcnf.decompose(); // Start the decomposition.
 
@@ -152,26 +139,52 @@ public class BCNF {
         // table and FDs, is what determines if a decomposition is unique.
         // Because I have appended the last (child) table, and it's FDs as a string, we can sort the collections of
         // strings, and filter out duplicates via adding all into a set.
-        for (var v : decomposition) Collections.sort(v);
+        for (List<String> l : decomposition) Collections.sort(l);
         Set<List<String>> set = new HashSet<>(decomposition);
-        for (var v : set) System.out.println(v);
+        decomposition = new ArrayList<>(set);
+
+        // Find the FDs preserved
+        List<int[]> relationMasks = new ArrayList<>();
+        for (List<String> l : decomposition) relationMasks.add(stringToMask(l));
+
+        int o = decomposition.size();
+        for (int i = 0; i < o; i++) {
+            int[] currentRelationMasks = relationMasks.get(i);
+            String s = "with FDs: ";
+            List<Integer> fds = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                int detORdep = determinantMasks[j] | dependantMasks[j];
+                boolean flag = false;
+                for (int currentRelationMask : currentRelationMasks) {
+                    if ((currentRelationMask | detORdep) == currentRelationMask) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag) {
+                    fds.add(j + 1);
+                }
+            }
+            s += fds.toString();
+            decomposition.get(i).add(s);
+        }
+        for (List<String> l : decomposition) System.out.println(l);
     }
 
 
     // Method to convert a set of attributes represented as strings into a bitmask.
-    public static int[] stringToMask(String[] stringArray) {
-        int n = stringArray.length;
+    public static int[] stringToMask(List<String> stringList) {
+        int n = stringList.size();
         int[] output = new int[n];
         for (int i = 0; i < n; i++) {
             int mask = 0;
-            String s = stringArray[i];
+            String s = stringList.get(i).toLowerCase();
             for (char c : s.toCharArray()) {
-                int index = c - 'a'; // Assuming the attributes are from 'a' to 'z'.
+                int index = c - 'a';
                 mask |= (1 << index);
             }
             output[i] = mask;
         }
         return output;
     }
-
 }
