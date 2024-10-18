@@ -107,6 +107,72 @@ public class BCNF {
     }
 
     public static void main(String[] args) {
+//        // n is the number of functional dependencies.
+//        int n = 6;
+//        // m is the number of attributes.
+//        int m = 15;
+//
+//        // Create the functional dependency mask.
+//        int fdMask = 0;
+//        for (int i = 0; i < n; i++) fdMask |= (1 << i);
+//
+//        // Create the attribute mask.
+//        int attributeMask = 0;
+//        for (int i = 0; i < m; i++) attributeMask |= (1 << i);
+//
+//        // Example functional dependencies (determinants and dependants).
+//        List<String> determinants = new ArrayList<>(Arrays.asList("ab", "e", "fgikm", "k", "m", "abe"));
+//        List<String> dependants = new ArrayList<>(Arrays.asList("cd", "fgjk", "h", "lm", "i", "no"));
+//
+//
+//        // Convert the functional dependency strings to bitmasks.
+//        int[] determinantMasks = stringToMask(determinants);
+//        int[] dependantMasks = stringToMask(dependants);
+//
+//        // Initialise BCNF decomposition.
+//        BCNF bcnf = new BCNF(determinantMasks, dependantMasks, fdMask, attributeMask, n, m);
+//        bcnf.decompose(); // Start the decomposition.
+//
+//        // Sort the resulting decompositions and filter out duplicates.
+//        List<List<String>> decomposition = bcnf.decompositionList;
+//        // Noting that, only the number of decomposed tables and the composition of the last
+//        // table and FDs, is what determines if a decomposition is unique.
+//        // Because I have appended the last (child) table, and it's FDs as a string, we can sort the collections of
+//        // strings, and filter out duplicates via adding all into a set.
+//        for (List<String> l : decomposition) Collections.sort(l);
+//        Set<List<String>> set = new HashSet<>(decomposition);
+//        decomposition = new ArrayList<>(set);
+//
+//        // Find the FDs preserved
+//        List<int[]> relationMasks = new ArrayList<>();
+//        for (List<String> l : decomposition) relationMasks.add(stringToMask(l));
+//
+//        int o = decomposition.size();
+//        for (int i = 0; i < o; i++) {
+//            int[] currentRelationMasks = relationMasks.get(i);
+//            String s = "with FDs: ";
+//            List<Integer> fds = new ArrayList<>();
+//            for (int j = 0; j < n; j++) {
+//                int detORdep = determinantMasks[j] | dependantMasks[j];
+//                boolean flag = false;
+//                for (int currentRelationMask : currentRelationMasks) {
+//                    if ((currentRelationMask | detORdep) == currentRelationMask) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//                if (flag) {
+//                    fds.add(j + 1);
+//                }
+//            }
+//            s += fds.toString();
+//            decomposition.get(i).add(s);
+//        }
+//        for (List<String> l : decomposition) System.out.println(l);
+
+
+
+
         // n is the number of functional dependencies.
         int n = 6;
         // m is the number of attributes.
@@ -121,7 +187,7 @@ public class BCNF {
         for (int i = 0; i < m; i++) attributeMask |= (1 << i);
 
         // Example functional dependencies (determinants and dependants).
-        List<String> determinants = new ArrayList<>(Arrays.asList("ab", "e", "fgikm", "k", "m", "abe"));
+        List<String> determinants = new ArrayList<>(Arrays.asList("ab", "e", "fgk", "k", "m", "abe"));
         List<String> dependants = new ArrayList<>(Arrays.asList("cd", "fgjk", "h", "lm", "i", "no"));
 
 
@@ -169,6 +235,12 @@ public class BCNF {
             decomposition.get(i).add(s);
         }
         for (List<String> l : decomposition) System.out.println(l);
+
+
+
+
+
+
     }
 
 
