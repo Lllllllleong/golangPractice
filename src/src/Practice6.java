@@ -147,7 +147,21 @@ public class Practice6 {
 
 
 
-
+    public int[] resultsArray(int[][] queries, int k) {
+        int n = queries.length;
+        int[] output = new int[n];
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < n; i++) {
+            int a = queries[i][0];
+            int b = queries[i][1];
+            int distance = Math.abs(a) + Math.abs(b);
+            pq.add(distance);
+            while (pq.size() > k) pq.poll();
+            int out = (pq.size() < k) ? -1 : pq.peek();
+            output[i] = out;
+        }
+        return output;
+    }
 
 
 
