@@ -143,6 +143,28 @@ public class Practice6 {
     //
     ///////////////////////////////////////////////////////////////////////////
 
+
+
+    public int canBeTypedWords(String text, String brokenLetters) {
+        boolean[] charFlags =  new boolean[26];
+        for (char c : brokenLetters.toCharArray()) {
+            charFlags[c - 'a'] = true;
+        }
+        String[] words = text.split(" ");
+        int output = 0;
+        for (String word : words) {
+            boolean flag = true;
+            for (char c : word.toCharArray()) {
+                if (charFlags[c - 'a']) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) output++;
+        }
+        return output;
+    }
+
     public String getEncryptedString(String s, int k) {
         int n = s.length();
         StringBuilder encrypted = new StringBuilder();
