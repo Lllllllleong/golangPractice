@@ -149,6 +149,27 @@ public class Practice6 {
     //
     ///////////////////////////////////////////////////////////////////////////
 
+    public int minCost(int n, int[] cuts) {
+        Arrays.sort(cuts);
+        List<Integer> cutList = new ArrayList<>();
+        cutList.add(0);
+        for (int i : cuts) cutList.add(i);
+        cutList.add(n);
+        int m = cutList.size();
+        int[][] dp = new int[m][m];
+        for (int i = m - 3; i >= 0; i--) {
+            for (int j = i + 2; j < m; j++) {
+                int currentMin = Integer.MAX_VALUE;
+                for (int k = i + 1; k < j; k++) {
+                    currentMin = Math.min(currentMin, dp[i][k] + dp[k][j]);
+                }
+                currentMin += cutList.get(j) - cutList.get(i);
+                dp[i][j] = currentMin;
+            }
+        }
+        return dp[0][m-1];
+    }
+
 
 
 
