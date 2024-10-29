@@ -124,6 +124,8 @@ public class Practice6 {
         }
     }
 
+
+
     public static void main(String[] args) {
         Practice6 practice6 = new Practice6();
         int[] nums = new int[]{1, 3, 5, 3, 3, 7, 1, 7, 3};
@@ -144,10 +146,42 @@ public class Practice6 {
 
 
     }
+    /**
+     * Main Method
+     * z
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+     */
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    ///////////////////////////////////////////////////////////////////////////
+
+    public String clearDigits(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int counter = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int i = n - 1; i >= 0; i--) {
+            char c = sChar[i];
+            if (Character.isDigit(c)) {
+                counter++;
+            } else {
+                if (counter == 0) sb.append(c);
+                else counter--;
+            }
+        }
+        return sb.reverse().toString();
+    }
+
+
+
 
     public int minCost(int n, int[] cuts) {
         Arrays.sort(cuts);
