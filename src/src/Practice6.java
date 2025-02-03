@@ -1967,7 +1967,19 @@ public class Practice6 {
         return (y * n) + x;
     }
 
+    public int minElement(int[] nums) {
+        int minimum = Integer.MAX_VALUE;
+        for (int i : nums) {
+            int currentSum = 0;
+            while (i > 0) {
+                currentSum += (i % 10);
+                i /= 10;
+            }
+            minimum = Math.min(minimum, currentSum);
 
+        }
+        return minimum;
+    }
 
 
 
