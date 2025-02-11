@@ -2016,6 +2016,31 @@ public class Practice6 {
     }
 
 
+    public int countKConstraintSubstrings(String s, int k) {
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int zeros = 0;
+        int ones = 0;
+        int left = 0;
+        int output = 0;
+        for (int right = 0; right < n; right++) {
+            char c = chars[right];
+            if (c == '0') zeros++;
+            else ones++;
+            while (zeros > k && ones > k) {
+                if (chars[left] == '0') zeros--;
+                else ones--;
+                left++;
+            }
+            output += right - left + 1;
+        }
+        return output;
+    }
+
+
+
+
+
 
 }
 
