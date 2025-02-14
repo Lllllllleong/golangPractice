@@ -2055,6 +2055,21 @@ public class Practice6 {
         return output;
     }
 
+    public List<String> buildArray(int[] target, int n) {
+        List<String> output = new ArrayList<>();
+        int counter = 1;
+        for (int i : target) {
+            while (counter < i) {
+                output.add("Push");
+                output.add("Pop");
+                counter++;
+            }
+            output.add("Push");
+            counter++;
+        }
+        return output;
+    }
+
 
 
 
