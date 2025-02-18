@@ -2070,9 +2070,24 @@ public class Practice6 {
         return output;
     }
 
+    public int countDistinctIntegers(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int i : nums) {
+            set.add(i);
+            set.add(reverseNumber(i));
+        }
+        return set.size();
+    }
 
-
-
+    public int reverseNumber(int i) {
+        int output = 0;
+        while (i != 0) {
+            output *= 10;
+            output += (i % 10);
+            i /= 10;
+        }
+        return output;
+    }
 
 }
 
