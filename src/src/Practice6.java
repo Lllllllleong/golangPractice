@@ -1,3 +1,5 @@
+import TreeXMLExample.*;
+
 import java.sql.*;
 import java.util.*;
 
@@ -2088,6 +2090,35 @@ public class Practice6 {
         }
         return output;
     }
+
+    private HashSet<Integer> targetNodeValues;
+    private TreeNode lcaNode;
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode[] nodes) {
+        targetNodeValues = new HashSet<>();
+        for (TreeNode node : nodes) {
+            targetNodeValues.add(node.val);
+        }
+        lcaNode = null;
+        findLCA(root);
+        return lcaNode;
+    }
+
+    private int findLCA(TreeNode root) {
+        if (root == null) return 0;
+        int leftCount = findLCA(root.left);
+        int rightCount = findLCA(root.right);
+        int currentCount = 0;
+        if (targetNodeValues.contains(root.val)) {
+            currentCount = 1;
+        }
+        int totalCount = leftCount + rightCount + currentCount;
+        if (totalCount == targetNodeValues.size() && lcaNode == null) {
+            lcaNode = root;
+        }
+        return totalCount;
+    }
+
 
 }
 
