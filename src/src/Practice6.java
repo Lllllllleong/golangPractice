@@ -2120,6 +2120,56 @@ public class Practice6 {
     }
 
 
+    public double maxAmount(String initialCurrency,
+                            List<List<String>> pairs1,
+                            double[] rates1,
+                            List<List<String>> pairs2,
+                                double[] rates2) {
+        int p1 = pairs1.size(), p2 = pairs2.size();
+        boolean flag1 = true, flag2 = true;
+        HashMap<String, Double> hm = new HashMap<>();
+        hm.put(initialCurrency, 1d);
+        while (flag1) {
+            flag1 = false;
+            for (int i = 0; i < p1; i++) {
+                var pair = pairs1.get(i);
+                String currencyA = pair.get(0);
+                String currencyB = pair.get(1);
+                double rate = rates1[i];
+                if (hm.containsKey(currencyA) &&
+                        (!hm.containsKey(currencyB) || (hm.get(currencyB) < hm.get(currencyA) * rate))) {
+                    flag1 = true;
+                    hm.put(currencyB, hm.get(currencyA) * rate);
+                } else if (hm.containsKey(currencyB) &&
+                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1/rate)))) {
+                    flag1 = true;
+                    hm.put(currencyA, hm.get(currencyB) * (1 / rate));
+                }
+            }
+        }
+
+        while (flag2) {
+            flag2 = false;
+            for (int i = 0; i < p2; i++) {
+                var pair = pairs2.get(i);
+                String currencyA = pair.get(0);
+                String currencyB = pair.get(1);
+                double rate = rates2[i];
+                if (hm.containsKey(currencyA) &&
+                        (!hm.containsKey(currencyB) || (hm.get(currencyB) < hm.get(currencyA) * rate))) {
+                    flag2 = true;
+                    hm.put(currencyB, hm.get(currencyA) * rate);
+                } else if (hm.containsKey(currencyB) &&
+                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1/rate)))) {
+                    flag2 = true;
+                    hm.put(currencyA, hm.get(currencyB) * (1 / rate));
+                }
+            }
+        }
+        return hm.get(initialCurrency);
+    }
+
+
 }
 
 
