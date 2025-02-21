@@ -2169,6 +2169,30 @@ public class Practice6 {
         return hm.get(initialCurrency);
     }
 
+    public int[] xorQueries(int[] arr, int[][] queries) {
+        int n = arr.length;
+        int m = queries.length;
+        int[] output = new int[m];
+        int currentXOR = 0;
+        for (int i = 0; i < n; i++) {
+            currentXOR = currentXOR ^ arr[i];
+            arr[i] = currentXOR;
+        }
+        for (int i = 0; i < m; i++) {
+            int[] query = queries[i];
+            int a = query[0];
+            int b = query[1];
+            int left = (a == 0) ? 0 : arr[a-1];
+            int right = arr[b];
+            output[i] = left ^ right;
+        }
+        return output;
+    }
+
+
+
+
+
 
 }
 
