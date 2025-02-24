@@ -2189,6 +2189,21 @@ public class Practice6 {
         return output;
     }
 
+    public int maxScore(int n, int k, int[][] stayScore, int[][] travelScore) {
+        int[] dp = new int[n];
+        while (k-- > 0) {
+            int[] currentDP = dp.clone();
+            for (int i = 0; i < n; i++) {
+                currentDP[i] += stayScore[k][i];
+                for (int j = 0; j < n; j++) {
+                    currentDP[i] = Math.max(currentDP[i], dp[j] + travelScore[i][j]);
+                }
+            }
+            dp = currentDP;
+        }
+        return Arrays.stream(dp).max().getAsInt();
+    }
+
 
 
 
