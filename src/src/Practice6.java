@@ -2204,6 +2204,22 @@ public class Practice6 {
         return Arrays.stream(dp).max().getAsInt();
     }
 
+    public boolean isPossibleToRearrange(String s, String t, int k) {
+        int n = s.length();
+        int substringLength = n / k;
+        HashMap<String, Integer> hm = new HashMap<>(k << 2);
+        for (int i = 0; i < n; i += substringLength) {
+            String substringS = s.substring(i, i + substringLength);
+            hm.merge(substringS, 1, Integer::sum);
+        }
+        for (int i = 0; i < n; i += substringLength) {
+            String substringT = t.substring(i, i + substringLength);
+            if (hm.getOrDefault(substringT, 0) <= 0) return false;
+            else hm.merge(substringT, -1, Integer::sum);
+        }
+        return true;
+    }
+
 
 
 
