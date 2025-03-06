@@ -2294,6 +2294,47 @@ public class Practice6 {
         return Math.min(a, b);
     }
 
+    public int numberOfSets(int n, int k) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp,1);
+        int MOD = 1_000_000_007;
+        while (k-- > 0) {
+            int[] currentDP = new int[n + 1];
+            for (int i = n - 2; i >= 0; i--) {
+                currentDP[i] = currentDP[i + 1];
+                for (int j = n - 1; j > i; j--) {
+                    currentDP[i] += dp[j + 1];
+                    currentDP[i] %= MOD;
+                }
+            }
+            System.out.println(Arrays.toString(currentDP));
+            dp = currentDP;
+        }
+        return dp[0];
+    }
+
+
+    public long getDescentPeriods(int[] prices) {
+        int n = prices.length;
+        long output = 0;
+        long currentLength = 0;
+        for (int i = 0; i < n; i++) {
+            if (currentLength == 0) {
+                currentLength++;
+            } else {
+                if (prices[i] == (prices[i-1] - 1)) {
+                    currentLength++;
+                } else {
+                    output += (currentLength * (currentLength + 1)) / 2;
+                    currentLength = 1;
+                }
+            }
+        }
+        output += (currentLength * (currentLength + 1)) / 2;
+        return output;
+    }
+
+
 
 
 
