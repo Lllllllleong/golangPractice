@@ -2415,6 +2415,21 @@ public class Practice6 {
 
 
 
+    public int maxAbsoluteSum(int[] nums) {
+        int output = 0;
+        int minSum = 0;
+        int maxSum = 0;
+        for (int i : nums) {
+            minSum += i;
+            maxSum += i;
+            output = Math.max(output, Math.max(Math.abs(minSum), Math.abs(maxSum)));
+            if (minSum > 0) minSum = 0;
+            if (maxSum < 0) maxSum = 0;
+        }
+        return output;
+    }
+
+
 
 
 
