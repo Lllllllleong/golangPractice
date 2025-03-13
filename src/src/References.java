@@ -41,7 +41,9 @@ import java.io.IOException;
  **/
 
 public class References {
+    int n = 1;
     int MOD = 1_000_000_007;
+    List<Integer>[] graph = new ArrayList[n];
 
     //Binary search
     public static int binarySearchExact(int[] arr, int target) {
