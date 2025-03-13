@@ -2430,7 +2430,19 @@ public class Practice6 {
     }
 
 
-
+    public int maximumMatchingIndices(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int counter = 0;
+            for (int j = 0; j < n; j++) {
+                int index = (j + i) % n;
+                if (nums1[index] == nums2[j]) counter++;
+            }
+            output = Math.max(output, counter);
+        }
+        return output;
+    }
 
 
 
