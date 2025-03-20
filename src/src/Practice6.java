@@ -2514,6 +2514,29 @@ public class Practice6 {
         return output;
     }
 
+    int LBSTSCount = 0;
+    public int largestBSTSubtree(TreeNode root) {
+        LBSTSCount = 0;
+        LBSTS(root);
+        return LBSTSCount;
+    }
+
+    public int[] LBSTS(TreeNode root) {
+        if (root == null) {
+            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+        int[] left = LBSTS(root.left);
+        int[] right = LBSTS(root.right);
+        boolean flag = (left[2] == -1) || (right[2]  == -1) || (root.val <= left[1]) || (root.val >= right[0]);
+        if (flag) {
+            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, -1};
+        } else {
+            int counter = left[2] + right[2] + 1;
+            LBSTSCount = Math.max(LBSTSCount, counter);
+            return new int[]{Math.min(root.val, left[0]), Math.max(root.val, right[1]), counter};
+        }
+    }
+
 
 
 
