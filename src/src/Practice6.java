@@ -127,7 +127,6 @@ public class Practice6 {
     }
 
 
-
     public static void main(String[] args) {
         Practice6 practice6 = new Practice6();
         int[] nums = new int[]{1, 3, 5, 3, 3, 7, 1, 7, 3};
@@ -142,12 +141,13 @@ public class Practice6 {
 
         practice6.partition("aab");
 
-        int[] p = {0, 5, 7,8,10,16,17,18,16,20,27,29};
+        int[] p = {0, 5, 7, 8, 10, 16, 17, 18, 16, 20, 27, 29};
         int[] out = practice6.rodCutting(11, p);
         System.out.println(Arrays.toString(out));
 
 
     }
+
     /**
      * Main Method
      * z
@@ -199,8 +199,6 @@ public class Practice6 {
     }
 
 
-
-
     public int minCost(int n, int[] cuts) {
         Arrays.sort(cuts);
         List<Integer> cutList = new ArrayList<>();
@@ -219,12 +217,8 @@ public class Practice6 {
                 dp[i][j] = currentMin;
             }
         }
-        return dp[0][m-1];
+        return dp[0][m - 1];
     }
-
-
-
-
 
 
     public int[] rodCutting(int n, int[] p) {
@@ -2040,7 +2034,6 @@ public class Practice6 {
     }
 
 
-
     public int[] findingUsersActiveMinutes(int[][] logs, int k) {
         int n = logs.length;
         HashMap<Integer, HashSet<Integer>> hm = new HashMap<>();
@@ -2124,7 +2117,7 @@ public class Practice6 {
                             List<List<String>> pairs1,
                             double[] rates1,
                             List<List<String>> pairs2,
-                                double[] rates2) {
+                            double[] rates2) {
         int p1 = pairs1.size(), p2 = pairs2.size();
         boolean flag1 = true, flag2 = true;
         HashMap<String, Double> hm = new HashMap<>();
@@ -2141,7 +2134,7 @@ public class Practice6 {
                     flag1 = true;
                     hm.put(currencyB, hm.get(currencyA) * rate);
                 } else if (hm.containsKey(currencyB) &&
-                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1/rate)))) {
+                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1 / rate)))) {
                     flag1 = true;
                     hm.put(currencyA, hm.get(currencyB) * (1 / rate));
                 }
@@ -2160,7 +2153,7 @@ public class Practice6 {
                     flag2 = true;
                     hm.put(currencyB, hm.get(currencyA) * rate);
                 } else if (hm.containsKey(currencyB) &&
-                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1/rate)))) {
+                        (!hm.containsKey(currencyA) || (hm.get(currencyA) < hm.get(currencyB) * (1 / rate)))) {
                     flag2 = true;
                     hm.put(currencyA, hm.get(currencyB) * (1 / rate));
                 }
@@ -2182,7 +2175,7 @@ public class Practice6 {
             int[] query = queries[i];
             int a = query[0];
             int b = query[1];
-            int left = (a == 0) ? 0 : arr[a-1];
+            int left = (a == 0) ? 0 : arr[a - 1];
             int right = arr[b];
             output[i] = left ^ right;
         }
@@ -2273,7 +2266,6 @@ public class Practice6 {
     }
 
 
-
     public int minimumDeletions(String s) {
         int n = s.length();
         char[] sChar = s.toCharArray();
@@ -2296,7 +2288,7 @@ public class Practice6 {
 
     public int numberOfSets(int n, int k) {
         int[] dp = new int[n + 1];
-        Arrays.fill(dp,1);
+        Arrays.fill(dp, 1);
         int MOD = 1_000_000_007;
         while (k-- > 0) {
             int[] currentDP = new int[n + 1];
@@ -2322,7 +2314,7 @@ public class Practice6 {
             if (currentLength == 0) {
                 currentLength++;
             } else {
-                if (prices[i] == (prices[i-1] - 1)) {
+                if (prices[i] == (prices[i - 1] - 1)) {
                     currentLength++;
                 } else {
                     output += (currentLength * (currentLength + 1)) / 2;
@@ -2341,17 +2333,17 @@ public class Practice6 {
         for (int i = 0; i < n; i++) {
             dp[i] = (nums[i] < k) ? (k - nums[i]) : 0;
             if (i >= 3) {
-                dp[i] += Math.min(Math.min(dp[i-1], dp[i-2]), dp[i-3]);
+                dp[i] += Math.min(Math.min(dp[i - 1], dp[i - 2]), dp[i - 3]);
             }
         }
-        return Math.min(Math.min(dp[n-1], dp[n-2]), dp[n-3]);
+        return Math.min(Math.min(dp[n - 1], dp[n - 2]), dp[n - 3]);
     }
 
     public long minCost(int n, int[][] cost) {
-        long[][]  minCost = new long[3][3];
+        long[][] minCost = new long[3][3];
         for (int i = (n / 2) - 1; i >= 0; i--) {
             int j = (n - 1) - i;
-            long[][]  currentCosts = new long[3][3];
+            long[][] currentCosts = new long[3][3];
             for (int k = 0; k < 3; k++) Arrays.fill(currentCosts[k], Long.MAX_VALUE);
 
             for (int k = 0; k < 3; k++) {
@@ -2384,26 +2376,26 @@ public class Practice6 {
 
     public int maxSum(int[] nums, int k, int m) {
         int n = nums.length;
-        long[] dp = new long[n+1];
+        long[] dp = new long[n + 1];
         dp[n] = 0;
         long[] prefixSum = new long[n];
         prefixSum[0] = nums[0];
         for (int i = 1; i < n; i++) {
-            prefixSum[i] = prefixSum[i-1] + nums[i];
+            prefixSum[i] = prefixSum[i - 1] + nums[i];
         }
         int counter = 0;
         while (counter < k) {
-            long[] currentDP = new long[n+1];
+            long[] currentDP = new long[n + 1];
             Arrays.fill(currentDP, Long.MIN_VALUE);
             int upperBound = n - (counter * m);
             int lowerBound = ((k - (counter + 1)) * m);
             for (int i = upperBound - m; i >= lowerBound; i--) {
                 for (int j = i + (m - 1); j < upperBound; j++) {
                     long currentSum = prefixSum[j];
-                    if (i > 0) currentSum -= prefixSum[i-1];
-                    currentDP[i] = Math.max(currentDP[i], currentSum + dp[j+1]);
+                    if (i > 0) currentSum -= prefixSum[i - 1];
+                    currentDP[i] = Math.max(currentDP[i], currentSum + dp[j + 1]);
                 }
-                currentDP[i] = Math.max(currentDP[i], currentDP[i+1]);
+                currentDP[i] = Math.max(currentDP[i], currentDP[i + 1]);
             }
             dp = currentDP;
             counter++;
@@ -2411,8 +2403,6 @@ public class Practice6 {
         }
         return (int) dp[0];
     }
-
-
 
 
     public int maxAbsoluteSum(int[] nums) {
@@ -2458,7 +2448,6 @@ public class Practice6 {
         }
         return output;
     }
-
 
 
     public long calculateScore(String s) {
@@ -2515,6 +2504,7 @@ public class Practice6 {
     }
 
     int LBSTSCount = 0;
+
     public int largestBSTSubtree(TreeNode root) {
         LBSTSCount = 0;
         LBSTS(root);
@@ -2527,7 +2517,7 @@ public class Practice6 {
         }
         int[] left = LBSTS(root.left);
         int[] right = LBSTS(root.right);
-        boolean flag = (left[2] == -1) || (right[2]  == -1) || (root.val <= left[1]) || (root.val >= right[0]);
+        boolean flag = (left[2] == -1) || (right[2] == -1) || (root.val <= left[1]) || (root.val >= right[0]);
         if (flag) {
             return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, -1};
         } else {
@@ -2558,8 +2548,20 @@ public class Practice6 {
     }
 
 
-
-
+    public int maxDistinctElements(int[] nums, int k) {
+        if (k >= nums.length) return nums.length;
+        int counter = 0;
+        int minReq = Integer.MIN_VALUE;
+        Arrays.sort(nums);
+        for (int i : nums) {
+            int minimum = i - k;
+            int maximum = i + k;
+            if (maximum <= minReq) continue;
+            counter++;
+            minReq = Math.max(minReq + 1, minimum);
+        }
+        return counter;
+    }
 }
 
 
