@@ -2537,7 +2537,25 @@ public class Practice6 {
         }
     }
 
-
+    public int lengthAfterTransformations(String s, int t) {
+        long output = 0;
+        int MOD = 1_000_000_007;
+        int[] charFrequency = new int[26];
+        for (char c : s.toCharArray()) {
+            charFrequency[c - 'a']++;
+        }
+        Deque<Long> dq = new ArrayDeque<>();
+        for (int i = 0; i < 26; i++) dq.offer(1L);
+        int counter = 0;
+        while (counter++ < t) {
+            dq.addLast((dq.pollFirst() + dq.peekFirst()) % MOD);
+        }
+        for (int i = 0; i < 26; i++) {
+            output += charFrequency[i] * dq.pollFirst();
+            output %= MOD;
+        }
+        return (int) output;
+    }
 
 
 
