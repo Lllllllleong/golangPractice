@@ -2562,6 +2562,42 @@ public class Practice6 {
         }
         return counter;
     }
+
+    public int maxIncreasingSubarrays(List<Integer> nums) {
+        int n = nums.size();
+        int output = 0;
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(0);
+        int prior = Integer.MAX_VALUE;
+        int counter = 0;
+        for (int i = n - 1; i > 0; i--) {
+            int num = nums.get(i);
+            if (num < prior) {
+                counter++;
+            } else {
+                counter = 1;
+            }
+            dq.addFirst(counter);
+            prior = num;
+        }
+        prior = Integer.MIN_VALUE;
+        counter = 0;
+        for (int num : nums) {
+            if (num > prior) {
+                counter++;
+            } else {
+                counter = 1;
+            }
+            prior = num;
+            output = Math.max(output, Math.min(counter, dq.pollFirst()));
+        }
+        return output;
+    }
+
+
+
+
+
 }
 
 
