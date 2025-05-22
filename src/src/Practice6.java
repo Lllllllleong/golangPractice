@@ -2661,7 +2661,6 @@ public class Practice6 {
 
 
 
-    //    https://leetcode.com/problems/count-partitions-with-even-sum-difference/submissions/1520960434/
     public int countPartitions(int[] nums) {
         int n = nums.length;
         long sumA = 0;
@@ -2675,6 +2674,31 @@ public class Practice6 {
         }
         return output;
     }
+
+
+    public long calculateScore(String[] instructions, int[] values) {
+        int n = values.length;
+        int i = 0;
+        long output = 0;
+        while (i >= 0
+                && i < n
+                && instructions[i] != null) {
+            String s = instructions[i];
+            instructions[i] = null;
+            if (s.equals("add")) {
+                output += values[i];
+                i++;
+            } else {
+                i += values[i];
+            }
+        }
+        return output;
+    }
+
+
+
+
+
 
 }
 

@@ -150,12 +150,15 @@ public class References {
         });
 
         // Sort by first then by second element
-        Arrays.sort(prices, new Comparator<int[]>() {
-            public int compare(int[] a, int[] b) {
-                if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
-                return Integer.compare(a[1], b[1]);
-            }
+
+        Arrays.sort(prices, (a, b) -> {
+            return (a[0] != b[0]) ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]);
         });
+
+
+
+
+
 
         // Print sorted arrays
         for (int[] intArr : prices) {
@@ -505,6 +508,7 @@ public class References {
         // 1 >> m === 1 / (2^m)
         // Right-shift integer division
         // num >> 1 === num / 2
+
 
 
         //Setting a bit to 1
