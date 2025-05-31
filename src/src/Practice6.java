@@ -2702,6 +2702,30 @@ public class Practice6 {
     }
 
 
+    public boolean[] pathExistenceQueries(int n, int[] nums, int maxDiff, int[][] queries) {
+        int m = queries.length;
+        boolean[] output = new boolean[m];
+        int[] minNodes = new int[n];
+        int minNode = 0;
+        for (int i = 1; i < n; i++) {
+            int currentNodeValue = nums[i];
+            if ((currentNodeValue - nums[i-1]) <= maxDiff) {
+                minNodes[i] = minNodes[i-1];
+            } else {
+                minNodes[i] = i;
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            int[] query = queries[i];
+            int smaller = Math.min(query[0], query[1]);
+            int bigger = Math.max(query[0], query[1]);
+            output[i] = (smaller >= minNodes[bigger]);
+        }
+        System.out.println(Arrays.toString(minNodes));
+        return output;
+    }
+
+
 
 
 }
