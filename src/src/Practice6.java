@@ -2702,28 +2702,55 @@ public class Practice6 {
     }
 
 
-    public boolean[] pathExistenceQueries(int n, int[] nums, int maxDiff, int[][] queries) {
-        int m = queries.length;
-        boolean[] output = new boolean[m];
-        int[] minNodes = new int[n];
-        int minNode = 0;
-        for (int i = 1; i < n; i++) {
-            int currentNodeValue = nums[i];
-            if ((currentNodeValue - nums[i-1]) <= maxDiff) {
-                minNodes[i] = minNodes[i-1];
-            } else {
-                minNodes[i] = i;
-            }
+//    public boolean[] pathExistenceQueries(int n, int[] nums, int maxDiff, int[][] queries) {
+//        int m = queries.length;
+//        boolean[] output = new boolean[m];
+//        int[] minNodes = new int[n];
+//        int minNode = 0;
+//        for (int i = 1; i < n; i++) {
+//            int currentNodeValue = nums[i];
+//            if ((currentNodeValue - nums[i-1]) <= maxDiff) {
+//                minNodes[i] = minNodes[i-1];
+//            } else {
+//                minNodes[i] = i;
+//            }
+//        }
+//        for (int i = 0; i < m; i++) {
+//            int[] query = queries[i];
+//            int smaller = Math.min(query[0], query[1]);
+//            int bigger = Math.max(query[0], query[1]);
+//            output[i] = (smaller >= minNodes[bigger]);
+//        }
+//        return output;
+//    }
+
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        int output = 0;
+        HashMap<Integer, int[]> xMap = new HashMap<>();
+        HashMap<Integer, int[]> yMap = new HashMap<>();
+        for (int[] building : buildings) {
+            int x = building[0];
+            int y = building[1];
+            int[] yRange = xMap.getOrDefault(x, new int[]{y,y});
+            yRange[0] = Math.min(yRange[0], y);
+            yRange[1] = Math.max(yRange[1], y);
+            xMap.put(x, yRange);
+            int[] xRange = yMap.getOrDefault(y, new int[]{x,x});
+            xRange[0] = Math.min(xRange[0], x);
+            xRange[1] = Math.max(xRange[1], x);
+            yMap.put(y, xRange);
         }
-        for (int i = 0; i < m; i++) {
-            int[] query = queries[i];
-            int smaller = Math.min(query[0], query[1]);
-            int bigger = Math.max(query[0], query[1]);
-            output[i] = (smaller >= minNodes[bigger]);
+        for (int[] building : buildings) {
+            int x = building[0];
+            int y = building[1];
+            int[] yRange = xMap.get(x);
+            int[] xRange = yMap.get(y);
+            if (yRange[0] < y && y < yRange[1] && xRange[0] < x && x < xRange[1]) output++;
         }
-        System.out.println(Arrays.toString(minNodes));
         return output;
     }
+
+
 
 
 
