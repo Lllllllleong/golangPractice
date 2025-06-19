@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "math"
+)
 
 func main() {
     fmt.Println("!!")
@@ -40,4 +43,15 @@ func fizzBuzz(n int) []string {
 }
 
 
-
+func scoreOfString(s string) int {
+    output := 0
+    for i := 0; i < len(s) - 1; i++ {
+        difference := int(s[i]) - int(s[i+1])
+        if difference < 0 {
+            output += -difference
+        } else {
+            output += difference
+        }
+    }
+    return output
+}
