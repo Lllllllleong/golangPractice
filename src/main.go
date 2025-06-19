@@ -13,6 +13,8 @@ type TreeNode struct {
 func main() {
     fmt.Println("!!")
 
+
+
 }
 
 
@@ -94,3 +96,20 @@ func prefixCount(words []string, pref string) int {
     }
     return output
 }
+
+func isSymmetric(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+    return isSymmetric2(root.Left, root.Right)
+}
+
+func isSymmetric2(root1, root2 *TreeNode) bool {
+    condition1 := root1 == nil
+    condition2 := root2 == nil
+    if (condition1 && condition2) {return true}
+    if (condition1 && !condition2) || (!condition1 && condition2) {return false}
+    if (root1.Val != root2.Val) {return false}
+    return (isSymmetric2(root1.Right, root2.Left)) && (isSymmetric2(root1.Left, root2.Right))
+}
+
