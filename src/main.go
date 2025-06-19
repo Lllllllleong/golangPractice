@@ -19,3 +19,25 @@ func twoSum(nums []int, target int) []int {
     }
     return nil
 }
+
+func fizzBuzz(n int) []string {
+    outputSlice := []string{}
+    for i := 1; i <= n; i++ {
+        condition1 := (i % 3) == 0
+        condition2 := (i % 5) == 0
+        switch {
+        case condition1 && condition2:
+            outputSlice = append(outputSlice, "FizzBuzz")
+        case condition1:
+            outputSlice = append(outputSlice, "Fizz")
+        case condition2:
+            outputSlice = append(outputSlice, "Buzz")
+        default:
+            outputSlice = append(outputSlice, fmt.Sprintf("%d", i))
+        }
+    }
+    return outputSlice
+}
+
+
+
