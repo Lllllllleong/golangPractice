@@ -155,3 +155,15 @@ func findMaxTrips(timeLimit int64, tripTimes []int) int {
     }
     return output
 }
+
+func sumEvenGrandparent(root *TreeNode) int {
+    return sEG(1, 1, root)
+}
+func sEG(grandParent, parent int, root *TreeNode) int {
+    if root == nil {return 0}
+    if (grandParent % 2 == 0) {
+        return root.Val + sEG(parent, root.Val, root.Left) + sEG(parent, root.Val, root.Right)
+    } else {
+        return sEG(parent, root.Val, root.Left) + sEG(parent, root.Val, root.Right)
+    }
+}
