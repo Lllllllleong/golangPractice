@@ -1,6 +1,7 @@
 package main
 
 import (
+
 	"fmt"
 	"sort"
 )
@@ -12,14 +13,17 @@ type TreeNode struct {
 }
 
 func main() {
+	fmt.Println("=== Double-ended Queue Examples ===")
 
+	// Example 1: Using container/list as a deque
+	dequeExample()
 
+	// Example 2: Using slice-based deque
+	sliceDequeExample()
+
+	fmt.Println("\n=== Wikipedia Search ===")
 	// Test the full article text function
 	SearchAndFetchWikiArticle("Haskell")
-
-
-
-
 
 }
 
@@ -222,4 +226,21 @@ func countPartitions(nums []int, k int) int {
 		}
 	}
 	return dp[0]
+}
+
+func matrixSum(nums [][]int) int {
+	for _, num := range nums {
+		sort.Ints(num)
+	}
+	output := 0
+	for i := 0; i < len(nums[0]); i++ {
+		currentMax := -1
+		for _, num := range nums {
+			if num[i] > currentMax {
+				currentMax = num[i]
+			}
+		}
+		output += currentMax
+	}
+	return output
 }
