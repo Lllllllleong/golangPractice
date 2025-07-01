@@ -1,7 +1,7 @@
 package main
 
 import (
-
+	"container/list"
 	"fmt"
 	"sort"
 )
@@ -243,4 +243,20 @@ func matrixSum(nums [][]int) int {
 		output += currentMax
 	}
 	return output
+}
+
+func maxNumOfMarkedIndices(nums []int) int {
+    sort.Ints(nums)
+    n := len(nums)
+    left := 0
+    right := n / 2  
+    output := 0
+    for left < n/2 && right < n {
+        if nums[left] * 2 <= nums[right] {
+            output += 2 
+            left++
+        }
+        right++
+    }
+    return output
 }
