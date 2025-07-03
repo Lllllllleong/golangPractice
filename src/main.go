@@ -1,7 +1,7 @@
 package main
 
 import (
-	"container/list"
+
 	"fmt"
 	"sort"
 )
@@ -259,4 +259,28 @@ func maxNumOfMarkedIndices(nums []int) int {
         right++
     }
     return output
+}
+
+func findCommonResponse(responses [][]string) string {
+	hashMap := make(map[string]int)
+	for _, stringArray := range responses {
+		stringSet := make(map[string]struct{})
+		for _, s := range stringArray {
+			stringSet[s] = struct{}{}
+		}
+		for key, _ := range stringSet {
+			hashMap[key]++
+		}
+	}
+	output := ""
+	currentMax := -1
+	for key, value := range hashMap {
+		if value > currentMax {
+			output = key
+			currentMax = value
+		} else if value == currentMax && key < output {
+			output = key
+		}
+	}
+	return output
 }
