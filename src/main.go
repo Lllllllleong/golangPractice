@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"sort"
 )
 
@@ -246,19 +245,19 @@ func matrixSum(nums [][]int) int {
 }
 
 func maxNumOfMarkedIndices(nums []int) int {
-    sort.Ints(nums)
-    n := len(nums)
-    left := 0
-    right := n / 2  
-    output := 0
-    for left < n/2 && right < n {
-        if nums[left] * 2 <= nums[right] {
-            output += 2 
-            left++
-        }
-        right++
-    }
-    return output
+	sort.Ints(nums)
+	n := len(nums)
+	left := 0
+	right := n / 2
+	output := 0
+	for left < n/2 && right < n {
+		if nums[left]*2 <= nums[right] {
+			output += 2
+			left++
+		}
+		right++
+	}
+	return output
 }
 
 func findCommonResponse(responses [][]string) string {
@@ -285,34 +284,73 @@ func findCommonResponse(responses [][]string) string {
 	return output
 }
 
-
 func removeDuplicateLetters(s string) string {
-    const alphabetSize = 26
-    lastIndex := make([]int, alphabetSize)
-    for i, char := range s {
-        lastIndex[char - 'a'] = i
-    }
-    var stack []int
-    seenSlice := make([]bool, alphabetSize)
-    for i, char := range s {
-        charIndex := int(char - 'a')
-        if seenSlice[charIndex] {
-            continue
-        }
-        for len(stack) > 0 {
-            top := stack[len(stack)-1]
-            if top <= charIndex || lastIndex[top] <= i {
-                break
-            }
-            seenSlice[top] = false
-            stack = stack[:len(stack)-1]
-        }
-        stack = append(stack, charIndex)
-        seenSlice[charIndex] = true
-    }
-    output := make([]byte, len(stack))
-    for i, charIndex := range stack {
-        output[i] = byte('a' + charIndex)
-    }
-    return string(output)
+	const alphabetSize = 26
+	lastIndex := make([]int, alphabetSize)
+	for i, char := range s {
+		lastIndex[char-'a'] = i
+	}
+	var stack []int
+	seenSlice := make([]bool, alphabetSize)
+	for i, char := range s {
+		charIndex := int(char - 'a')
+		if seenSlice[charIndex] {
+			continue
+		}
+		for len(stack) > 0 {
+			top := stack[len(stack)-1]
+			if top <= charIndex || lastIndex[top] <= i {
+				break
+			}
+			seenSlice[top] = false
+			stack = stack[:len(stack)-1]
+		}
+		stack = append(stack, charIndex)
+		seenSlice[charIndex] = true
+	}
+	output := make([]byte, len(stack))
+	for i, charIndex := range stack {
+		output[i] = byte('a' + charIndex)
+	}
+	return string(output)
+}
+
+func shortestDistanceAfterQueries(n int, queries [][]int) []int {
+	output := []int{}
+	graph := make([][]int, n)
+	distances := make([]int, n)
+	for i := 0; i < n; i++ {
+		distances[i] = i
+		graph[i] = append(graph[i], i+1)
+	}
+	for _, query := range queries {
+		updateDistanceGraph(query, distances, graph)
+		output = append(output, distances[n-1])
+	}
+	return output
+}
+
+func updateDistanceGraph(query, distances []int, graph [][]int) {
+	from := query[0]
+	to := query[1]
+	if from + 1 == to {
+		return
+	}
+	graph[from] = append(graph[from], to)
+	queue := []int{0}
+	for len(queue) > 0 {
+		currentNode := queue[0]
+		queue = queue[1:]
+		if currentNode == len(distances) - 1 {
+			continue
+		}
+		for _, nextNode := range graph[currentNode] {
+			if distances[currentNode] + 1 > distances[nextNode] {
+				continue
+			}
+			distances[nextNode] = distances[currentNode] + 1
+			queue = append(queue, nextNode)
+		}
+	}
+	return
 }
