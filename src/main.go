@@ -333,7 +333,7 @@ func shortestDistanceAfterQueries(n int, queries [][]int) []int {
 func updateDistanceGraph(query, distances []int, graph [][]int) {
 	from := query[0]
 	to := query[1]
-	if from + 1 == to {
+	if from+1 == to {
 		return
 	}
 	graph[from] = append(graph[from], to)
@@ -341,11 +341,11 @@ func updateDistanceGraph(query, distances []int, graph [][]int) {
 	for len(queue) > 0 {
 		currentNode := queue[0]
 		queue = queue[1:]
-		if currentNode == len(distances) - 1 {
+		if currentNode == len(distances)-1 {
 			continue
 		}
 		for _, nextNode := range graph[currentNode] {
-			if distances[currentNode] + 1 > distances[nextNode] {
+			if distances[currentNode]+1 > distances[nextNode] {
 				continue
 			}
 			distances[nextNode] = distances[currentNode] + 1
@@ -354,3 +354,42 @@ func updateDistanceGraph(query, distances []int, graph [][]int) {
 	}
 	return
 }
+
+
+func assignEdgeWeights(edges [][]int) int {
+	const mod = 1_000_000_007
+	n := len(edges) + 1
+	graph := make([][]int, n)
+	for _, edge := range edges {
+		u, v := edge[0]-1, edge[1]-1
+		graph[u] = append(graph[u], v)
+		graph[v] = append(graph[v], u)
+	}
+	depthSlice := make([]int, n)
+	seenSlice := make([]bool, n)
+	queue := []int{0}
+	seenSlice[0] = true
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+		for _, neighbor := range graph[node] {
+			if !seenSlice[neighbor] {
+				seenSlice[neighbor] = true
+				depthSlice[neighbor] = depthSlice[node] + 1
+				queue = append(queue, neighbor)
+			}
+		}
+	}
+	maxDepth := -1
+	for _, depth := range depthSlice {
+		if depth > maxDepth {
+			maxDepth = depth
+		}
+	}
+	output := 1
+	for i := 0; i < maxDepth-1; i++ {
+		output = (output * 2) % mod
+	}
+	return output
+}
+
