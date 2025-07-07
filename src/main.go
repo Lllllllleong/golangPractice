@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+
 )
 
 type TreeNode struct {
@@ -393,3 +394,22 @@ func assignEdgeWeights(edges [][]int) int {
 	return output
 }
 
+func maxProduct(words []string) int {
+	output := 0
+	n := len(words)
+	bitMasks := make([]int, len(words))
+	for i, word := range words {
+		for _, char := range word {
+			charValue := int(char - 'a')
+			bitMasks[i] = bitMasks[i] | (1 << charValue)
+		}
+	}
+	for i := 0; i < n; i++ {
+		for j := i+1; j < n; j++ {
+			if bitMasks[i] & bitMasks[j] == 0 && len(words[i]) * len(words[j]) > output {
+				output = len(words[i]) * len(words[j])
+			}
+		}
+	}
+	return output
+}
