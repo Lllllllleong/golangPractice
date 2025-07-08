@@ -413,3 +413,20 @@ func maxProduct(words []string) int {
 	}
 	return output
 }
+
+
+func divideArray(nums []int, k int) [][]int {
+    sort.Ints(nums)
+	output := [][]int{}
+	for i := 0; i < len(nums); i += 3 {
+		currentSlice := []int{}
+		for j := 0; j < 3; j++ {
+			currentSlice = append(currentSlice, nums[i + j])
+		}
+		if (currentSlice[2] - currentSlice[0]) > k {
+			return [][]int{}
+		}
+		output = append(output, currentSlice)
+	}
+	return output
+}
