@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sort"
-
 )
 
 type TreeNode struct {
@@ -356,7 +356,6 @@ func updateDistanceGraph(query, distances []int, graph [][]int) {
 	return
 }
 
-
 func assignEdgeWeights(edges [][]int) int {
 	const mod = 1_000_000_007
 	n := len(edges) + 1
@@ -405,8 +404,8 @@ func maxProduct(words []string) int {
 		}
 	}
 	for i := 0; i < n; i++ {
-		for j := i+1; j < n; j++ {
-			if bitMasks[i] & bitMasks[j] == 0 && len(words[i]) * len(words[j]) > output {
+		for j := i + 1; j < n; j++ {
+			if bitMasks[i]&bitMasks[j] == 0 && len(words[i])*len(words[j]) > output {
 				output = len(words[i]) * len(words[j])
 			}
 		}
@@ -414,14 +413,13 @@ func maxProduct(words []string) int {
 	return output
 }
 
-
 func divideArray(nums []int, k int) [][]int {
-    sort.Ints(nums)
+	sort.Ints(nums)
 	output := [][]int{}
 	for i := 0; i < len(nums); i += 3 {
 		currentSlice := []int{}
 		for j := 0; j < 3; j++ {
-			currentSlice = append(currentSlice, nums[i + j])
+			currentSlice = append(currentSlice, nums[i+j])
 		}
 		if (currentSlice[2] - currentSlice[0]) > k {
 			return [][]int{}
@@ -431,45 +429,68 @@ func divideArray(nums []int, k int) [][]int {
 	return output
 }
 
-unc orangesRotting(grid [][]int) int {
-    queue := [][]int{}
-    freshCount := 0
-    yMax, xMax := len(grid), len(grid[0])
-    for y, xArray := range grid {
-        for x, value := range xArray {
-            switch value {
-            case 1:
-                freshCount++
-            case 2:
-                queue = append(queue, []int{y, x})
-            }
-        }
-    }
+func orangesRotting(grid [][]int) int {
+	queue := [][]int{}
+	freshCount := 0
+	yMax, xMax := len(grid), len(grid[0])
+	for y, xArray := range grid {
+		for x, value := range xArray {
+			switch value {
+			case 1:
+				freshCount++
+			case 2:
+				queue = append(queue, []int{y, x})
+			}
+		}
+	}
 
-    minutes := 0
-    directions := [][]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+	minutes := 0
+	directions := [][]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
 
-    for len(queue) > 0 && freshCount > 0 {
-        minutes++
-        levelSize := len(queue)
-        for i := 0; i < levelSize; i++ {
-            rotten := queue[0]
-            queue = queue[1:]
+	for len(queue) > 0 && freshCount > 0 {
+		minutes++
+		levelSize := len(queue)
+		for i := 0; i < levelSize; i++ {
+			rotten := queue[0]
+			queue = queue[1:]
 
-            for _, dir := range directions {
-                y, x := rotten[0]+dir[0], rotten[1]+dir[1]
+			for _, dir := range directions {
+				y, x := rotten[0]+dir[0], rotten[1]+dir[1]
 
-                if y >= 0 && y < yMax && x >= 0 && x < xMax && grid[y][x] == 1 {
-                    grid[y][x] = 2
-                    freshCount--
-                    queue = append(queue, []int{y, x})
-                }
-            }
-        }
-    }
+				if y >= 0 && y < yMax && x >= 0 && x < xMax && grid[y][x] == 1 {
+					grid[y][x] = 2
+					freshCount--
+					queue = append(queue, []int{y, x})
+				}
+			}
+		}
+	}
 
-    if freshCount == 0 {
-        return minutes
-    }
-    return -1
+	if freshCount == 0 {
+		return minutes
+	}
+	return -1
+}
+
+func findCoins(numWays []int) []int {
+	n := len(numWays)
+	output := []int{}
+	dp := make([]int, n)
+	for i := 0; i < n; i++ {
+		if dp[i] == numWays[i] {
+			continue
+		}
+		if (dp[i] != numWays[i] - 1) {
+			return []int{}
+		}
+		dp[i]++
+		coinValue := i+1
+		output = append(output, coinValue)
+		for j := 0; j < n; j++ {
+			if dp[j] != 0 && (j+coinValue) < n {
+				dp[j+coinValue] += dp[j]
+			}
+		}
+	}
+	return output
 }
