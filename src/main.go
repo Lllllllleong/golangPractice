@@ -14,6 +14,7 @@ type TreeNode struct {
 
 func main() {
 	fmt.Println("=== Double-ended Queue Examples ===")
+	fmt.Println(math.MaxInt32)
 
 	// Example 1: Using container/list as a deque
 	dequeExample()
@@ -493,4 +494,24 @@ func findCoins(numWays []int) []int {
 		}
 	}
 	return output
+}
+
+
+func resultingString(s string) string {
+    stack := []byte{}
+	for _, char := range s {
+		charIndex := byte(char)
+		if len(stack) > 0 {
+			top := stack[len(stack)-1]
+			difference := int(charIndex) -int(top)
+			if difference == 1 || difference == -1 || difference == 25 || difference == -25 {
+				stack = stack[:len(stack)-1]
+			} else {
+				stack = append(stack, charIndex)
+			}
+		} else {
+			stack = append(stack, charIndex)
+		}
+	}
+    return string(stack)
 }
