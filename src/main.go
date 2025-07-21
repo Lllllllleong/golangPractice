@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math"
+
 	"sort"
 )
 
@@ -13,18 +13,18 @@ type TreeNode struct {
 }
 
 func main() {
-	fmt.Println("=== Double-ended Queue Examples ===")
-	fmt.Println(math.MaxInt32)
+	// fmt.Println("=== Double-ended Queue Examples ===")
+	// fmt.Println(math.MaxInt32)
 
 	// Example 1: Using container/list as a deque
-	dequeExample()
+	// dequeExample()
 
 	// Example 2: Using slice-based deque
-	sliceDequeExample()
+	// sliceDequeExample()
 
-	fmt.Println("\n=== Wikipedia Search ===")
+	// fmt.Println("\n=== Wikipedia Search ===")
 	// Test the full article text function
-	SearchAndFetchWikiArticle("Haskell")
+	// SearchAndFetchWikiArticle("Haskell")
 
 }
 
@@ -481,11 +481,11 @@ func findCoins(numWays []int) []int {
 		if dp[i] == numWays[i] {
 			continue
 		}
-		if (dp[i] != numWays[i] - 1) {
+		if dp[i] != numWays[i]-1 {
 			return []int{}
 		}
 		dp[i]++
-		coinValue := i+1
+		coinValue := i + 1
 		output = append(output, coinValue)
 		for j := 0; j < n; j++ {
 			if dp[j] != 0 && (j+coinValue) < n {
@@ -496,14 +496,13 @@ func findCoins(numWays []int) []int {
 	return output
 }
 
-
 func resultingString(s string) string {
-    stack := []byte{}
+	stack := []byte{}
 	for _, char := range s {
 		charIndex := byte(char)
 		if len(stack) > 0 {
 			top := stack[len(stack)-1]
-			difference := int(charIndex) -int(top)
+			difference := int(charIndex) - int(top)
 			if difference == 1 || difference == -1 || difference == 25 || difference == -25 {
 				stack = stack[:len(stack)-1]
 			} else {
@@ -513,5 +512,44 @@ func resultingString(s string) string {
 			stack = append(stack, charIndex)
 		}
 	}
-    return string(stack)
+	return string(stack)
+}
+
+func maximalSquare(matrix [][]byte) int {
+    rows := len(matrix)
+    cols := len(matrix[0])
+    intMatrix := make([][]int, rows)
+    for i := range matrix {
+        intMatrix[i] = make([]int, cols)
+        for j := range matrix[i] {
+            intMatrix[i][j] = int(matrix[i][j]) - 48
+        }
+    }
+    output := 0
+    maxf := func(a, b int) int {
+        if a > b {
+            return a
+        }
+        return b
+    }
+    minf := func(a, b int) int {
+        if a < b {
+            return a
+        }
+        return b
+    }
+    for y := 0; y < rows; y++ {
+        for x := 0; x < cols; x++ {
+            if intMatrix[y][x] > 0 &&
+                x > 0 &&
+                y > 0 &&
+                intMatrix[y-1][x-1] > 0 &&
+                intMatrix[y-1][x] > 0 &&
+                intMatrix[y][x-1] > 0 {
+                intMatrix[y][x] = minf(intMatrix[y-1][x], minf(intMatrix[y-1][x-1], intMatrix[y][x-1])) + 1
+            }
+            output = maxf(output, intMatrix[y][x])
+        }
+    }
+    return output * output
 }
