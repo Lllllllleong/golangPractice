@@ -6,39 +6,27 @@ This repository contains my solutions to LeetCode problems implemented in Go.
 
 ```
 .
-├── easy/           # Easy difficulty problems
-├── medium/         # Medium difficulty problems
-├── hard/           # Hard difficulty problems
-└── README.md       # This file
+├── easy/
+│   └── solutions.go      # All easy difficulty problems
+├── medium/
+│   └── solutions.go      # All medium difficulty problems
+├── hard/
+│   └── solutions.go      # All hard difficulty problems
+└── README.md
 ```
 
-## Naming Convention
+## Format
 
-Each solution file is named using the pattern: `{problem_number}_{problem_name}.go`
-
-Example: `001_two_sum.go`
-
-## Running Solutions
-
-```bash
-# Run a specific solution
-go run easy/001_two_sum.go
-
-# Run tests for a solution
-go test ./easy -v -run TestTwoSum
-```
+Each solution includes:
+- Problem number and name
+- LeetCode link
+- Problem description
+- Time and space complexity
+- Solution implementation
 
 ## Progress
 
-- Easy: 0
+- Easy: 1
 - Medium: 0
 - Hard: 0
-- Total: 0
-
-## Notes
-
-Each solution includes:
-- Problem description (as comments)
-- Solution implementation
-- Time and space complexity analysis
-- Test cases (where applicable)
+- Total: 1
