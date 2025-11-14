@@ -26,18 +26,14 @@ TIPS:
 */
 
 func main() {
-	// "Hi" is 2 bytes. "👋" is 4 bytes. Total 6 bytes.
-	str := "Hi 👋"
+	s := "Hello, 世界"
+	for i, r := range s {
+		fmt.Printf("Index: %d, Rune: %c\n", i, r)
+	}
 
-	// ❌ BAD: Slicing bytes
-	// This tries to take the first 3 bytes.
-	// It gets "H", "i", and HALF of the hand emoji.
-	fmt.Println(str[:4])
+	runes := []rune(s)
+	for i, r := range runes {
+		fmt.Printf("Index: %d, Rune: %c\n", i, r)
+	}
 
-	// ✅ GOOD: Slicing Runes
-	// Convert to runes -> Slice -> Convert back to string
-	runes := []rune(str)
-	safeSub := string(runes[:4])
-	fmt.Println(safeSub)
-	fmt.Println(string(runes[0:1]))
 }
