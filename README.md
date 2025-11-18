@@ -48,11 +48,13 @@ This repository contains my solutions to LeetCode problems implemented in Java a
     └── progress/               # Progress screenshots
 ```
 
-## About
 
-I make a new Practice class in Java when my IDE starts to lag, which is usually around 4,000 lines.
 
-## Recent Progress (2024)
+## 📈 Recent Progress
+
+**November 2025:** Repository reorganization complete - focused on LeetCode solutions only
+<br>
+<img src="resources/progress/11-25.png" width="400" height="180">
 
 **August 2024:** Been doing SQL questions to supplement COMP2400 learning
 <br>
