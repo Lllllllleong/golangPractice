@@ -2,7 +2,27 @@
 
 This repository contains my solutions to LeetCode problems implemented in Java and Go, plus SQL practice problems.
 
-## Structure
+## 📊 Statistics
+
+- **Java**: ~1,171 solutions across 6 Practice files
+- **Go**: 34 solutions (13 Easy, 18 Medium, 3 Hard)
+- **SQL**: Database problems for learning
+- **Total Lines**: ~24,400 lines of code
+
+## 🚀 Quick Start
+
+### Finding Solutions
+- **Java**: Solutions organized in `Practice1-6.java` files (~4,000 lines each)
+  - Use Ctrl+F to search for problem names or keywords
+  - Check `References.java` for common algorithms and utilities
+- **Go**: Solutions organized by difficulty in `go/easy/`, `go/medium/`, `go/hard/`
+- **SQL**: All SQL problems in `sql/SQLPractice.sql`
+
+### Working on New Solutions
+- **Go**: Use `draft.go` in the root directory (gitignored for work-in-progress)
+- **Java**: Add to the most recent Practice file or start Practice7.java when IDE slows down
+
+## 📁 Structure
 
 ```
 .
