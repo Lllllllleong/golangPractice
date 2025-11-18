@@ -4,10 +4,10 @@ This repository contains my solutions to LeetCode problems implemented in Java a
 
 ## 📊 Statistics
 
-- **Java**: ~1,171 solutions across 6 Practice files
-- **Go**: 34 solutions (13 Easy, 18 Medium, 3 Hard)
+- **Java**: ~700 solutions
+- **Go**: ~34 solutions
 - **SQL**: Database problems for learning
-- **Total Lines**: ~24,400 lines of code
+
 
 ## 🚀 Quick Start
 
