@@ -1,24 +1,34 @@
-# LeetCode Solutions in Go
+# Go LeetCode Solutions
 
-This repository contains my solutions to LeetCode problems implemented in Go.
+This directory contains Go solutions to LeetCode problems, organized by difficulty.
 
 ## Structure
 
 ```
 .
 ├── easy/
-│   └── solutions.go      # All easy difficulty problems
+│   └── solutions.go      # Easy difficulty problems
 ├── medium/
-│   └── solutions.go      # All medium difficulty problems
+│   └── solutions.go      # Medium difficulty problems
 ├── hard/
-│   └── solutions.go      # All hard difficulty problems
-└── README.md
+│   └── solutions.go      # Hard difficulty problems
+├── golangReference.go    # Go scratchpad for quick testing
+└── draft.go              # Working file (gitignored)
 ```
 
+## How to Use
 
-## Progress
+- Solutions are organized by difficulty level
+- `draft.go` is for working on new solutions before moving them to the appropriate difficulty file
+- `golangReference.go` can be used for quick Go syntax testing and experimentation
 
-- Easy: 
-- Medium: 
-- Hard: 
-- Total: 
+## Running Code
+
+```bash
+# Run the reference file
+go run golangReference.go
+
+# Run tests for a specific package
+cd easy
+go test
+```

@@ -1,0 +1,38 @@
+# Draft files (working solutions not ready to commit)
+draft.go
+
+# Java compiled files
+*.class
+*.jar
+*.war
+*.ear
+out/
+target/
+build/
+*.iml
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go test files
+*.test
+*.out
+
+# Dependency directories
+node_modules/
+vendor/

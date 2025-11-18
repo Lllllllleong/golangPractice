@@ -1,28 +1,31 @@
-# Leetcode Practice
+# Java LeetCode Solutions
 
-This is a repository for learning and practicing programming.
-I make a new practice class when my IDE starts to lag, which is usually at
-around 4000 lines.
+This directory contains Java solutions to LeetCode problems.
 
-08/24 Progress:
+## Structure
 
-Been doing SQL questions to supplement COMP2400 learning
-<br>
-<img src="src/src/res/08-24.png" width="400" height="180">
+- `Practice1.java` - ~4,500 lines of LeetCode solutions
+- `Practice2.java` - ~3,700 lines of LeetCode solutions
+- `Practice3.java` - ~3,800 lines of LeetCode solutions
+- `Practice4.java` - ~4,000 lines of LeetCode solutions
+- `Practice5.java` - ~3,600 lines of LeetCode solutions
+- `Practice6.java` - ~2,800 lines of LeetCode solutions
+- `References.java` - Utility functions, algorithms, and reference implementations
 
-07/24 Progress:
-<br>
-<img src="src/src/res/07-24.png" width="400" height="180">
+## Organization
 
-06/24 Progress:
-<br>
-<img src="src/src/res/06-24.png" width="400" height="180">
+Each Practice file contains multiple LeetCode problems. I create a new Practice class when my IDE starts to lag, which is usually around 4,000 lines.
 
+## Common Patterns
 
-<br>
-05/24 Progress:
-<br>
-<img src="src/src/res/05-24.png" width="400" height="180">
+The `References.java` file contains useful utilities including:
+- Binary search variations (exact, ceiling, floor)
+- Sorting examples and comparators
+- HashMap operations
+- Queue/Deque examples
+- Array/List conversions
+- File I/O operations
+- XML/JSON parsing utilities
 
 
 
