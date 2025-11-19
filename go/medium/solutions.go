@@ -18,6 +18,61 @@ Space Complexity: O()
 
 /*
 ============================================================
+648. Replace Words
+============================================================
+Time Complexity: O(?)
+Space Complexity: O(?)
+*/
+type Trie struct {
+	eow      bool
+	children map[rune]*Trie
+}
+
+func NewTrie() *Trie {
+	return &Trie{
+		eow:      false,
+		children: make(map[rune]*Trie),
+	}
+}
+
+func replaceWords(dictionary []string, sentence string) string {
+	trieRoot := NewTrie()
+	currentNode := trieRoot
+	// Fill in the Trie
+	for _, rootString := range dictionary {
+		runes := []rune(rootString)
+		currentNode = trieRoot
+		for _, rune := range runes {
+			nextNode, ok := currentNode.children[rune]
+			if !ok {
+				nextNode = NewTrie()
+				currentNode.children[rune] = nextNode
+			}
+			currentNode = nextNode
+		}
+		currentNode.eow = true
+	}
+	words := strings.Fields(sentence)
+	for i, word := range words {
+		currentNode = trieRoot
+		runes := []rune(word)
+		for j, rune := range runes {
+			nextNode, ok := currentNode.children[rune]
+			if !ok {
+				break
+			}
+			currentNode = nextNode
+			if currentNode.eow {
+				words[i] = string(runes[:j+1])
+				break
+			}
+		}
+	}
+	return strings.Join(words, " ")
+}
+
+/*
+============================================================
 1529. Minimum Suffix Flips
 ============================================================
 Time Complexity: O(n)
