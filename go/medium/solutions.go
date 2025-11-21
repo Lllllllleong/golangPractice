@@ -1,6 +1,7 @@
 package medium
 
 import (
+	"container/heap"
 	"sort"
 	"strings"
 )
@@ -18,6 +19,96 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3112. Minimum Time to Visit Disappearing Nodes
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+type Item struct {
+	node int
+	time int
+}
+
+type PriorityQueue []*Item
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].time < pq[j].time
+}
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+}
+func (pq *PriorityQueue) Push(x any) {
+	item := x.(*Item)
+	*pq = append(*pq, item)
+}
+func (pq *PriorityQueue) Pop() any {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	*pq = old[0 : n-1]
+	return item
+}
+
+func minimumTime(n int, edges [][]int, disappear []int) []int {
+	graph := make([][]struct{ to, weight int }, n)
+	for _, edge := range edges {
+		u, v, w := edge[0], edge[1], edge[2]
+		graph[u] = append(graph[u], struct{ to, weight int }{v, w})
+		graph[v] = append(graph[v], struct{ to, weight int }{u, w})
+	}
+	minTime := make([]int, n)
+	for i := range minTime {
+		minTime[i] = -1
+	}
+	minTime[0] = 0
+	pq := &PriorityQueue{&Item{node: 0, time: 0}}
+	heap.Init(pq)
+	for pq.Len() > 0 {
+		item := heap.Pop(pq).(*Item)
+		u, time := item.node, item.time
+		if time > minTime[u] && minTime[u] != -1 {
+			continue
+		}
+		for _, edge := range graph[u] {
+			v, w := edge.to, edge.weight
+			newTime := time + w
+			if newTime < disappear[v] {
+				if minTime[v] == -1 || newTime < minTime[v] {
+					minTime[v] = newTime
+					heap.Push(pq, &Item{node: v, time: newTime})
+				}
+			}
+		}
+	}
+	return minTime
+}
+
+/*
+============================================================
+2439. Minimize Maximum of Array
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func minimizeArrayValue(nums []int) int {
+	var sum int64
+	output := 0
+	for i, v := range nums {
+		sum += int64(v)
+		currentMin := sum / int64(i+1)
+		if sum%int64(i+1) != 0 {
+			currentMin++
+		}
+		if output < int(currentMin) {
+			output = int(currentMin)
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
@@ -231,7 +322,7 @@ Minimum Time to Complete Trips
 Time Complexity: O(?)
 Space Complexity: O(?)
 */
-func minimumTime(time []int, totalTrips int) int64 {
+func minimumTime2(time []int, totalTrips int) int64 {
 	n := len(time)
 	if n == 1 {
 		return int64(time[0]) * int64(totalTrips)

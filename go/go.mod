@@ -1,3 +1,3 @@
 module github.com/Lllllllleong/self-learning-programming/go
 
-go 1.21
+go 1.25
