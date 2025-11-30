@@ -29,18 +29,17 @@ Time Complexity: O(n)
 Space Complexity: O(n)
 */
 func maximumGain(s string, x int, y int) int {
-	runes := []rune(s)
 	if x > y {
-		return maximumGainSolve(runes, x, y, 'a', 'b')
+		return maximumGainSolve(s, x, y, 'a', 'b')
 	} else {
-		return maximumGainSolve(runes, y, x, 'b', 'a')
+		return maximumGainSolve(s, y, x, 'b', 'a')
 	}
 }
 
-func maximumGainSolve(runes []rune, x, y int, runeFirst, runeSecond rune) int {
+func maximumGainSolve(s string, x, y int, runeFirst, runeSecond rune) int {
 	output := 0
 	stackFirst := []rune{}
-	for _, v := range runes {
+	for _, v := range s {
 		if v == runeSecond && len(stackFirst) > 0 && stackFirst[len(stackFirst)-1] == runeFirst {
 			output += x
 			stackFirst = stackFirst[:len(stackFirst)-1]
