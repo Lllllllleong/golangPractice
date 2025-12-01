@@ -23,6 +23,17 @@ Space Complexity: O()
 
 /*
 ============================================================
+3021. Alice and Bob Playing Flower Game
+============================================================
+Time Complexity: O(1)
+Space Complexity: O(1)
+*/
+func flowerGame(n int, m int) int64 {
+	return int64(n) * int64(m) / 2
+}
+
+/*
+============================================================
 1717. Maximum Score From Removing Substrings
 ============================================================
 Time Complexity: O(n)
